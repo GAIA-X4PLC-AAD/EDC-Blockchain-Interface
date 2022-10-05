@@ -133,7 +133,6 @@ const postTransfer = async (
   return result;
 };
 
-//TODO: Diese Woche
 const transactionQuery = async (transactionId, mapName) => {
   let resultObject = {};
   await tezos.contract
@@ -158,10 +157,38 @@ const transactionQuery = async (transactionId, mapName) => {
   return resultObject;
 };
 
+const mintAsset = async (metaLink = "") => {
+  let byteLink = char2Bytes(metaLink);
+
+  // Parameter der Minting Funktion als Array angegeben werden müssen, da es sich in dem Contract selbst um ein Mapping handelt?
+  let result = await tezos.contract
+    .at("KT1CXc9Y3GJAWAWXQMi48naJsZfQfrdbjFnE")
+    .then((contract) => {
+      return contract.methods
+        .mint([
+          {
+            to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+            metadata: {
+              "": char2Bytes(metaLink),
+            },
+          },
+        ])
+        .send();
+    })
+    .then((hash) => {
+      return hash;
+    })
+    .catch((error) => {
+      return error;
+    });
+  return result;
+};
+
 export {
   getBalance,
   getMapSize,
   postContractAgreement,
   postTransfer,
   transactionQuery,
+  mintAsset,
 };

@@ -1,0 +1,23 @@
+{
+  "name": "tezos-client",
+  "version": "1.0.0",
+  "description": "Tezos Client API for GAIA X Project",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "serve": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@taquito/signer": "^12.1.1",
+    "@taquito/taquito": "^12.1.1",
+    "@taquito/tezbridge-signer": "^12.1.1",
+    "express": "^4.18.1",
+    "node-fetch": "^3.2.4",
+    "nodemon": "^2.0.16",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.4.0"
+  }
+}

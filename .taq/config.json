@@ -1,0 +1,70 @@
+{
+    "language": "en",
+    "contractsDir": "contracts",
+    "artifactsDir": "artifacts",
+    "network": {
+        "ghostnet": {
+            "label": "Ghostnet Testnet",
+            "rpcUrl": "https://rpc.ghostnet.teztnets.xyz/",
+            "protocol": "PtJakart2xVj7pYXJBXrqHgd82rdkLey5ZeeGwDgPp9rhQUbSqY",
+            "faucet": {
+                "pkh": "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                "mnemonic": [
+                    "position",
+                    "rate",
+                    "moment",
+                    "length",
+                    "expect",
+                    "cube",
+                    "hood",
+                    "myself",
+                    "wolf",
+                    "aunt",
+                    "forward",
+                    "east",
+                    "festival",
+                    "lunar",
+                    "disorder"
+                ],
+                "email": "rdohpfom.npmvsjuk@teztnets.xyz",
+                "password": "cFXNG4JNNs",
+                "amount": "57673736693",
+                "activation_code": "d055ae3b0015305c45039fd22c5999b4c14ea08b"
+            }
+        }
+    },
+    "sandbox": {
+        "local": {
+            "label": "Local Tezos Sandbox",
+            "rpcUrl": "http://localhost:20000",
+            "protocol": "Psithaca2MLRFYargivpo7YvUr7wUDqyxrdhC5CQq78mRvimz6A"
+        }
+    },
+    "environment": {
+        "default": "testnet",
+        "development": {
+            "networks": [],
+            "sandboxes": [
+                "local"
+            ],
+            "storage": {}
+        },
+        "testnet": {
+            "networks": [
+                "ghostnet"
+            ],
+            "sandboxes": [],
+            "storage": {
+                "Fa2flex/step_000_cont_0_contract.tz": "1",
+                "Fa2flex/step_000_cont_0_storage.tz": "1"
+            }
+        }
+    },
+    "accounts": {
+        "bob": "3_000_000_000",
+        "alice": "3_000_000_000",
+        "john": "3_000_000_000",
+        "jane": "3_000_000_000",
+        "joe": "3_000_000_000"
+    }
+}

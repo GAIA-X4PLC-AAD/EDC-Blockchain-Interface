@@ -162,6 +162,34 @@ const mintAsset = async (metaLink = "") => {
 
   // Parameter der Minting Funktion als Array angegeben werden müssen, da es sich in dem Contract selbst um ein Mapping handelt?
   let result = await tezos.contract
+    //TODO: change to asset contract address
+    .at("KT1CXc9Y3GJAWAWXQMi48naJsZfQfrdbjFnE")
+    .then((contract) => {
+      return contract.methods
+        .mint([
+          {
+            to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+            metadata: {
+              "": char2Bytes(metaLink),
+            },
+          },
+        ])
+        .send();
+    })
+    .then((hash) => {
+      return hash;
+    })
+    .catch((error) => {
+      return error;
+    });
+  return result;
+};
+const mintPolicy = async (metaLink = "") => {
+  let byteLink = char2Bytes(metaLink);
+
+  // Parameter der Minting Funktion als Array angegeben werden müssen, da es sich in dem Contract selbst um ein Mapping handelt?
+  let result = await tezos.contract
+    //TODO: change to policy address
     .at("KT1CXc9Y3GJAWAWXQMi48naJsZfQfrdbjFnE")
     .then((contract) => {
       return contract.methods
@@ -191,4 +219,5 @@ export {
   postTransfer,
   transactionQuery,
   mintAsset,
+  mintPolicy,
 };

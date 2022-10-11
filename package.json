@@ -20,5 +20,15 @@
     "nodemon": "^2.0.16",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johannha/edc-interface.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/johannha/edc-interface/issues"
+  },
+  "homepage": "https://github.com/johannha/edc-interface#readme"
 }

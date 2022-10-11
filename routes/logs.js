@@ -5,6 +5,7 @@ import {
   postTransfer,
   transactionQuery,
   mintAsset,
+  mintPolicy,
 } from "../taquito/contract.js";
 
 import { pinJSON } from "../pinata/ipfs.js";
@@ -289,5 +290,13 @@ export const getLogRoute = (client) => {
     let ipfsHash = await pinJSON(request);
     let metaUri = "ipfs://" + ipfsHash;
     await mintAsset(metaUri);
+  });
+
+  client.post("/mint/policy", async (req, res) => {
+    // Await upload of metadata
+    let request = req.body;
+    let ipfsHash = await pinJSON(request);
+    let metaUri = "ipfs://" + ipfsHash;
+    await mintPolicy(metaUri);
   });
 };

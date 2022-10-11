@@ -8,7 +8,6 @@
             "rpcUrl": "https://rpc.ghostnet.teztnets.xyz/",
             "protocol": "PtJakart2xVj7pYXJBXrqHgd82rdkLey5ZeeGwDgPp9rhQUbSqY",
             "faucet": {
-                "pkh": "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
                 "mnemonic": [
                     "position",
                     "rate",
@@ -29,7 +28,8 @@
                 "email": "rdohpfom.npmvsjuk@teztnets.xyz",
                 "password": "cFXNG4JNNs",
                 "amount": "57673736693",
-                "activation_code": "d055ae3b0015305c45039fd22c5999b4c14ea08b"
+                "activation_code": "d055ae3b0015305c45039fd22c5999b4c14ea08b",
+                "pkh": "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ"
             }
         }
     },
@@ -66,5 +66,28 @@
         "john": "3_000_000_000",
         "jane": "3_000_000_000",
         "joe": "3_000_000_000"
+    },
+    "plugins": [
+        {
+            "name": "@taqueria/plugin-smartpy",
+            "type": "npm"
+        },
+        {
+            "name": "@taqueria/plugin-metadata",
+            "type": "npm"
+        }
+    ],
+    "projectDir": "/Users/johann/Documents/Code/GAIA/edc-interface",
+    "configFile": "/Users/johann/Documents/Code/GAIA/edc-interface/.taq/config.json",
+    "hash": "f46be67e514b0db87a0908f03e609429312a6b675a6dd0404b9990effb979ec9",
+    "metadata": {
+        "name": "EDC Asset and Policy Tezos-Interface",
+        "projectDescription": "Rest API for minting assets and policies and further query functionality ",
+        "authors": [
+            "Johann Hartmann",
+            "Julian Legler"
+        ],
+        "homepage": "https://www.tu.berlin/ise/projekte/gaia-x",
+        "license": "ISC"
     }
 }

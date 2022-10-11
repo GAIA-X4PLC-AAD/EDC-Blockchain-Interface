@@ -1,0 +1,16 @@
+{
+    "operations": {},
+    "tasks": {
+        "@taqueria/plugin-smartpy.compile.1665481601622": {
+            "task": "compile",
+            "plugin": "@taqueria/plugin-smartpy",
+            "time": 1665481601623,
+            "output": [
+                {
+                    "contract": "asset_contract.py",
+                    "artifacts": []
+                }
+            ]
+        }
+    }
+}

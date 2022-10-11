@@ -6,7 +6,11 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compileAssetContract": "~/smartpy-cli/SmartPy.sh compile ./contracts/asset_contract.py ./artifacts",
+    "compilePolicyContract": "~/smartpy-cli/SmartPy.sh compile ./contracts/policy_contract.py ./artifacts",
+    "deployAssetContract": "~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/assetContract/step_000_cont_0_contract.tz --storage ./artifacts/assetContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.xyz/",
+    "deployPolicyContract": "~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/policyContract/step_000_cont_0_contract.tz --storage ./artifacts/policyContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.xyz/"
   },
   "author": "",
   "license": "ISC",
@@ -21,7 +25,10 @@
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@taqueria/plugin-metadata": "^0.20.2",
+    "@taqueria/plugin-smartpy": "^0.20.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/johannha/edc-interface.git"

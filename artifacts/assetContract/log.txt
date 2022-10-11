@@ -1,0 +1,11 @@
+Creating contract KT1TezoooozzSmartPyzzSTATiCzzzwwBFA1
+ -> (Pair (Pair "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ" (Pair "Johann Hartmann" 0)) (Pair {} (Pair {Elt "" 0x68747470733a2f2f697066732e696f2f697066732f516d556d55714643526a6354416b506753667375556d64735750524e444a6d454332737762465842363233723678} {})))
+ => ./artifacts/assetContract/step_000_cont_0_storage.tz 1
+ => ./artifacts/assetContract/step_000_cont_0_storage.json 27
+ => ./artifacts/assetContract/step_000_cont_0_sizes.csv 2
+ => ./artifacts/assetContract/step_000_cont_0_storage.py 1
+ => ./artifacts/assetContract/step_000_cont_0_types.py 7
+ => ./artifacts/assetContract/step_000_cont_0_metadata.metadata_base.json 151
+ => ./artifacts/assetContract/step_000_cont_0_contract.tz 162
+ => ./artifacts/assetContract/step_000_cont_0_contract.json 313
+ => ./artifacts/assetContract/step_000_cont_0_contract.py 46

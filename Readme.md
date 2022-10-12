@@ -1,5 +1,36 @@
 # EDC Interface
 
+## IPFS Setup
+
+In order to pin content to the IPFS you must include your Pinata API credentials in the form of environment parameters:
+
+1. Create a file in root directory called ".env"
+2. Add your Pinata private key as a variable:
+
+```
+PINATA_KEY=
+```
+
+3. Save this file
+
+## Run the Tezos Client
+
+First, make sure all dependencies are installed:
+
+```
+npm install
+```
+
+Run the server locally:
+
+```
+npm run serve
+```
+
+## Swagger Documentation
+
+The documentation can be viewed on http://localhost:3000/docs when server runs.
+
 ## Contract Information
 
 Metadata of FA2 contracts is generated with the support of @taqueria/plugin-metadata feature to comply with TZIP-16 standard.

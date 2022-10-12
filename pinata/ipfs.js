@@ -1,5 +1,5 @@
 import axios from "axios";
-var bKey = process.env.PINATA_KEY;
+//TODO: Fix token import
 
 export const testPinata = async () => {
   const res = await axios(testFetch);
@@ -7,6 +7,7 @@ export const testPinata = async () => {
 };
 
 export const pinFile = async (file, setIpfsHash) => {
+  let bKey = process.env.PINATA_KEY;
   const formData = new FormData();
   formData.append("file", file);
 
@@ -30,6 +31,8 @@ export const pinFile = async (file, setIpfsHash) => {
 };
 
 export const pinJSON = async (content) => {
+  let bKey = process.env.PINATA_KEY;
+  console.log("Bearer Key: " + bKey);
   const req = {
     method: "post",
     url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
@@ -45,6 +48,7 @@ export const pinJSON = async (content) => {
     console.log(res.data);
     return res.data.IpfsHash;
   } catch (e) {
-    console.log(e.message);
+    //console.log(e);
+    throw new Error("JSON could not be pinned to ipfs");
   }
 };

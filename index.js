@@ -3,11 +3,14 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { getBalanceRoute } from "./routes/balance.js";
 import { getLogRoute } from "./routes/logs.js";
+import dotenv from "dotenv";
 
 // set up express
 const client = express();
 client.use(express.json());
 const port = 3000;
+
+dotenv.config();
 
 // Load speficig endspoints
 getBalanceRoute(client);
@@ -17,10 +20,10 @@ getLogRoute(client);
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
-    title: "Tezos Client utilizing Taquito",
+    title: "Tezos Client for Contract Management",
     version: "1.0.0",
     description:
-      "Interface to forward hashed logs from Eclipse Dataspace Connector to smart contract deployed on Tezos testnet.",
+      "Interface to forward Assets, Policies and Contracts from Eclipse Dataspace Connector to smart contract deployed on Tezos testnet.",
   },
   servers: [
     { url: "http://" + "localhost" + ":3000", description: "Dev Server" },

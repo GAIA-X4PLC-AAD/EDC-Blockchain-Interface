@@ -1,5 +1,6 @@
 import { TezosToolkit } from "@taquito/taquito";
 import { importKey } from "@taquito/signer";
+import { char2Bytes } from "@taquito/utils";
 import fs from "fs";
 import { rejects } from "assert";
 
@@ -158,12 +159,9 @@ const transactionQuery = async (transactionId, mapName) => {
 };
 
 const mintAsset = async (metaLink = "") => {
-  let byteLink = char2Bytes(metaLink);
-
   // Parameter der Minting Funktion als Array angegeben werden müssen, da es sich in dem Contract selbst um ein Mapping handelt?
   let result = await tezos.contract
-    //TODO: change to asset contract address
-    .at("KT1CXc9Y3GJAWAWXQMi48naJsZfQfrdbjFnE")
+    .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K")
     .then((contract) => {
       return contract.methods
         .mint([
@@ -177,20 +175,19 @@ const mintAsset = async (metaLink = "") => {
         .send();
     })
     .then((hash) => {
-      return hash;
+      return hash.hash;
     })
     .catch((error) => {
       return error;
     });
+  console.log("Return Object: " + result);
   return result;
 };
-const mintPolicy = async (metaLink = "") => {
-  let byteLink = char2Bytes(metaLink);
 
+const mintPolicy = async (metaLink = "") => {
   // Parameter der Minting Funktion als Array angegeben werden müssen, da es sich in dem Contract selbst um ein Mapping handelt?
   let result = await tezos.contract
-    //TODO: change to policy address
-    .at("KT1CXc9Y3GJAWAWXQMi48naJsZfQfrdbjFnE")
+    .at("KT1J1Hgy9HAwbiGA6BGAy5PLQN6afn6jmr5n")
     .then((contract) => {
       return contract.methods
         .mint([
@@ -204,11 +201,12 @@ const mintPolicy = async (metaLink = "") => {
         .send();
     })
     .then((hash) => {
-      return hash;
+      return hash.hash;
     })
     .catch((error) => {
       return error;
     });
+  console.log("Return Object: " + result);
   return result;
 };
 

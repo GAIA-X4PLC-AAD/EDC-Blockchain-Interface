@@ -1,0 +1,32 @@
+{
+    "createdAt": 1666097067169,
+    "id": "cdc508ea-de26-4194-9179-7102058da136",
+    "policy": {
+        "permissions": [
+            {
+                "edctype": "dataspaceconnector:permission",
+                "uid": null,
+                "target": "test-document",
+                "action": {
+                    "type": "USE",
+                    "includedIn": null,
+                    "constraint": null
+                },
+                "assignee": null,
+                "assigner": null,
+                "constraints": [],
+                "duties": []
+            }
+        ],
+        "prohibitions": [],
+        "obligations": [],
+        "extensibleProperties": {},
+        "inheritsFrom": null,
+        "assigner": "ame",
+        "assignee": "dolor incididunt proident ullamco",
+        "target": null,
+        "@type": {
+            "@policytype": "set"
+        }
+    }
+}

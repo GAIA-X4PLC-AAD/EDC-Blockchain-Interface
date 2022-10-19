@@ -7,6 +7,7 @@ import {
   transactionQuery,
   mintAsset,
   mintPolicy,
+  getAllAssets,
 } from "../taquito/contract.js";
 
 import { pinJSON } from "../pinata/ipfs.js";
@@ -138,6 +139,46 @@ export const getLogRoute = (client) => {
       res.send(JSON.stringify(returnObject));
     } catch (error) {
       res.status(400);
+      res.send(error.message);
+    }
+  });
+
+  /**
+   * @swagger
+   * /asset/all:
+   *   get:
+   *     summary: Get all minted assets.
+   *     description: Returns json objects of tokenized assets.
+   *     responses:
+   *       200:
+   *         description: Response in JSON.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 hashedLog:
+   *                   type: string
+   *                   description: Actual content of hashed Log.
+   *                   example: TODO Provide example
+   *                 consumer:
+   *                   type: string
+   *                   description: Consumer Id of this specific transaction.
+   *                   example: BMW-649283
+   *                 transactionId:
+   *                   type: string
+   *                   description: Requested transaction Id.
+   *                   example: 75584
+   *
+   *
+   */
+  client.get("/asset/all", async (req, res) => {
+    try {
+      let dataMap = await getAllAssets();
+      res.status(200);
+      res.send(JSON.stringify(dataMap));
+    } catch (error) {
+      res.status(404);
       res.send(error.message);
     }
   });

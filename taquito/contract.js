@@ -1,4 +1,4 @@
-import { TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit, MichelsonMap } from "@taquito/taquito";
 import { importKey } from "@taquito/signer";
 import { char2Bytes } from "@taquito/utils";
 import fs from "fs";
@@ -210,6 +210,33 @@ const mintPolicy = async (metaLink = "") => {
   return result;
 };
 
+const getAllAssets = async () => {
+  let resultObject = {};
+  await tezos.contract
+    .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K")
+    .then((c) => {
+      return c.storage();
+    })
+    .then((myStorage) => {
+      // if (myStorage[token_metadata].get(transactionId) != undefined) {
+      //   const mapObject = Object.fromEntries(
+      //     myStorage[mapName].get(transactionId).valueMap
+      //   );
+      //   for (const [key, value] of Object.entries(mapObject)) {
+      //     // remove additional quotation marks
+      //     resultObject[key.replaceAll('"', "")] = value;
+      //   }
+      // } else {
+      //   // No transaction with this Id found
+      //   throw new Error(`No transaction with Id ${transactionId} found.`);
+      // }
+      console.log(myStorage["token_metadata"]);
+      let mapCheck = MichelsonMap.isMichelsonMap(myStorage);
+      console.log(mapCheck);
+    });
+  return resultObject;
+};
+
 export {
   getBalance,
   getMapSize,
@@ -218,4 +245,5 @@ export {
   transactionQuery,
   mintAsset,
   mintPolicy,
+  getAllAssets,
 };

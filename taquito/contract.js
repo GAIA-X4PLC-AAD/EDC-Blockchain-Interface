@@ -2,13 +2,15 @@ import { TezosToolkit, MichelsonMap } from "@taquito/taquito";
 import { importKey } from "@taquito/signer";
 import { char2Bytes } from "@taquito/utils";
 import fs from "fs";
-import { rejects } from "assert";
+import { Tzip12Module, tzip12 } from "@taquito/tzip12";
+import { Tzip16Module, tzip16 } from "@taquito/tzip16";
 
 // Read contract config
 const contractConfig = JSON.parse(fs.readFileSync("./contractConfig.json"));
 
 // connects to smartpy ithacanet
 const tezos = new TezosToolkit(contractConfig.rpcUrl);
+tezos.addExtension(new Tzip12Module());
 
 // In-memory signer
 // Remember to switch to remote signer in production
@@ -211,30 +213,40 @@ const mintPolicy = async (metaLink = "") => {
 };
 
 const getAllAssets = async () => {
-  let resultObject = {};
+  // let resultObject = {};
+  // await tezos.contract
+  //   .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K")
+  //   .then((c) => {
+  //     return c.storage();
+  //   })
+  //   .then((myStorage) => {
+  //     //console.log(myStorage["token_metadata"].get(10));
+  //     return myStorage["token_metadata"].get(10);
+  //   })
+  //   .then((entry) => {
+  //     console.log(entry.token_info);
+  //   });
+
+  // get amount of tokens
   await tezos.contract
     .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K")
     .then((c) => {
       return c.storage();
     })
     .then((myStorage) => {
-      // if (myStorage[token_metadata].get(transactionId) != undefined) {
-      //   const mapObject = Object.fromEntries(
-      //     myStorage[mapName].get(transactionId).valueMap
-      //   );
-      //   for (const [key, value] of Object.entries(mapObject)) {
-      //     // remove additional quotation marks
-      //     resultObject[key.replaceAll('"', "")] = value;
-      //   }
-      // } else {
-      //   // No transaction with this Id found
-      //   throw new Error(`No transaction with Id ${transactionId} found.`);
-      // }
-      console.log(myStorage["token_metadata"]);
-      let mapCheck = MichelsonMap.isMichelsonMap(myStorage);
-      console.log(mapCheck);
+      console.log(myStorage.size);
     });
-  return resultObject;
+
+  tezos.contract
+    .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K", tzip12)
+    .then((contract) => {
+      console.log(`Fetching the token metadata for the token ID of 10...`);
+      return contract.tzip12().getTokenMetadata(20);
+    })
+    .then((tokenMetadata) => {
+      console.log(JSON.stringify(tokenMetadata, null, 2));
+    })
+    .catch((error) => console.log(`Error: ${JSON.stringify(error, null, 2)}`));
 };
 
 export {

@@ -1,6 +1,14 @@
 import axios from "axios";
 //TODO: Fix token import
 
+class TokenMetadata {
+  constructor(assetData) {
+    this.name = assetData.asset.id;
+    this.decimals = 0;
+    this.assetData = assetData;
+  }
+}
+
 export const testPinata = async () => {
   const res = await axios(testFetch);
   console.log(res.data);
@@ -32,6 +40,9 @@ export const pinFile = async (file, setIpfsHash) => {
 
 export const pinJSON = async (content) => {
   let bKey = process.env.PINATA_KEY;
+  // create Token Metadata
+  let tokenMeta = new TokenMetadata(content);
+
   console.log("Bearer Key: " + bKey);
   const req = {
     method: "post",
@@ -40,7 +51,7 @@ export const pinJSON = async (content) => {
       Authorization: `Bearer ${bKey}`,
       "Content-Type": "application/json",
     },
-    data: content,
+    data: tokenMeta,
   };
 
   try {

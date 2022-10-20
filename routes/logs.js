@@ -1,4 +1,3 @@
-import { MissedBlockDuringConfirmationError } from "@taquito/taquito";
 import { setTimeout } from "timers/promises";
 import {
   getMapSize,
@@ -172,6 +171,7 @@ export const getLogRoute = (client) => {
    *
    *
    */
+
   client.get("/asset/all", async (req, res) => {
     try {
       let dataMap = await getAllAssets();

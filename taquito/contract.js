@@ -161,9 +161,8 @@ const transactionQuery = async (transactionId, mapName) => {
 };
 
 const mintAsset = async (metaLink = "") => {
-  // Parameter der Minting Funktion als Array angegeben werden müssen, da es sich in dem Contract selbst um ein Mapping handelt?
   let result = await tezos.contract
-    .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K")
+    .at(contractConfig.assetAddress)
     .then((contract) => {
       return contract.methods
         .mint([
@@ -187,9 +186,33 @@ const mintAsset = async (metaLink = "") => {
 };
 
 const mintPolicy = async (metaLink = "") => {
-  // Parameter der Minting Funktion als Array angegeben werden müssen, da es sich in dem Contract selbst um ein Mapping handelt?
   let result = await tezos.contract
-    .at("KT1J1Hgy9HAwbiGA6BGAy5PLQN6afn6jmr5n")
+    .at(contractConfig.policyAddress)
+    .then((contract) => {
+      return contract.methods
+        .mint([
+          {
+            to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+            metadata: {
+              "": char2Bytes(metaLink),
+            },
+          },
+        ])
+        .send();
+    })
+    .then((hash) => {
+      return hash.hash;
+    })
+    .catch((error) => {
+      return error;
+    });
+  console.log("Return Object: " + result);
+  return result;
+};
+
+const mintContract = async (metaLink = "") => {
+  let result = await tezos.contract
+    .at(contractConfig.contractAddress)
     .then((contract) => {
       return contract.methods
         .mint([
@@ -215,7 +238,7 @@ const mintPolicy = async (metaLink = "") => {
 const getAsset = async (assetId) => {
   let returnObject;
   await tezos.contract
-    .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K", tzip12)
+    .at(contractConfig.assetAddress, tzip12)
     .then((contract) => {
       console.log(`Fetching the token metadata for the token ID ${assetId}`);
       return contract.tzip12().getTokenMetadata(assetId);
@@ -226,6 +249,9 @@ const getAsset = async (assetId) => {
       return returnObject;
     })
     .catch((error) => {
+      if (error.name === "TokenIdNotFound") {
+        console.log("Not found error");
+      }
       throw new Error(error);
     });
   return returnObject;
@@ -234,7 +260,7 @@ const getAsset = async (assetId) => {
 const getAllAssets = async () => {
   // get amount of tokens
   await tezos.contract
-    .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K")
+    .at(contractConfig.assetAddress)
     .then((c) => {
       return c.storage();
     })
@@ -243,7 +269,7 @@ const getAllAssets = async () => {
     });
 
   tezos.contract
-    .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K", tzip12)
+    .at(contractConfig.assetAddress, tzip12)
     .then((contract) => {
       console.log(`Fetching the token metadata for the token ID of 20...`);
       return contract.tzip12().getTokenMetadata(20);
@@ -259,7 +285,7 @@ const getAllAssets = async () => {
 const getPolicy = async (policyId) => {
   let returnObject;
   await tezos.contract
-    .at("KT1J1Hgy9HAwbiGA6BGAy5PLQN6afn6jmr5n", tzip12)
+    .at(contractConfig.policyAddress, tzip12)
     .then((contract) => {
       console.log(`Fetching the token metadata for the token ID ${policyId}`);
       return contract.tzip12().getTokenMetadata(policyId);
@@ -283,6 +309,7 @@ export {
   transactionQuery,
   mintAsset,
   mintPolicy,
+  mintContract,
   getAllAssets,
   getAsset,
   getPolicy,

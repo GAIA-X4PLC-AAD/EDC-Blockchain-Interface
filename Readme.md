@@ -39,3 +39,11 @@ Following smart contracts are originated and can be used for minting:
 
 - FA2 Asset Contract: [KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K](https://better-call.dev/ghostnet/KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K/metadata)
 - FA2 Policy Contract: [KT1J1Hgy9HAwbiGA6BGAy5PLQN6afn6jmr5n](https://better-call.dev/ghostnet/KT1J1Hgy9HAwbiGA6BGAy5PLQN6afn6jmr5n/metadata)
+- FA2 Contract Contract : [KT1XRSJSmeUbEscGK9126K78akE6qQCAt9bc](https://better-call.dev/ghostnet/KT1XRSJSmeUbEscGK9126K78akE6qQCAt9bc/metadata)
+
+## Contract Origination
+
+```
+~/smartpy-cli/SmartPy.sh originate-contract --code /Users/johann/Documents/Code/GAIA/edc-interface/artifacts/contractContract/step_000_cont_0_contract.tz --storage /Users/johann/Documents/Code/GAIA/edc-interface/artifacts/contractContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.xyz/
+
+```

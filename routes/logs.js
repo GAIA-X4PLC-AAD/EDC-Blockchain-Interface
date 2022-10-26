@@ -7,6 +7,8 @@ import {
   mintAsset,
   mintPolicy,
   getAllAssets,
+  getAsset,
+  getPolicy,
 } from "../taquito/contract.js";
 
 import { pinJSON } from "../pinata/ipfs.js";
@@ -144,10 +146,17 @@ export const getLogRoute = (client) => {
 
   /**
    * @swagger
-   * /asset/all:
+   * /asset/{assetId}:
    *   get:
-   *     summary: Get all minted assets.
-   *     description: Returns json objects of tokenized assets.
+   *     summary: Retrieve token metadata of asset for given id.
+   *     description: Retrieve token metadata of asset for given id.
+   *     parameters:
+   *       - in: path
+   *         name: assetId
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: Token Id
    *     responses:
    *       200:
    *         description: Response in JSON.
@@ -156,27 +165,63 @@ export const getLogRoute = (client) => {
    *             schema:
    *               type: object
    *               properties:
-   *                 hashedLog:
+   *                 admin:
    *                   type: string
-   *                   description: Actual content of hashed Log.
-   *                   example: TODO Provide example
-   *                 consumer:
-   *                   type: string
-   *                   description: Consumer Id of this specific transaction.
-   *                   example: BMW-649283
-   *                 transactionId:
-   *                   type: string
-   *                   description: Requested transaction Id.
-   *                   example: 75584
-   *
+   *                   description: Tz address of smart contract's admin.
+   *                   example: tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5
+   *                 mapSize:
+   *                   type: int
+   *                   description: Amount of stored logs.
+   *                   example: 5
    *
    */
-
-  client.get("/asset/all", async (req, res) => {
+  client.get("/asset/:assetId", async (req, res) => {
     try {
-      let dataMap = await getAllAssets();
+      let assetResult = await getAsset(req.params.assetId);
       res.status(200);
-      res.send(JSON.stringify(dataMap));
+      res.send(JSON.stringify(assetResult));
+    } catch (error) {
+      res.status(404);
+      res.send(error.message);
+    }
+  });
+
+  /**
+   * @swagger
+   * /policy/{policyId}:
+   *   get:
+   *     summary: Retrieve token metadata of policy for given id.
+   *     description: Retrieve token metadata of policy for given id.
+   *     parameters:
+   *       - in: path
+   *         name: policyId
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: Token Id
+   *     responses:
+   *       200:
+   *         description: Response in JSON.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 admin:
+   *                   type: string
+   *                   description: Tz address of smart contract's admin.
+   *                   example: tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5
+   *                 mapSize:
+   *                   type: int
+   *                   description: Amount of stored logs.
+   *                   example: 5
+   *
+   */
+  client.get("/policy/:policyId", async (req, res) => {
+    try {
+      let policyResult = await getPolicy(req.params.policyId);
+      res.status(200);
+      res.send(JSON.stringify(policyResult));
     } catch (error) {
       res.status(404);
       res.send(error.message);

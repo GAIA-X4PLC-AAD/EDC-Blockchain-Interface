@@ -212,21 +212,26 @@ const mintPolicy = async (metaLink = "") => {
   return result;
 };
 
-const getAllAssets = async () => {
-  // let resultObject = {};
-  // await tezos.contract
-  //   .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K")
-  //   .then((c) => {
-  //     return c.storage();
-  //   })
-  //   .then((myStorage) => {
-  //     //console.log(myStorage["token_metadata"].get(10));
-  //     return myStorage["token_metadata"].get(10);
-  //   })
-  //   .then((entry) => {
-  //     console.log(entry.token_info);
-  //   });
+const getAsset = async (assetId) => {
+  let returnObject;
+  await tezos.contract
+    .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K", tzip12)
+    .then((contract) => {
+      console.log(`Fetching the token metadata for the token ID ${assetId}`);
+      return contract.tzip12().getTokenMetadata(assetId);
+    })
+    .then((tokenMetadata) => {
+      console.log(tokenMetadata);
+      returnObject = tokenMetadata;
+      return returnObject;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+  return returnObject;
+};
 
+const getAllAssets = async () => {
   // get amount of tokens
   await tezos.contract
     .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K")
@@ -234,19 +239,40 @@ const getAllAssets = async () => {
       return c.storage();
     })
     .then((myStorage) => {
-      console.log(myStorage.size);
+      console.log(myStorage["token_metadata"]);
     });
 
   tezos.contract
     .at("KT1PqLhC8wjhWf9dGp5NdTHpuAEJhBMuhd5K", tzip12)
     .then((contract) => {
-      console.log(`Fetching the token metadata for the token ID of 10...`);
+      console.log(`Fetching the token metadata for the token ID of 20...`);
       return contract.tzip12().getTokenMetadata(20);
     })
     .then((tokenMetadata) => {
       console.log(JSON.stringify(tokenMetadata, null, 2));
     })
-    .catch((error) => console.log(`Error: ${JSON.stringify(error, null, 2)}`));
+    .catch((error) => {
+      return new Error(error);
+    });
+};
+
+const getPolicy = async (policyId) => {
+  let returnObject;
+  await tezos.contract
+    .at("KT1J1Hgy9HAwbiGA6BGAy5PLQN6afn6jmr5n", tzip12)
+    .then((contract) => {
+      console.log(`Fetching the token metadata for the token ID ${policyId}`);
+      return contract.tzip12().getTokenMetadata(policyId);
+    })
+    .then((tokenMetadata) => {
+      console.log(tokenMetadata);
+      returnObject = tokenMetadata;
+      return returnObject;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+  return returnObject;
 };
 
 export {
@@ -258,4 +284,6 @@ export {
   mintAsset,
   mintPolicy,
   getAllAssets,
+  getAsset,
+  getPolicy,
 };

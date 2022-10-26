@@ -1,5 +1,4 @@
 import axios from "axios";
-//TODO: Fix token import
 
 class TokenMetadata {
   constructor(assetData) {

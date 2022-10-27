@@ -3,12 +3,11 @@ import { importKey } from "@taquito/signer";
 import { char2Bytes } from "@taquito/utils";
 import fs from "fs";
 import { Tzip12Module, tzip12 } from "@taquito/tzip12";
-import { Tzip16Module, tzip16 } from "@taquito/tzip16";
 
 // Read contract config
 const contractConfig = JSON.parse(fs.readFileSync("./contractConfig.json"));
 
-// connects to smartpy ithacanet
+// connect tezos client to testnet
 const tezos = new TezosToolkit(contractConfig.rpcUrl);
 tezos.addExtension(new Tzip12Module());
 
@@ -52,112 +51,6 @@ const getMapSize = async (mapName) => {
       throw new Error(error);
     });
   return result;
-};
-
-const postContractAgreement = async (
-  producerId,
-  consumerId,
-  transactionId,
-  timestamp,
-  assetToken,
-  hashedContract
-) => {
-  let result = await tezos.contract
-    .at(contractConfig.contractAddress)
-    .then((contract) => {
-      return (
-        contract.methods
-          // Check how the contract is compiled (parmaters might be ordered differently)
-          .postContractAgreement(
-            assetToken,
-            consumerId,
-            hashedContract,
-            producerId,
-            timestamp,
-            transactionId
-          )
-          .send()
-      );
-    })
-    .then(async (op) => {
-      console.log(`Waiting for confirmation of ${op.hash}`);
-      // Client waits for 2 confirmations (increment in production use cases!)
-      return op.confirmation(2).then(() => op.hash);
-    })
-    .then((hash) => {
-      return { status: "ok", hash: `https://ithacanet.smartpy.io/${hash}` };
-    })
-    .catch((error) => {
-      console.log("Error: " + error);
-      throw new Error(`Error: ${JSON.stringify(error, null, 2)}`);
-    });
-
-  console.log(result);
-  return result;
-};
-
-const postTransfer = async (
-  producerId,
-  consumerId,
-  transactionId,
-  timestamp,
-  assetToken
-) => {
-  let result = await tezos.contract
-    .at(contractConfig.contractAddress)
-    .then((contract) => {
-      return (
-        contract.methods
-          // Check how the contract is compiled (parmaters might be ordered differently)
-          .postTransfer(
-            assetToken,
-            consumerId,
-            producerId,
-            timestamp,
-            transactionId
-          )
-          .send()
-      );
-    })
-    .then(async (op) => {
-      console.log(`Waiting for confirmation of ${op.hash}`);
-      // Client waits for 2 confirmations (increment in production use cases!)
-      return op.confirmation(2).then(() => op.hash);
-    })
-    .then((hash) => {
-      return { status: "ok", hash: `https://ithacanet.smartpy.io/${hash}` };
-    })
-    .catch((error) => {
-      console.log("Error: " + error);
-      throw new Error(`Error: ${JSON.stringify(error, null, 2)}`);
-    });
-
-  console.log(result);
-  return result;
-};
-
-const transactionQuery = async (transactionId, mapName) => {
-  let resultObject = {};
-  await tezos.contract
-    .at(contractConfig.contractAddress)
-    .then((c) => {
-      return c.storage();
-    })
-    .then((myStorage) => {
-      if (myStorage[mapName].get(transactionId) != undefined) {
-        const mapObject = Object.fromEntries(
-          myStorage[mapName].get(transactionId).valueMap
-        );
-        for (const [key, value] of Object.entries(mapObject)) {
-          // remove additional quotation marks
-          resultObject[key.replaceAll('"', "")] = value;
-        }
-      } else {
-        // No transaction with this Id found
-        throw new Error(`No transaction with Id ${transactionId} found.`);
-      }
-    });
-  return resultObject;
 };
 
 const mintAsset = async (metaLink = "") => {
@@ -236,8 +129,7 @@ const mintContract = async (metaLink = "") => {
 };
 
 const getAsset = async (assetId) => {
-  let returnObject;
-  await tezos.contract
+  let query = await tezos.contract
     .at(contractConfig.assetAddress, tzip12)
     .then((contract) => {
       console.log(`Fetching the token metadata for the token ID ${assetId}`);
@@ -245,8 +137,7 @@ const getAsset = async (assetId) => {
     })
     .then((tokenMetadata) => {
       console.log(tokenMetadata);
-      returnObject = tokenMetadata;
-      return returnObject;
+      return tokenMetadata;
     })
     .catch((error) => {
       if (error.name === "TokenIdNotFound") {
@@ -254,37 +145,44 @@ const getAsset = async (assetId) => {
       }
       throw new Error(error);
     });
-  return returnObject;
+  return query;
 };
 
-const getAllAssets = async () => {
-  // get amount of tokens
-  await tezos.contract
-    .at(contractConfig.assetAddress)
-    .then((c) => {
-      return c.storage();
-    })
-    .then((myStorage) => {
-      console.log(myStorage["token_metadata"]);
-    });
+const getAllTokens = async (tokenType) => {
+  // iterate over bigmap until tokenidnotfound error
 
-  tezos.contract
-    .at(contractConfig.assetAddress, tzip12)
-    .then((contract) => {
-      console.log(`Fetching the token metadata for the token ID of 20...`);
-      return contract.tzip12().getTokenMetadata(20);
-    })
-    .then((tokenMetadata) => {
-      console.log(JSON.stringify(tokenMetadata, null, 2));
-    })
-    .catch((error) => {
-      return new Error(error);
-    });
+  let startTime = new Date().getTime();
+  let index = 0;
+  let result = [];
+  let inArray = true;
+  while (inArray) {
+    await tezos.contract
+      .at(contractConfig[tokenType + "Address"], tzip12)
+      .then((contract) => {
+        console.log(`Fetching the token metadata for the token ID of ${index}`);
+        return contract.tzip12().getTokenMetadata(index);
+      })
+      .then((tokenMetadata) => {
+        //console.log(JSON.stringify(tokenMetadata, null, 2));
+        result.push(tokenMetadata);
+      })
+      .catch((error) => {
+        if (error.name == "TokenIdNotFound") {
+          inArray = false;
+          console.log("End of bigmap was reached");
+        }
+      });
+    index = index + 1;
+  }
+  let endtime = new Date().getTime();
+  let duration = (endtime - startTime) / 1000;
+  console.log(`Execution time: ${duration} seconds`);
+  console.log(`${result.length} tokens were returned`);
+  return result;
 };
 
 const getPolicy = async (policyId) => {
-  let returnObject;
-  await tezos.contract
+  let query = await tezos.contract
     .at(contractConfig.policyAddress, tzip12)
     .then((contract) => {
       console.log(`Fetching the token metadata for the token ID ${policyId}`);
@@ -292,25 +190,39 @@ const getPolicy = async (policyId) => {
     })
     .then((tokenMetadata) => {
       console.log(tokenMetadata);
-      returnObject = tokenMetadata;
-      return returnObject;
+      return tokenMetadata;
     })
     .catch((error) => {
       throw new Error(error);
     });
-  return returnObject;
+  return query;
+};
+
+const getContract = async (contractId) => {
+  let query = await tezos.contract
+    .at(contractConfig.contractAddress, tzip12)
+    .then((contract) => {
+      console.log(`Fetching the token metadata for the token ID ${contractId}`);
+      return contract.tzip12().getTokenMetadata(contractId);
+    })
+    .then((tokenMetadata) => {
+      console.log(tokenMetadata);
+      return tokenMetadata;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+  return query;
 };
 
 export {
   getBalance,
   getMapSize,
-  postContractAgreement,
-  postTransfer,
-  transactionQuery,
   mintAsset,
   mintPolicy,
   mintContract,
-  getAllAssets,
+  getAllTokens,
   getAsset,
   getPolicy,
+  getContract,
 };

@@ -1,14 +1,11 @@
 import { setTimeout } from "timers/promises";
 import {
-  getMapSize,
-  postContractAgreement,
-  postTransfer,
-  transactionQuery,
   mintAsset,
   mintPolicy,
-  getAllAssets,
+  getAllTokens,
   getAsset,
   getPolicy,
+  getContract,
   mintContract,
 } from "../taquito/contract.js";
 
@@ -287,9 +284,88 @@ export const getLogRoute = (client) => {
     }
   });
 
-  client.get("asset/all", async (req, res) => {
+  /**
+   * @swagger
+   * /contract/{contractId}:
+   *   get:
+   *     summary: Retrieve token metadata of contract for given id.
+   *     description: Retrieve token metadata of contract for given id.
+   *     parameters:
+   *       - in: path
+   *         name: contractId
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: Token Id
+   *     responses:
+   *       200:
+   *         description: Response in JSON.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 admin:
+   *                   type: string
+   *                   description: Tz address of smart contract's admin.
+   *                   example: tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5
+   *                 mapSize:
+   *                   type: int
+   *                   description: Amount of stored logs.
+   *                   example: 5
+   *
+   */
+  client.get("/contract/:contractId", async (req, res) => {
     try {
-      let assetResult = await getAllAssets();
+      let contractResult = await getContract(req.params.contractId);
+      res.status(200);
+      res.send(JSON.stringify(contractResult));
+    } catch (error) {
+      res.status(404);
+      res.send(error.message);
+    }
+  });
+
+  /**
+   * @swagger
+   * /all/{tokenType}:
+   *   get:
+   *     summary: Retrieve all token metadata of contract for given token type.
+   *     description: Retrieve token metadata of contract for given token type.
+   *     parameters:
+   *       - in: path
+   *         name: tokenType
+   *         schema:
+   *           type: string
+   *           enum:
+   *             - asset
+   *             - policy
+   *             - contract
+   *           default: asset
+   *         required: true
+   *         description: Token Type
+   *     responses:
+   *       200:
+   *         description: Response in JSON.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 admin:
+   *                   type: string
+   *                   description: Tz address of smart contract's admin.
+   *                   example: tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5
+   *                 mapSize:
+   *                   type: int
+   *                   description: Amount of stored logs.
+   *                   example: 5
+   *
+   */
+  client.get("/all/:tokenType", async (req, res) => {
+    let tokenType = req.params.tokenType;
+    try {
+      let assetResult = await getAllTokens(tokenType);
       res.status(200);
       res.send(JSON.stringify(assetResult));
     } catch (error) {

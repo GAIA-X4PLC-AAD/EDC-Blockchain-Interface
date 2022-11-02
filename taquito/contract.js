@@ -162,35 +162,6 @@ const getAssetByName = async (assetName) => {
       .then((tokenMetadata) => {
         if (tokenMetadata.name == assetName) {
           result.push(tokenMetadata);
-          console.log(tokenMetadata);
-        }
-      })
-      .catch((error) => {
-        if (error.name == "TokenIdNotFound") {
-          inArray = false;
-          console.log("End of bigmap was reached");
-        }
-      });
-    index = index + 1;
-  }
-  return result;
-};
-
-const getPolicyByName = async (policyName) => {
-  let index = 0;
-  let result = [];
-  let inArray = true;
-  while (inArray) {
-    await tezos.contract
-      .at(contractConfig.policyAddress, tzip12)
-      .then((contract) => {
-        console.log(`Fetching the token metadata for the token ID of ${index}`);
-        return contract.tzip12().getTokenMetadata(index);
-      })
-      .then((tokenMetadata) => {
-        if (tokenMetadata.name == policyName) {
-          result.push(tokenMetadata);
-          console.log(tokenMetadata);
         }
       })
       .catch((error) => {
@@ -251,6 +222,33 @@ const getPolicy = async (policyId) => {
       throw new Error(error);
     });
   return query;
+};
+
+const getPolicyByName = async (policyName) => {
+  let index = 0;
+  let result = [];
+  let inArray = true;
+  while (inArray) {
+    await tezos.contract
+      .at(contractConfig.policyAddress, tzip12)
+      .then((contract) => {
+        console.log(`Fetching the token metadata for the token ID of ${index}`);
+        return contract.tzip12().getTokenMetadata(index);
+      })
+      .then((tokenMetadata) => {
+        if (tokenMetadata.name == policyName) {
+          result.push(tokenMetadata);
+        }
+      })
+      .catch((error) => {
+        if (error.name == "TokenIdNotFound") {
+          inArray = false;
+          console.log("End of bigmap was reached");
+        }
+      });
+    index = index + 1;
+  }
+  return result;
 };
 
 const getContract = async (contractId) => {

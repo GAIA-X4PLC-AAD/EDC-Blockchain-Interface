@@ -4,7 +4,9 @@ import {
   mintPolicy,
   getAllTokens,
   getAsset,
+  getAssetByName,
   getPolicy,
+  getPolicyByName,
   getContract,
   mintContract,
 } from "../taquito/contract.js";
@@ -244,6 +246,37 @@ export const getLogRoute = (client) => {
 
   /**
    * @swagger
+   * /assetName/{assetName}:
+   *   get:
+   *     summary: Retrieve token metadata of asset for given document name.
+   *     description: Make sure you know the exact document name.
+   *     parameters:
+   *       - in: path
+   *         name: assetName
+   *         schema:
+   *           type: string
+   *           example: test-document-34
+   *         required: true
+   *         description: Exact name of asset
+   *     responses:
+   *       200:
+   *         description: Asset in JSON format.
+   *
+   *
+   */
+  client.get("/assetName/:assetName", async (req, res) => {
+    try {
+      let assetResult = await getAssetByName(req.params.assetName);
+      res.status(200);
+      res.send(JSON.stringify(assetResult));
+    } catch (error) {
+      res.status(404);
+      res.send(error.message);
+    }
+  });
+
+  /**
+   * @swagger
    * /policy/{policyId}:
    *   get:
    *     summary: Retrieve token metadata of policy for given id.
@@ -276,6 +309,37 @@ export const getLogRoute = (client) => {
   client.get("/policy/:policyId", async (req, res) => {
     try {
       let policyResult = await getPolicy(req.params.policyId);
+      res.status(200);
+      res.send(JSON.stringify(policyResult));
+    } catch (error) {
+      res.status(404);
+      res.send(error.message);
+    }
+  });
+
+  /**
+   * @swagger
+   * /policyName/{policyName}:
+   *   get:
+   *     summary: Retrieve token metadata of policy for given document name.
+   *     description: Make sure you know the exact document name.
+   *     parameters:
+   *       - in: path
+   *         name: policyName
+   *         schema:
+   *           type: string
+   *           example: 78c7919b-7774-401a-8ad3-b79760ba4d65
+   *         required: true
+   *         description: Exact name of policy
+   *     responses:
+   *       200:
+   *         description: Asset in JSON format.
+   *
+   *
+   */
+  client.get("/policyName/:policyName", async (req, res) => {
+    try {
+      let policyResult = await getPolicyByName(req.params.policyName);
       res.status(200);
       res.send(JSON.stringify(policyResult));
     } catch (error) {

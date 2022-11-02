@@ -148,6 +148,62 @@ const getAsset = async (assetId) => {
   return query;
 };
 
+const getAssetByName = async (assetName) => {
+  let index = 0;
+  let result = [];
+  let inArray = true;
+  while (inArray) {
+    await tezos.contract
+      .at(contractConfig.assetAddress, tzip12)
+      .then((contract) => {
+        console.log(`Fetching the token metadata for the token ID of ${index}`);
+        return contract.tzip12().getTokenMetadata(index);
+      })
+      .then((tokenMetadata) => {
+        if (tokenMetadata.name == assetName) {
+          result.push(tokenMetadata);
+          console.log(tokenMetadata);
+        }
+      })
+      .catch((error) => {
+        if (error.name == "TokenIdNotFound") {
+          inArray = false;
+          console.log("End of bigmap was reached");
+        }
+      });
+    index = index + 1;
+  }
+  return result;
+};
+
+const getPolicyByName = async (policyName) => {
+  let index = 0;
+  let result = [];
+  let inArray = true;
+  while (inArray) {
+    await tezos.contract
+      .at(contractConfig.policyAddress, tzip12)
+      .then((contract) => {
+        console.log(`Fetching the token metadata for the token ID of ${index}`);
+        return contract.tzip12().getTokenMetadata(index);
+      })
+      .then((tokenMetadata) => {
+        if (tokenMetadata.name == policyName) {
+          result.push(tokenMetadata);
+          console.log(tokenMetadata);
+        }
+      })
+      .catch((error) => {
+        if (error.name == "TokenIdNotFound") {
+          inArray = false;
+          console.log("End of bigmap was reached");
+        }
+      });
+    index = index + 1;
+  }
+  return result;
+};
+
 const getAllTokens = async (tokenType) => {
   // iterate over bigmap until tokenidnotfound error
 
@@ -178,7 +234,6 @@ const getAllTokens = async (tokenType) => {
   let duration = (endtime - startTime) / 1000;
   console.log(`Execution time: ${duration} seconds`);
   console.log(`${result.length} tokens were returned`);
-  return result;
 };
 
 const getPolicy = async (policyId) => {
@@ -223,6 +278,8 @@ export {
   mintContract,
   getAllTokens,
   getAsset,
+  getAssetByName,
   getPolicy,
+  getPolicyByName,
   getContract,
 };

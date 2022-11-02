@@ -1,10 +1,15 @@
+import { UriNotFound } from "@taquito/tzip16";
 import axios from "axios";
 
 class TokenMetadata {
   constructor(assetData) {
-    this.name = assetData.asset.id;
+    if (assetData.asset == undefined) {
+      this.name = assetData.id;
+    } else {
+      this.name = assetData.asset.id;
+    }
     this.decimals = 0;
-    this.assetData = assetData;
+    this.tokenData = assetData;
   }
 }
 

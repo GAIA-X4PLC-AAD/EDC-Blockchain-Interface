@@ -1,6 +1,7 @@
 import { TezosToolkit, MichelsonMap } from "@taquito/taquito";
 import { importKey } from "@taquito/signer";
 import { char2Bytes } from "@taquito/utils";
+import axios from "axios";
 import fs from "fs";
 import { Tzip12Module, tzip12 } from "@taquito/tzip12";
 
@@ -149,62 +150,53 @@ const getAsset = async (assetId) => {
 };
 
 const getAssetByName = async (assetName) => {
-  let index = 0;
   let result = [];
-  let inArray = true;
-  while (inArray) {
-    await tezos.contract
-      .at(contractConfig.assetAddress, tzip12)
-      .then((contract) => {
-        console.log(`Fetching the token metadata for the token ID of ${index}`);
-        return contract.tzip12().getTokenMetadata(index);
-      })
-      .then((tokenMetadata) => {
-        if (tokenMetadata.name == assetName) {
-          result.push(tokenMetadata);
-        }
-      })
-      .catch((error) => {
-        if (error.name == "TokenIdNotFound") {
-          inArray = false;
-          console.log("End of bigmap was reached");
-        }
-      });
-    index = index + 1;
-  }
+  let request = {
+    method: "get",
+    url: "https://api.ghostnet.tzkt.io/v1/tokens/",
+    params: {
+      contract: contractConfig.assetAddress,
+      "metadata.name": assetName,
+    },
+  };
+  await axios(request)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      result = response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
   return result;
 };
 
 const getAllTokens = async (tokenType) => {
-  // iterate over bigmap until tokenidnotfound error
-
-  let startTime = new Date().getTime();
-  let index = 0;
   let result = [];
-  let inArray = true;
-  while (inArray) {
-    await tezos.contract
-      .at(contractConfig[tokenType + "Address"], tzip12)
-      .then((contract) => {
-        console.log(`Fetching the token metadata for the token ID of ${index}`);
-        return contract.tzip12().getTokenMetadata(index);
-      })
-      .then((tokenMetadata) => {
-        //console.log(JSON.stringify(tokenMetadata, null, 2));
-        result.push(tokenMetadata);
-      })
-      .catch((error) => {
-        if (error.name == "TokenIdNotFound") {
-          inArray = false;
-          console.log("End of bigmap was reached");
-        }
-      });
-    index = index + 1;
-  }
+  let startTime = new Date().getTime();
+  let request = {
+    method: "get",
+    url: "https://api.ghostnet.tzkt.io/v1/tokens/",
+    params: {
+      contract: contractConfig[tokenType + "Address"],
+    },
+  };
+  await axios(request)
+    .then((response) => {
+      //console.log(JSON.stringify(response.data));
+      result = response.data;
+    })
+    .catch(function (error) {
+      throw new Error(error);
+      console.log(error);
+    });
+
   let endtime = new Date().getTime();
   let duration = (endtime - startTime) / 1000;
   console.log(`Execution time: ${duration} seconds`);
   console.log(`${result.length} tokens were returned`);
+
+  return result;
 };
 
 const getPolicy = async (policyId) => {
@@ -225,29 +217,24 @@ const getPolicy = async (policyId) => {
 };
 
 const getPolicyByName = async (policyName) => {
-  let index = 0;
   let result = [];
-  let inArray = true;
-  while (inArray) {
-    await tezos.contract
-      .at(contractConfig.policyAddress, tzip12)
-      .then((contract) => {
-        console.log(`Fetching the token metadata for the token ID of ${index}`);
-        return contract.tzip12().getTokenMetadata(index);
-      })
-      .then((tokenMetadata) => {
-        if (tokenMetadata.name == policyName) {
-          result.push(tokenMetadata);
-        }
-      })
-      .catch((error) => {
-        if (error.name == "TokenIdNotFound") {
-          inArray = false;
-          console.log("End of bigmap was reached");
-        }
-      });
-    index = index + 1;
-  }
+  let request = {
+    method: "get",
+    url: "https://api.ghostnet.tzkt.io/v1/tokens/",
+    params: {
+      contract: contractConfig.policyAddress,
+      "metadata.name": policyName,
+    },
+  };
+  await axios(request)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      result = response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
   return result;
 };
 

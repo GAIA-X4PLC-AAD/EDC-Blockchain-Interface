@@ -183,12 +183,14 @@ const getAllTokens = async (tokenType) => {
   };
   await axios(request)
     .then((response) => {
-      //console.log(JSON.stringify(response.data));
-      result = response.data;
+      let res = response.data;
+      res.forEach((element) => {
+        result.push(element.metadata);
+      });
     })
     .catch(function (error) {
-      throw new Error(error);
       console.log(error);
+      throw new Error(error);
     });
 
   let endtime = new Date().getTime();
@@ -255,6 +257,28 @@ const getContract = async (contractId) => {
   return query;
 };
 
+const getContractByName = async (contractName) => {
+  let result = [];
+  let request = {
+    method: "get",
+    url: "https://api.ghostnet.tzkt.io/v1/tokens/",
+    params: {
+      contract: contractConfig.contractAddress,
+      "metadata.name": contractName,
+    },
+  };
+  await axios(request)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      result = response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  return result;
+};
+
 export {
   getBalance,
   getMapSize,
@@ -267,4 +291,5 @@ export {
   getPolicy,
   getPolicyByName,
   getContract,
+  getContractByName,
 };

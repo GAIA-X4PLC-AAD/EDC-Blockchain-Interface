@@ -37,9 +37,9 @@ Metadata of FA2 contracts is generated with the support of @taqueria/plugin-meta
 
 Following smart contracts are originated and can be used for minting:
 
-- FA2 Asset Contract: [KT1HdUFdQTzJKcL5kemU7vFZVVoAWodHJ58E](https://better-call.dev/ghostnet/KT1HdUFdQTzJKcL5kemU7vFZVVoAWodHJ58E/metadata)
-- FA2 Policy Contract: [KT1Ci1NxLk6WeBf3ZxyvjUZ7qcQU9v4w3zKY](https://better-call.dev/ghostnet/KT1Ci1NxLk6WeBf3ZxyvjUZ7qcQU9v4w3zKY/metadata)
-- FA2 Contract Contract : [KT1NCEJcxn6n9nvK9JvjbWdSv7degSeTE6tB](https://better-call.dev/ghostnet/KT1NCEJcxn6n9nvK9JvjbWdSv7degSeTE6tB/metadata)
+- FA2 Asset Contract: [KT1LEJAv7RhAKPrfjLAPDv5cmazpN9gnLUFc](https://better-call.dev/ghostnet/KT1LEJAv7RhAKPrfjLAPDv5cmazpN9gnLUFc/metadata)
+- FA2 Policy Contract: [KT1EhF4mt5n8iGZbWWwgCvonroGcKY2WfPzV](https://better-call.dev/ghostnet/KT1EhF4mt5n8iGZbWWwgCvonroGcKY2WfPzV/metadata)
+- FA2 Contract Contract : [KT19ZSZiCR5mArhi6i6bCAnTgFENZfvQxk7W](https://better-call.dev/ghostnet/KT19ZSZiCR5mArhi6i6bCAnTgFENZfvQxk7W/metadata)
 
 ## Contract Origination
 

@@ -26,6 +26,41 @@ export const getLogRoute = (client) => {
    *         application/json:
    *           schema:
    *             type: object
+   *             properties:
+   *               asset:
+   *                 type: object
+   *                 properties:
+   *                   id:
+   *                     type: string
+   *                   properties:
+   *                     type: object
+   *                     properties:
+   *                       asset:prop:name:
+   *                         type: string
+   *                       asset:prop:description:
+   *                         type: string
+   *                       asset:prop:contenttype:
+   *                         type: string
+   *                       asset:prop:version:
+   *                         type: string
+   *                       asset:prop:id:
+   *                         type: string
+   *               dataAddress:
+   *                 type: object
+   *                 properties:
+   *                   properties:
+   *                     type: object
+   *                     properties:
+   *                       path:
+   *                         type: string
+   *                       authKey:
+   *                         type: string
+   *                       filename:
+   *                         type: string
+   *                       authCode:
+   *                         type: string
+   *                       type:
+   *                         type: string
    *     responses:
    *       201:
    *         description: Response might take a while since 2 confirmations are awaited.

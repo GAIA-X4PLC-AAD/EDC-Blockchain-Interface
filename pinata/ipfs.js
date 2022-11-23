@@ -63,7 +63,7 @@ export const pinJSON = async (content) => {
     console.log(res.data);
     return res.data.IpfsHash;
   } catch (e) {
-    //console.log(e);
+    console.log(e);
     throw new Error("JSON could not be pinned to ipfs");
   }
 };

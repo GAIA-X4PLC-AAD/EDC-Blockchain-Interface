@@ -13,11 +13,6 @@ class TokenMetadata {
   }
 }
 
-export const testPinata = async () => {
-  const res = await axios(testFetch);
-  console.log(res.data);
-};
-
 export const pinFile = async (file, setIpfsHash) => {
   let bKey = process.env.PINATA_KEY;
   const formData = new FormData();

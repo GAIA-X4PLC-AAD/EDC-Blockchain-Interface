@@ -37,13 +37,35 @@ Metadata of FA2 contracts is generated with the support of @taqueria/plugin-meta
 
 Following smart contracts are originated and can be used for minting:
 
-- FA2 Asset Contract: [KT1HdUFdQTzJKcL5kemU7vFZVVoAWodHJ58E](https://better-call.dev/ghostnet/KT1HdUFdQTzJKcL5kemU7vFZVVoAWodHJ58E/metadata)
-- FA2 Policy Contract: [KT1Ci1NxLk6WeBf3ZxyvjUZ7qcQU9v4w3zKY](https://better-call.dev/ghostnet/KT1Ci1NxLk6WeBf3ZxyvjUZ7qcQU9v4w3zKY/metadata)
-- FA2 Contract Contract : [KT1NCEJcxn6n9nvK9JvjbWdSv7degSeTE6tB](https://better-call.dev/ghostnet/KT1NCEJcxn6n9nvK9JvjbWdSv7degSeTE6tB/metadata)
+- FA2 Asset Contract: [KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9](https://better-call.dev/ghostnet/KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9/tokens)
+- FA2 Policy Contract: [KT1BFNQveBXw3ZwkWUswPpQfQkxLi6a29Kru](https://better-call.dev/ghostnet/KT1BFNQveBXw3ZwkWUswPpQfQkxLi6a29Kru/tokens)
+- FA2 Contract Contract : [KT1TUXx3G5w8Ey6sTKdE4duT23n2iPffNGsz](https://better-call.dev/ghostnet/KT1TUXx3G5w8Ey6sTKdE4duT23n2iPffNGsz/tokens)
+
+## Tezos Account
+
+Feel free to use the current tezos account included in [./.taq/config.json](./.taq/config.json) for testing.
+
+You can easily create your own account and change it in the config file.
+
+When originating new contracts, make sure to update the new addresses in [./contractConfig.json](./contractConfig.json).
 
 ## Contract Origination
 
+Compile Asset Contract:
+
 ```
-~/smartpy-cli/SmartPy.sh originate-contract --code /Users/johann/Documents/Code/GAIA/edc-interface/artifacts/contractContract/step_000_cont_0_contract.tz --storage /Users/johann/Documents/Code/GAIA/edc-interface/artifacts/contractContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.xyz/
+npm run compileAssetContract
+```
+
+Deploy Asset Contract:
+
+```
+npm run deployAssetContract
+```
+
+Alternatively:
+
+```
+~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/contractContract/step_000_cont_0_contract.tz --storage ./artifacts/contractContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.xyz/
 
 ```

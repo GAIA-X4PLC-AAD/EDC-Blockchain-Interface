@@ -13,11 +13,6 @@ class TokenMetadata {
   }
 }
 
-export const testPinata = async () => {
-  const res = await axios(testFetch);
-  console.log(res.data);
-};
-
 export const pinFile = async (file, setIpfsHash) => {
   let bKey = process.env.PINATA_KEY;
   const formData = new FormData();
@@ -63,7 +58,7 @@ export const pinJSON = async (content) => {
     console.log(res.data);
     return res.data.IpfsHash;
   } catch (e) {
-    //console.log(e);
+    console.log(e);
     throw new Error("JSON could not be pinned to ipfs");
   }
 };

@@ -8,10 +8,10 @@ class TokenMetadata {
     } else {
       this.name = assetData.asset.id;
     }
+    this.decimals = 0;
     if (assetData.dataUrl != undefined) {
       this.dataUrl = assetData.dataUrl;
     }
-    this.decimals = 0;
     this.tokenData = assetData;
   }
 }

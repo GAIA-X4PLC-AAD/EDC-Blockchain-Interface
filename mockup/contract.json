@@ -1,6 +1,7 @@
 {
-    "createdAt": 1666097107707,
-    "id": "2",
+    "createdAt": 1671097867,
+    "dataUrl": "testUrl",
+    "id": "5",
     "accessPolicyId": "cdc508ea-de26-4194-9179-7102058da136",
     "contractPolicyId": "cdc508ea-de26-4194-9179-7102058da136",
     "criteria": [

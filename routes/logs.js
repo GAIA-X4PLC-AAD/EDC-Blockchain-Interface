@@ -186,6 +186,37 @@ export const getLogRoute = (client) => {
    *         application/json:
    *           schema:
    *             type: object
+   *             properties:
+   *                createdAt:
+   *                  type: integer
+   *                  format: int32
+   *                  example: 1671097867
+   *                dataUrl:
+   *                  type: string
+   *                  example: testUrl
+   *                id:
+   *                  type: string
+   *                  example: 5
+   *                accessPolicyId:
+   *                  type: string
+   *                  example: cdc508ea-de26-4194-9179-7102058da136
+   *                contractPolicyId:
+   *                  type: string
+   *                  example: cdc508ea-de26-4194-9179-7102058da136
+   *                criteria:
+   *                  type: array
+   *                  items:
+   *                    type: object
+   *                    properties:
+   *                      operandLeft:
+   *                        type: string
+   *                        example: asset:prop:id
+   *                      operator:
+   *                        type: string
+   *                        example: =
+   *                      operandRight:
+   *                        type: string
+   *                        example: test-document-47
    *     responses:
    *       201:
    *         description: Response might take a while since 2 confirmations are awaited.

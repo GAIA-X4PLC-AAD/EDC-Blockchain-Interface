@@ -5,10 +5,10 @@
 In order to pin content to the IPFS you must include your Pinata API credentials in the form of environment parameters:
 
 1. Create a file in root directory called ".env"
-2. Add your Pinata private key as a variable:
+2. Add your Pinata private key as a variable (the JWT key):
 
 ```
-PINATA_KEY=
+PINATA_KEY="<JWT key>"
 ```
 
 3. Save this file

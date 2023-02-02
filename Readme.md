@@ -35,6 +35,8 @@ The documentation can be viewed on http://localhost:3000/docs when server runs.
 
 You can run the server in a Docker container. Make sure to add you Pinata KEY as an environment variable in the docker run command.
 
+Image on Docker Hub: [https://hub.docker.com/repository/docker/johann1999/edc-interface](https://hub.docker.com/repository/docker/johann1999/edc-interface)
+
 ```
 docker build -t edc-interface .
 

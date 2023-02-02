@@ -5,10 +5,10 @@
 In order to pin content to the IPFS you must include your Pinata API credentials in the form of environment parameters:
 
 1. Create a file in root directory called ".env"
-2. Add your Pinata private key as a variable:
+2. Add your Pinata private key as a variable (the JWT key):
 
 ```
-PINATA_KEY=
+PINATA_KEY="<JWT key>"
 ```
 
 3. Save this file
@@ -30,6 +30,16 @@ npm run serve
 ## Swagger Documentation
 
 The documentation can be viewed on http://localhost:3000/docs when server runs.
+
+## Run as Docker container
+
+You can run the server in a Docker container. Make sure to add you Pinata KEY as an environment variable in the docker run command.
+
+```
+docker build -t edc-interface .
+
+docker run -d --env PINATA_KEY=<JWT key> -p 3000:3000 --name edc-interface edc-interface
+```
 
 ## Contract Information
 
@@ -67,5 +77,4 @@ Alternatively:
 
 ```
 ~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/contractContract/step_000_cont_0_contract.tz --storage ./artifacts/contractContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.xyz/
-
 ```

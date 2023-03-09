@@ -1,7 +1,7 @@
 {
     "rpcUrl": "https://rpc.ghostnet.teztnets.xyz/",
     "adminAddress": "tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5",
-    "assetAddress": "KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9",
-    "policyAddress": "KT1BFNQveBXw3ZwkWUswPpQfQkxLi6a29Kru",
-    "contractAddress": "KT1TUXx3G5w8Ey6sTKdE4duT23n2iPffNGsz"
+    "assetAddress": "KT1LJp8dUDuzUwwWJXCsHJHGcrVtdjyLDB8r",
+    "policyAddress": "KT1HAGsykg4e5eXeYCu1DxZBnLP9i7Ji6ZRC",
+    "contractAddress": "KT1JB7PH7KUmmRhVMkegudmTGV2rKpzWZ7Rf"
 }

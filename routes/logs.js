@@ -13,7 +13,7 @@ import {
 
 import { pinJSON } from "../pinata/ipfs.js";
 
-export const getLogRoute = (client) => {
+export const getLogRoute = (client, isAuth) => {
   /**
    * @swagger
    * /mint/asset:
@@ -79,40 +79,39 @@ export const getLogRoute = (client) => {
    *                   example: https://ithacanet.smartpy.io/ooSLJmoD4My5UmS7fsVLbqJ5aj3hyBqQyBPSNHrswhwH4MkNtQW
    *
    */
-  client.post("/mint/asset", async (req, res) => {
+  client.post("/mint/asset", isAuth, async (req, res) => {
     // Await upload of metadata
     console.log("Asset endpoint triggered");
     let request = req.body;
     let ipfsHash;
     let blockHash;
+    let metaUri;
 
     // Initiate ipfs pinning
     try {
       console.log("IPFS Pinning...");
       ipfsHash = await pinJSON(request);
-      let metaUri = "ipfs://" + ipfsHash;
-      res.status(201).send(metaUri);
+      metaUri = "ipfs://" + ipfsHash;
+      //res.status(201).send(metaUri);
     } catch (error) {
       res.status(404);
       res.send(error.message);
       return;
     }
-    let metaUri = "ipfs://" + ipfsHash;
     // Initiate minting process
-    // TODO: remove comments for minting process
-    // try {
-    //   console.log("Minting process...");
-    //   blockHash = await mintAsset(metaUri);
-    //   let returnObject = {
-    //     status: "ok",
-    //     hash: blockHash,
-    //   };
-    //   res.status(201);
-    //   res.send(JSON.stringify(returnObject));
-    // } catch (error) {
-    //   res.status(400);
-    //   res.send(error.message);
-    // }
+    try {
+      console.log("Minting process...");
+      blockHash = await mintAsset(metaUri);
+      let returnObject = {
+        status: "ok",
+        hash: blockHash,
+      };
+      res.status(201);
+      res.send(JSON.stringify(returnObject));
+    } catch (error) {
+      res.status(400);
+      res.send(error.message);
+    }
   });
 
   /**
@@ -145,7 +144,7 @@ export const getLogRoute = (client) => {
    *                   example: https://ithacanet.smartpy.io/ooSLJmoD4My5UmS7fsVLbqJ5aj3hyBqQyBPSNHrswhwH4MkNtQW
    *
    */
-  client.post("/mint/policy", async (req, res) => {
+  client.post("/mint/policy", isAuth, async (req, res) => {
     // Await upload of metadata
     console.log("Policy endpoint triggered");
     let request = req.body;
@@ -239,7 +238,7 @@ export const getLogRoute = (client) => {
    *
    */
 
-  client.post("/mint/contract", async (req, res) => {
+  client.post("/mint/contract", isAuth, async (req, res) => {
     // Await upload of metadata
     console.log("Contract endpoint triggered");
     let request = req.body;
@@ -302,7 +301,7 @@ export const getLogRoute = (client) => {
    *                   example: 5
    *
    */
-  client.get("/asset/:assetId", async (req, res) => {
+  client.get("/asset/:assetId", isAuth, async (req, res) => {
     try {
       let assetResult = await getAsset(req.params.assetId);
       res.status(200);
@@ -333,7 +332,7 @@ export const getLogRoute = (client) => {
    *
    *
    */
-  client.get("/assetName/:assetName", async (req, res) => {
+  client.get("/assetName/:assetName", isAuth, async (req, res) => {
     try {
       let assetResult = await getAssetByName(req.params.assetName);
       res.status(200);
@@ -375,7 +374,7 @@ export const getLogRoute = (client) => {
    *                   example: 5
    *
    */
-  client.get("/policy/:policyId", async (req, res) => {
+  client.get("/policy/:policyId", isAuth, async (req, res) => {
     try {
       let policyResult = await getPolicy(req.params.policyId);
       res.status(200);
@@ -406,7 +405,7 @@ export const getLogRoute = (client) => {
    *
    *
    */
-  client.get("/policyName/:policyName", async (req, res) => {
+  client.get("/policyName/:policyName", isAuth, async (req, res) => {
     try {
       let policyResult = await getPolicyByName(req.params.policyName);
       res.status(200);
@@ -448,7 +447,7 @@ export const getLogRoute = (client) => {
    *                   example: 5
    *
    */
-  client.get("/contract/:contractId", async (req, res) => {
+  client.get("/contract/:contractId", isAuth, async (req, res) => {
     try {
       let contractResult = await getContract(req.params.contractId);
       res.status(200);
@@ -495,7 +494,7 @@ export const getLogRoute = (client) => {
    *                   example: 5
    *
    */
-  client.get("/all/:tokenType", async (req, res) => {
+  client.get("/all/:tokenType", isAuth, async (req, res) => {
     let tokenType = req.params.tokenType;
     try {
       let assetResult = await getAllTokens(tokenType);

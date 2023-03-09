@@ -12,9 +12,20 @@ const port = 3000;
 
 dotenv.config();
 
+// auth middleware
+const isAuth = (req, res, next) => {
+  const auth = req.headers.apiKey;
+  if (auth === "password") {
+    next();
+  } else {
+    res.status(401);
+    res.send("Access forbidden");
+  }
+};
+
 // Load speficig endspoints
 getBalanceRoute(client);
-getLogRoute(client);
+getLogRoute(client, isAuth);
 
 // Swagger Setup
 const swaggerDefinition = {

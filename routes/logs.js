@@ -90,6 +90,8 @@ export const getLogRoute = (client) => {
     try {
       console.log("IPFS Pinning...");
       ipfsHash = await pinJSON(request);
+      let metaUri = "ipfs://" + ipfsHash;
+      res.status(201).send(metaUri);
     } catch (error) {
       res.status(404);
       res.send(error.message);
@@ -97,19 +99,20 @@ export const getLogRoute = (client) => {
     }
     let metaUri = "ipfs://" + ipfsHash;
     // Initiate minting process
-    try {
-      console.log("Minting process...");
-      blockHash = await mintAsset(metaUri);
-      let returnObject = {
-        status: "ok",
-        hash: blockHash,
-      };
-      res.status(201);
-      res.send(JSON.stringify(returnObject));
-    } catch (error) {
-      res.status(400);
-      res.send(error.message);
-    }
+    // TODO: remove comments for minting process
+    // try {
+    //   console.log("Minting process...");
+    //   blockHash = await mintAsset(metaUri);
+    //   let returnObject = {
+    //     status: "ok",
+    //     hash: blockHash,
+    //   };
+    //   res.status(201);
+    //   res.send(JSON.stringify(returnObject));
+    // } catch (error) {
+    //   res.status(400);
+    //   res.send(error.message);
+    // }
   });
 
   /**

@@ -1,4 +1,6 @@
 import express from "express";
+import https from "https";
+import fs from "fs";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { getBalanceRoute } from "./routes/balance.js";
@@ -14,12 +16,12 @@ dotenv.config();
 
 // auth middleware
 const isAuth = (req, res, next) => {
-  const auth = req.headers.apiKey;
-  if (auth === "password") {
+  const auth = req.headers.apikey;
+  if (auth === "123456") {
     next();
   } else {
     res.status(401);
-    res.send("Access forbidden");
+    res.send("Access forbidden " + req.headers.apiKey);
   }
 };
 
@@ -50,7 +52,15 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options);
 client.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-client.listen(port, () => {
-  console.log(`API listening at http://localhost:${port}`);
-  console.log(`For API Documentation see http://localhost:${port}/docs`);
-});
+https
+  .createServer(
+    {
+      key: fs.readFileSync("./ssl/key.pem"),
+      cert: fs.readFileSync("./ssl/cert.pem"),
+    },
+    client
+  )
+  .listen(port, () => {
+    console.log(`API listening at https://localhost:${port}`);
+    console.log(`For API Documentation see https://localhost:${port}/docs`);
+  });

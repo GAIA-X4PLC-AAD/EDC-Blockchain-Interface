@@ -14,7 +14,7 @@ const port = 3000;
 
 dotenv.config();
 
-// auth middleware
+// Auth middleware
 const isAuth = (req, res, next) => {
   const auth = req.headers.apikey;
   if (auth === "123456") {
@@ -25,7 +25,7 @@ const isAuth = (req, res, next) => {
   }
 };
 
-// Load speficig endspoints
+// Load endpoints
 getBalanceRoute(client);
 getLogRoute(client, isAuth);
 

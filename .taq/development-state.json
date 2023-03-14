@@ -22,6 +22,17 @@
                     "artifacts": []
                 }
             ]
+        },
+        "@taqueria/plugin-smartpy.compile.1678358843054": {
+            "task": "compile",
+            "plugin": "@taqueria/plugin-smartpy",
+            "time": 1678358843054,
+            "output": [
+                {
+                    "contract": "asset_contract.py",
+                    "artifacts": []
+                }
+            ]
         }
     }
 }

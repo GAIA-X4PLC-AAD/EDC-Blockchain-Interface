@@ -27,8 +27,7 @@
                       {
                         "prim": "pair",
                         "args": [
-                          { "prim": "nat", "annots": [ "%token_id" ] },
-                          { "prim": "map", "args": [ { "prim": "string" }, { "prim": "bytes" } ], "annots": [ "%token_info" ] }
+                          { "prim": "nat", "annots": [ "%token_id" ] }, { "prim": "map", "args": [ { "prim": "string" }, { "prim": "bytes" } ], "annots": [ "%token_info" ] }
                         ]
                       }
                     ],
@@ -204,8 +203,7 @@
                           {
                             "prim": "IF",
                             "args": [
-                              [ { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "1" } ] } ],
-                              [ { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "0" } ] } ]
+                              [ { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "1" } ] } ], [ { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "0" } ] } ]
                             ]
                           },
                           { "prim": "SWAP" },

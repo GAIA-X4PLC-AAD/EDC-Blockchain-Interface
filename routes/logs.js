@@ -9,6 +9,7 @@ import {
   getPolicyByName,
   getContract,
   mintContract,
+  writeTransfer,
 } from "../taquito/contract.js";
 
 import { pinJSON } from "../pinata/ipfs.js";
@@ -469,6 +470,51 @@ export const getLogRoute = (client) => {
       res.send(JSON.stringify(assetResult));
     } catch (error) {
       res.status(404);
+      res.send(error.message);
+    }
+  });
+  /**
+   * @swagger
+   * /transfer/add:
+   *   post:
+   *     summary: Write data transfer to smart contract.
+   *     description: Manually add metadata of data transfer to smart contract.
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *     responses:
+   *       201:
+   *         description: Response might take a while since 2 confirmations are awaited.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   description: Status of log forwarding.
+   *                   example: ok
+   *                 hash:
+   *                   type: string
+   *                   description: Hash of blockchain transaction.
+   *                   example: https://ithacanet.smartpy.io/ooSLJmoD4My5UmS7fsVLbqJ5aj3hyBqQyBPSNHrswhwH4MkNtQW
+   *
+   */
+
+  client.post("/transfer/add", async (req, res) => {
+    // Await upload of metadata
+    //let request = req.body;
+    let request = req.body;
+    try {
+      let hash = await writeTransfer(request);
+      console.log(hash);
+      res.status(201);
+      res.send(JSON.stringify({ status: "ok", hash: hash }));
+    } catch (error) {
+      res.status(400);
       res.send(error.message);
     }
   });

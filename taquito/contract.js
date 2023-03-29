@@ -279,6 +279,36 @@ const getContractByName = async (contractName) => {
   return result;
 };
 
+const writeTransfer = async (request) => {
+  //append request object to map inside smart contract
+  let callResult = await tezos.contract
+    .at(contractConfig.transferAddress)
+    .then((contract) => {
+      return contract.methods
+        .postDataTransfer(
+          request.assetId,
+          request.consumerId,
+          request.contractRef,
+          request.producerId,
+          request.transactionId
+        )
+        .send();
+    })
+    .then(async (op) => {
+      console.log(`Waiting for ${op.hash} to be confirmed...`);
+      await op.confirmation(2);
+      return op.hash;
+    })
+    .then((hash) => {
+      console.log(`Operation injected: https://ghost.tzstats.com/${hash}`);
+      return hash;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+  return callResult;
+};
+
 export {
   getBalance,
   getMapSize,
@@ -292,4 +322,5 @@ export {
   getPolicyByName,
   getContract,
   getContractByName,
+  writeTransfer,
 };

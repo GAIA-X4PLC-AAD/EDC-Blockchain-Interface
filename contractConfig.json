@@ -3,5 +3,6 @@
     "adminAddress": "tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5",
     "assetAddress": "KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9",
     "policyAddress": "KT1BFNQveBXw3ZwkWUswPpQfQkxLi6a29Kru",
-    "contractAddress": "KT1TUXx3G5w8Ey6sTKdE4duT23n2iPffNGsz"
+    "contractAddress": "KT1TUXx3G5w8Ey6sTKdE4duT23n2iPffNGsz",
+    "transferAddress": "KT1CZ7je2zjufsHvZuueFHAeu6xZyMSSQaPh"
 }

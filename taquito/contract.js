@@ -286,7 +286,7 @@ const writeTransfer = async (request) => {
     .then((contract) => {
       return contract.methods
         .postDataTransfer(
-          request.assetId,
+          request.assetId.toString(),
           request.consumerId,
           request.contractRef,
           request.producerId,
@@ -300,8 +300,9 @@ const writeTransfer = async (request) => {
       return op.hash;
     })
     .then((hash) => {
-      console.log(`Operation injected: https://ghost.tzstats.com/${hash}`);
-      return hash;
+      let url = `https://better-call.dev/ghostnet/opg/${hash}/contents`;
+      console.log(`Operation injected: ${hash}`);
+      return url;
     })
     .catch((error) => {
       throw new Error(error);

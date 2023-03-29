@@ -497,10 +497,10 @@ export const getLogRoute = (client) => {
    *                   type: string
    *                   description: Status of log forwarding.
    *                   example: ok
-   *                 hash:
+   *                 operationRef:
    *                   type: string
    *                   description: Hash of blockchain transaction.
-   *                   example: https://ithacanet.smartpy.io/ooSLJmoD4My5UmS7fsVLbqJ5aj3hyBqQyBPSNHrswhwH4MkNtQW
+   *                   example: https://better-call.dev/ghostnet/opg/oouUPSmsoCXrSudfNkPk9YGpsi5afXoDMqYcDsT5n8fohXyMFCo/contents
    *
    */
 
@@ -509,10 +509,9 @@ export const getLogRoute = (client) => {
     //let request = req.body;
     let request = req.body;
     try {
-      let hash = await writeTransfer(request);
-      console.log(hash);
+      let operationUrl = await writeTransfer(request);
       res.status(201);
-      res.send(JSON.stringify({ status: "ok", hash: hash }));
+      res.send(JSON.stringify({ status: "ok", operationRef: operationUrl }));
     } catch (error) {
       res.status(400);
       res.send(error.message);

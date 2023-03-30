@@ -296,7 +296,7 @@ const writeTransfer = async (request) => {
     })
     .then(async (op) => {
       console.log(`Waiting for ${op.hash} to be confirmed...`);
-      await op.confirmation(2);
+      await op.confirmation(1);
       return op.hash;
     })
     .then((hash) => {

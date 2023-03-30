@@ -40,7 +40,7 @@ Following smart contracts are originated and can be used for minting:
 - FA2 Asset Contract: [KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9](https://better-call.dev/ghostnet/KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9/tokens)
 - FA2 Policy Contract: [KT1BFNQveBXw3ZwkWUswPpQfQkxLi6a29Kru](https://better-call.dev/ghostnet/KT1BFNQveBXw3ZwkWUswPpQfQkxLi6a29Kru/tokens)
 - FA2 Contract Contract : [KT1TUXx3G5w8Ey6sTKdE4duT23n2iPffNGsz](https://better-call.dev/ghostnet/KT1TUXx3G5w8Ey6sTKdE4duT23n2iPffNGsz/tokens)
-- EDC Transfer Logging Contract : [KT1CZ7je2zjufsHvZuueFHAeu6xZyMSSQaPh](https://better-call.dev/ghostnet/KT1CZ7je2zjufsHvZuueFHAeu6xZyMSSQaPh/oper<ations)
+- EDC Transfer Logging Contract : [KT1HkJhQon5Wp12JFwTR7hxBVrvmzAUYd6Bu](https://better-call.dev/ghostnet/KT1HkJhQon5Wp12JFwTR7hxBVrvmzAUYd6Bu/operations)
 
 ## Tezos Account
 

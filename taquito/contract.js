@@ -289,7 +289,7 @@ const writeTransfer = async (request) => {
           request.assetId.toString(),
           request.consumerId,
           request.contractRef,
-          request.producerId,
+          request.providerId,
           request.transactionId
         )
         .send();

@@ -37,10 +37,11 @@ Metadata of FA2 contracts is generated with the support of @taqueria/plugin-meta
 
 Following smart contracts are originated and can be used for minting:
 
-- FA2 Asset Contract: [KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9](https://better-call.dev/ghostnet/KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9/tokens)
-- FA2 Policy Contract: [KT1BFNQveBXw3ZwkWUswPpQfQkxLi6a29Kru](https://better-call.dev/ghostnet/KT1BFNQveBXw3ZwkWUswPpQfQkxLi6a29Kru/tokens)
-- FA2 Contract Contract : [KT1TUXx3G5w8Ey6sTKdE4duT23n2iPffNGsz](https://better-call.dev/ghostnet/KT1TUXx3G5w8Ey6sTKdE4duT23n2iPffNGsz/tokens)
-- EDC Transfer Logging Contract : [KT1UBH3fDMSTttNS7vJxdz8e6ffFsSGNLvDf](https://better-call.dev/ghostnet/KT1UBH3fDMSTttNS7vJxdz8e6ffFsSGNLvDf/operations)
+- FA2 Asset Contract: [KT1N3iJne4jFnQz4tdHBz5q7Cd8Wmd6XtZSH](https://better-call.dev/ghostnet/KT1N3iJne4jFnQz4tdHBz5q7Cd8Wmd6XtZSH/tokens)
+- FA2 Policy Contract: [KT1J7FvNLo2yQSUm7jcm2wzNHDBhR19Y5dJ9](https://better-call.dev/ghostnet/KT1J7FvNLo2yQSUm7jcm2wzNHDBhR19Y5dJ9/tokens)
+- FA2 Contract Contract : [KT1QDheV2TkL3mitzYNKzunWYhSe6MmEPTh5](https://better-call.dev/ghostnet/KT1QDheV2TkL3mitzYNKzunWYhSe6MmEPTh5/tokens)
+- EDC Transfer Logging Contract : [KT1N5oTfoLsKbXshfW5WrcnQJdB1kR5t21Vs](https://better-call.dev/ghostnet/KT1N5oTfoLsKbXshfW5WrcnQJdB1kR5t21Vs/operations)
+- EDC Agreement Contract : [KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD](https://better-call.dev/ghostnet/KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD/operations)
 
 ## Tezos Account
 

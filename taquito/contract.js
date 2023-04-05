@@ -4,9 +4,7 @@ import { char2Bytes } from "@taquito/utils";
 import axios from "axios";
 import fs from "fs";
 import { Tzip12Module, tzip12 } from "@taquito/tzip12";
-
-// Read contract config
-const contractConfig = JSON.parse(fs.readFileSync("./contractConfig.json"));
+import { contractConfig } from "../contractConfig.js";
 
 // connect tezos client to testnet
 const tezos = new TezosToolkit(contractConfig.rpcUrl);

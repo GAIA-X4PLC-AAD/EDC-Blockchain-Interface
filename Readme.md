@@ -1,17 +1,12 @@
 # EDC Interface
 
+**This branch is not intended for production use.**
+
 This branch contains the EDC Interface implementation for a local IPFS setup. It is required that the IPFS node is running in the same network and is accessible via the IPFS API. For the purpose of data integrity and access management a self-signed SSL certificate is used to establish a HTTPS connection to this API. Further, users must authenticate themselves with a username and apiKey included in the http header. For more details, please refer to the Swagger documentation.
 
 ## IPFS Setup
 
-In order to pin content to the IPFS you must include your Pinata API credentials in the form of environment parameters:
-
-1. Create a file in root directory called ".env"
-2. Add your [Pinata key](https://knowledge.pinata.cloud/en/articles/6191471-how-to-create-an-pinata-api-key) as a variable (the JWT key):
-   ```
-   PINATA_KEY="<JWT key>"
-   ```
-3. Optionally: Add your own smart contract addresses as env variables
+1. Optionally: Add your own smart contract addresses as env variables
    - ASSET_ADDRESS
    - POLICY_ADDRESS
    - CONTRACT_ADDRESS

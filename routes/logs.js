@@ -13,14 +13,42 @@ import {
 } from "../taquito/contract.js";
 
 import { pinJSON } from "../pinata/ipfs.js";
+import fs from "fs";
 
-export const getLogRoute = (client, isAuth) => {
+//import profile json
+let profiles = JSON.parse(fs.readFileSync("./auth/profiles.json", "utf8"));
+fs.watch("./auth/profiles.json", (eventType, filename) => {
+  if (filename) {
+    console.log(`File ${filename} changed`);
+    fs.readFile("./auth/profiles.json", "utf8", (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      let json = JSON.parse(data);
+      profiles = json;
+    });
+  }
+});
+
+export const getLogRoute = (client, isAuth, isPinning, isAdmin) => {
   /**
    * @swagger
    * /mint/asset:
    *   post:
    *     summary: Minting new asset token.
    *     description: Requests metadata object with reference to actual asset data to save metadata on ipfs and mint new token.
+   *     parameters:
+   *       - in: header
+   *         name: username
+   *         schema:
+   *           type: string
+   *         required: true
+   *       - in: header
+   *         name: apikey
+   *         schema:
+   *           type: string
+   *         required: true
    *     requestBody:
    *       required: true
    *       content:
@@ -80,7 +108,7 @@ export const getLogRoute = (client, isAuth) => {
    *                   example: https://ithacanet.smartpy.io/ooSLJmoD4My5UmS7fsVLbqJ5aj3hyBqQyBPSNHrswhwH4MkNtQW
    *
    */
-  client.post("/mint/asset", isAuth, async (req, res) => {
+  client.post("/mint/asset", isAuth, isPinning, async (req, res) => {
     // Await upload of metadata
     console.log("Asset endpoint triggered");
     let request = req.body;
@@ -120,7 +148,18 @@ export const getLogRoute = (client, isAuth) => {
    * /mint/policy:
    *   post:
    *     summary: Minting new policy token.
-   *     description: Requests metadata object with reference to actual policy ressource to save metadata on ipfs and mint new token.
+   *     description: Requests metadata object with reference to actual policy resource to save metadata on ipfs and mint new token.
+   *     parameters:
+   *       - in: header
+   *         name: username
+   *         schema:
+   *           type: string
+   *         required: true
+   *       - in: header
+   *         name: apikey
+   *         schema:
+   *           type: string
+   *         required: true
    *     requestBody:
    *       required: true
    *       content:
@@ -145,7 +184,7 @@ export const getLogRoute = (client, isAuth) => {
    *                   example: https://ithacanet.smartpy.io/ooSLJmoD4My5UmS7fsVLbqJ5aj3hyBqQyBPSNHrswhwH4MkNtQW
    *
    */
-  client.post("/mint/policy", isAuth, async (req, res) => {
+  client.post("/mint/policy", isAuth, isPinning, async (req, res) => {
     // Await upload of metadata
     console.log("Policy endpoint triggered");
     let request = req.body;
@@ -182,7 +221,18 @@ export const getLogRoute = (client, isAuth) => {
    * /mint/contract:
    *   post:
    *     summary: Minting new contract token.
-   *     description: Requests metadata object with reference to actual contract ressource to save metadata on ipfs and mint new token.
+   *     description: Requests metadata object with reference to actual contract resource to save metadata on ipfs and mint new token.
+   *     parameters:
+   *       - in: header
+   *         name: username
+   *         schema:
+   *           type: string
+   *         required: true
+   *       - in: header
+   *         name: apikey
+   *         schema:
+   *           type: string
+   *         required: true
    *     requestBody:
    *       required: true
    *       content:
@@ -239,7 +289,7 @@ export const getLogRoute = (client, isAuth) => {
    *
    */
 
-  client.post("/mint/contract", isAuth, async (req, res) => {
+  client.post("/mint/contract", isAuth, isPinning, async (req, res) => {
     // Await upload of metadata
     console.log("Contract endpoint triggered");
     let request = req.body;
@@ -549,5 +599,55 @@ export const getLogRoute = (client, isAuth) => {
       res.status(400);
       res.send(error.message);
     }
+  });
+
+  /**
+   * @swagger
+   * /auth/user/add:
+   *   post:
+   *     summary: Add user to json whitelist enabling them to pin data to local IPFS node.
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *                name:
+   *                  type: string
+   *                  example: john
+   *                description:
+   *                  type: string
+   *                  example: Describe the user account
+   *                key:
+   *                  type: string
+   *                  example: password
+   *                pinLimit:
+   *                  type: integer
+   *                  example: 100
+   *     responses:
+   *       201:
+   *         description: Await response for updated role list.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *
+   *
+   */
+  client.post("/auth/user/add", isAuth, isAdmin, async (req, res) => {
+    let request = req.body;
+    let newUser = {
+      name: request.name,
+      description: request.description,
+      createdAt: new Date().toISOString(),
+      key: request.key,
+      permissions: { toPin: request.pinLimit },
+      stats: { pinnedFiles: 0 },
+    };
+    profiles[request.name] = newUser;
+    fs.writeFileSync("./auth/profiles.json", JSON.stringify(profiles));
+    res.status(201);
+    res.send(JSON.stringify(profiles));
   });
 };

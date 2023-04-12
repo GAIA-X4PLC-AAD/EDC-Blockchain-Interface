@@ -14,20 +14,69 @@ const port = 3000;
 
 dotenv.config();
 
+//import profile json
+let profiles = JSON.parse(fs.readFileSync("./auth/profiles.json", "utf8"));
+fs.watch("./auth/profiles.json", (eventType, filename) => {
+  if (filename) {
+    console.log(`File ${filename} changed`);
+    fs.readFile("./auth/profiles.json", "utf8", (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      let json = JSON.parse(data);
+      profiles = json;
+    });
+  }
+});
+
 // Auth middleware
 const isAuth = (req, res, next) => {
-  const auth = req.headers.apikey;
-  if (auth === "123456") {
+  const key = req.headers.apikey;
+  const userName = req.headers.username;
+  if (profiles[userName] === undefined) {
+    res.status(401);
+    res.send("User not found");
+  } else {
+    if (key === profiles[userName].key) {
+      next();
+    } else {
+      res.status(401);
+      res.send("Access forbidden for user: " + req.headers.username);
+    }
+  }
+};
+
+// Pinning middleware
+const isPinning = (req, res, next) => {
+  if (
+    profiles[req.headers.username].stats.pinnedFiles <
+    profiles[req.headers.username].permissions.toPin
+  ) {
+    profiles[req.headers.username].stats.pinnedFiles++;
+    fs.writeFileSync("./auth/profiles.json", JSON.stringify(profiles));
+    next();
+  } else {
+    res.status(403);
+    res.send("You have reached your pinning limit");
+  }
+};
+
+// Admin middleware
+const isAdmin = (req, res, next) => {
+  const key = req.headers.apikey;
+  const userName = req.headers.username;
+  if (userName == "admin" && key === profiles[userName].key) {
     next();
   } else {
     res.status(401);
-    res.send("Access forbidden " + req.headers.apiKey);
+    res.send("Access forbidden for user: " + req.headers.username);
   }
 };
 
 // Load endpoints
 getBalanceRoute(client);
-getLogRoute(client, isAuth);
+getLogRoute(client, isAuth, isPinning, isAdmin);
 
 // Swagger Setup
 const swaggerDefinition = {

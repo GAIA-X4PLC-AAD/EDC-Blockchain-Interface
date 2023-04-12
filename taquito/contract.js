@@ -4,9 +4,7 @@ import { char2Bytes } from "@taquito/utils";
 import axios from "axios";
 import fs from "fs";
 import { Tzip12Module, tzip12 } from "@taquito/tzip12";
-
-// Read contract config
-const contractConfig = JSON.parse(fs.readFileSync("./contractConfig.json"));
+import { contractConfig } from "../contractConfig.js";
 
 // connect tezos client to testnet
 const tezos = new TezosToolkit(contractConfig.rpcUrl);
@@ -279,6 +277,37 @@ const getContractByName = async (contractName) => {
   return result;
 };
 
+const writeTransfer = async (request) => {
+  //append request object to map inside smart contract
+  let callResult = await tezos.contract
+    .at(contractConfig.transferAddress)
+    .then((contract) => {
+      return contract.methods
+        .postDataTransfer(
+          request.assetId.toString(),
+          request.consumerId,
+          request.contractRef,
+          request.providerId,
+          request.transactionId
+        )
+        .send();
+    })
+    .then(async (op) => {
+      console.log(`Waiting for ${op.hash} to be confirmed...`);
+      await op.confirmation(1);
+      return op.hash;
+    })
+    .then((hash) => {
+      let url = `https://better-call.dev/ghostnet/opg/${hash}/contents`;
+      console.log(`Operation injected: ${hash}`);
+      return url;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+  return callResult;
+};
+
 export {
   getBalance,
   getMapSize,
@@ -292,4 +321,5 @@ export {
   getPolicyByName,
   getContract,
   getContractByName,
+  writeTransfer,
 };

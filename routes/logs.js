@@ -12,7 +12,7 @@ import {
   writeTransfer,
 } from "../taquito/contract.js";
 
-import { pinJSON } from "../pinata/ipfs.js";
+import { pinJSON, pinGenericJSON } from "../pinata/ipfs.js";
 import fs from "fs";
 
 //import profile json
@@ -649,5 +649,18 @@ export const getLogRoute = (client, isAuth, isPinning, isAdmin) => {
     fs.writeFileSync("./auth/profiles.json", JSON.stringify(profiles));
     res.status(201);
     res.send(JSON.stringify(profiles));
+  });
+
+  // pin JSON to IPFS
+  client.post("/pin", isAuth, isPinning, async (req, res) => {
+    let request = req.body;
+    try {
+      let ipfsHash = await pinGenericJSON(request);
+      res.status(201);
+      res.send(JSON.stringify({ hash: ipfsHash }));
+    } catch (error) {
+      res.status(400);
+      res.send(error.message);
+    }
   });
 };

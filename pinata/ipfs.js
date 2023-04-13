@@ -33,6 +33,17 @@ export const pinJSON = async (content) => {
   }
 };
 
+export const pinGenericJSON = async (content) => {
+  try {
+    let result = await ipfs.add(JSON.stringify(content));
+    console.log(result);
+    return result.cid.toString();
+  } catch (e) {
+    console.log(e);
+    throw new Error("JSON could not be pinned to ipfs");
+  }
+};
+
 // depricated for local ipfs branch
 // export const pinFile = async (file, setIpfsHash) => {
 //   let bKey = process.env.PINATA_KEY;

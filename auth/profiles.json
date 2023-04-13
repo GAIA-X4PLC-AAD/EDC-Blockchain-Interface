@@ -5,7 +5,7 @@
     "createdAt": "2023-04-12T09:35:47.276Z",
     "key": "getAdminAccess05",
     "permissions": { "toPin": 10000 },
-    "stats": { "pinnedFiles": 2 }
+    "stats": { "pinnedFiles": 0 }
   },
   "julian": {
     "name": "Julian",

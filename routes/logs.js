@@ -10,6 +10,7 @@ import {
   getContract,
   mintContract,
   writeTransfer,
+  getTransfer,
 } from "../taquito/contract.js";
 
 import { pinJSON } from "../pinata/ipfs.js";
@@ -485,6 +486,51 @@ export const getLogRoute = (client) => {
    *         application/json:
    *           schema:
    *             type: object
+   *             properties:
+   *               transactionId:
+   *                 type: string
+   *                 description: Transaction Id of data transfer.
+   *                 example: 78c7919b-7774-401a-8ad3-b79760ba4d65
+   *               consumerId:
+   *                 type: string
+   *                 description: Consumer Id of data transfer.
+   *                 example: consumerId_placeholder
+   *               providerId:
+   *                 type: string
+   *                 description: Provider Id of data transfer.
+   *                 example: providerId_placeholder
+   *               assetId:
+   *                 type: string
+   *                 description: Asset Id of data transfer.
+   *                 example: assetId_placeholder
+   *               contractRef:
+   *                 type: string
+   *                 description: Reference to the smart contract including the contract documentation.
+   *                 example: KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9
+   *               customerName:
+   *                 type: string
+   *                 description: Name of customer.
+   *                 example: customerName_placeholder
+   *               customerGaiaId:
+   *                 type: string
+   *                 description: Gaia Id of customer.
+   *                 example: customerGaiaId_placeholder
+   *               customerInvoiceAddress:
+   *                 type: string
+   *                 description: Invoice address of customer.
+   *                 example: customerInvoiceAddress_placeholder
+   *               invoiceDate:
+   *                 type: string
+   *                 description: Date of invoice.
+   *                 example: 2021-01-01
+   *               paymentTerm:
+   *                 type: string
+   *                 description: Payment term of invoice.
+   *                 example: paymentTerm_placeholder
+   *               currency:
+   *                 type: string
+   *                 description: Currency of invoice.
+   *                 example: EUR
    *     responses:
    *       201:
    *         description: Response might take a while since 2 confirmations are awaited.
@@ -505,7 +551,6 @@ export const getLogRoute = (client) => {
    */
 
   client.post("/transfer/add", async (req, res) => {
-    // Await upload of metadata
     //let request = req.body;
     let request = req.body;
     try {
@@ -514,6 +559,41 @@ export const getLogRoute = (client) => {
       res.send(JSON.stringify({ status: "ok", operationRef: operationUrl }));
     } catch (error) {
       res.status(400);
+      res.send(error.message);
+    }
+  });
+
+  /**
+   * @swagger
+   * /transfer/{transactionId}:
+   *   get:
+   *     summary: Retrieve the invoice metadata of given transaction id.
+   *     description: Retrieve the invoice metadata of given transaction id.
+   *     parameters:
+   *       - in: path
+   *         name: transactionId
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         example: 123
+   *         description: Transaction Id
+   *     responses:
+   *       200:
+   *         description: Response in JSON.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *
+   */
+  // get transfer by transactionId
+  client.get("/transfer/:transactionId", async (req, res) => {
+    try {
+      let transferResult = await getTransfer(req.params.transactionId);
+      res.status(200);
+      res.send(JSON.stringify(transferResult));
+    } catch (error) {
+      res.status(404);
       res.send(error.message);
     }
   });

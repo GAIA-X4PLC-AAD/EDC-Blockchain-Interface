@@ -287,6 +287,12 @@ const writeTransfer = async (request) => {
           request.assetId.toString(),
           request.consumerId,
           request.contractRef,
+          request.currency,
+          request.customerGaiaId,
+          request.customerInvoiceAddress,
+          request.customerName,
+          request.invoiceDate,
+          request.paymentTerm,
           request.providerId,
           request.transactionId
         )
@@ -308,6 +314,27 @@ const writeTransfer = async (request) => {
   return callResult;
 };
 
+const getTransfer = async (transferId) => {
+  let query = await tezos.contract
+    .at(contractConfig.transferAddress)
+    .then((contract) => {
+      // fetch data from a data map called "dataTransferMap"
+      return contract.storage();
+    })
+    .then((storage) => {
+      let transferData = storage.invoiceMap.get(transferId);
+      console.log(transferData);
+      if (transferData == undefined) {
+        throw new Error("TransferIdNotFound");
+      }
+      return transferData;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+  return query;
+};
+
 export {
   getBalance,
   getMapSize,
@@ -322,4 +349,5 @@ export {
   getContract,
   getContractByName,
   writeTransfer,
+  getTransfer,
 };

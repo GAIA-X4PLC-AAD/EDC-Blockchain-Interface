@@ -9,7 +9,7 @@ In order to pin content to the IPFS you must include your Pinata API credentials
    ```
    PINATA_KEY="<JWT key>"
    ```
-3. Optionally: Add your own smart contract adresses as env variables
+3. Optionally: Add your own smart contract addresses as env variables
    - ASSET_ADDRESS
    - POLICY_ADDRESS
    - CONTRACT_ADDRESS
@@ -43,7 +43,7 @@ Following smart contracts were originated and can be used for minting by default
 - FA2 Asset Contract: [KT1N3iJne4jFnQz4tdHBz5q7Cd8Wmd6XtZSH](https://better-call.dev/ghostnet/KT1N3iJne4jFnQz4tdHBz5q7Cd8Wmd6XtZSH/tokens)
 - FA2 Policy Contract: [KT1J7FvNLo2yQSUm7jcm2wzNHDBhR19Y5dJ9](https://better-call.dev/ghostnet/KT1J7FvNLo2yQSUm7jcm2wzNHDBhR19Y5dJ9/tokens)
 - FA2 Contract Contract : [KT1QDheV2TkL3mitzYNKzunWYhSe6MmEPTh5](https://better-call.dev/ghostnet/KT1QDheV2TkL3mitzYNKzunWYhSe6MmEPTh5/tokens)
-- EDC Transfer Logging Contract : [KT1N5oTfoLsKbXshfW5WrcnQJdB1kR5t21Vs](https://better-call.dev/ghostnet/KT1N5oTfoLsKbXshfW5WrcnQJdB1kR5t21Vs/operations)
+- EDC Transfer Logging Contract : [KT1M7mbYZoP4XTejnSdiKFvq3iynnct2iF9M](https://better-call.dev/ghostnet/KT1M7mbYZoP4XTejnSdiKFvq3iynnct2iF9M/operations)
 - EDC Agreement Contract : [KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD](https://better-call.dev/ghostnet/KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD/operations)
 
 ## Tezos Account

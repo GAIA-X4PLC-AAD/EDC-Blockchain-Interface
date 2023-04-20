@@ -53,78 +53,97 @@ const getMapSize = async (mapName) => {
 };
 
 const mintAsset = async (metaLink = "") => {
-  let result = await tezos.contract
-    .at(contractConfig.assetAddress)
-    .then((contract) => {
-      return contract.methods
-        .mint([
-          {
-            to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
-            metadata: {
-              "": char2Bytes(metaLink),
-            },
-          },
-        ])
-        .send();
-    })
-    .then((hash) => {
-      return hash.hash;
-    })
-    .catch((error) => {
-      return error;
-    });
-  console.log("Return Object: " + result);
-  return result;
+  for (let i = 0; i < 10; i++) {
+    try {
+      let result = await tezos.contract
+        .at(contractConfig.assetAddress)
+        .then((contract) => {
+          return contract.methods
+            .mint([
+              {
+                to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                metadata: {
+                  "": char2Bytes(metaLink),
+                },
+              },
+            ])
+            .send();
+        })
+        .then((hash) => {
+          return hash.hash;
+        });
+      console.log("Return Object: " + result);
+      return result;
+    } catch (error) {
+      console.error(`Error on attempt ${i + 1}: ${error}`);
+      console.log("Waiting 2 seconds before retrying...")
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+  }
+  throw new Error("Failed to mint asset after 10 attempts.");
 };
 
 const mintPolicy = async (metaLink = "") => {
-  let result = await tezos.contract
-    .at(contractConfig.policyAddress)
-    .then((contract) => {
-      return contract.methods
-        .mint([
-          {
-            to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
-            metadata: {
-              "": char2Bytes(metaLink),
-            },
-          },
-        ])
-        .send();
-    })
-    .then((hash) => {
-      return hash.hash;
-    })
-    .catch((error) => {
-      return error;
-    });
-  console.log("Return Object: " + result);
-  return result;
+  for (let i = 0; i < 10; i++) {
+    try {
+      let result = await tezos.contract
+        .at(contractConfig.policyAddress)
+        .then((contract) => {
+          return contract.methods
+            .mint([
+              {
+                to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                metadata: {
+                  "": char2Bytes(metaLink),
+                },
+              },
+            ])
+            .send();
+        })
+        .then((hash) => {
+          return hash.hash;
+        })
+      console.log("Return Object: " + result);
+      return result;
+    } catch (error) {
+      console.error(`Error on attempt ${i + 1}: ${error}`);
+      console.log("Waiting 2 seconds before retrying...")
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+  }
+  throw new Error("Failed to mint asset after 10 attempts.");
+    
 };
 
 const mintContract = async (metaLink = "") => {
-  let result = await tezos.contract
-    .at(contractConfig.contractAddress)
-    .then((contract) => {
-      return contract.methods
-        .mint([
-          {
-            to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
-            metadata: {
-              "": char2Bytes(metaLink),
-            },
-          },
-        ])
-        .send();
-    })
-    .then((hash) => {
-      return hash.hash;
-    })
-    .catch((error) => {
-      return error;
-    });
-  console.log("Return Object: " + result);
-  return result;
+  for (let i = 0; i < 10; i++) {
+    try {
+      let result = await tezos.contract
+        .at(contractConfig.contractAddress)
+        .then((contract) => {
+          return contract.methods
+            .mint([
+              {
+                to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                metadata: {
+                  "": char2Bytes(metaLink),
+                },
+              },
+            ])
+            .send();
+        })
+        .then((hash) => {
+          return hash.hash;
+        })
+      console.log("Return Object: " + result);
+      return result;
+  } catch (error) {
+    console.error(`Error on attempt ${i + 1}: ${error}`);
+    console.log("Waiting 2 seconds before retrying...")
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
+}
+throw new Error("Failed to mint asset after 10 attempts.");
 };
 
 const getAsset = async (assetId) => {
@@ -278,40 +297,37 @@ const getContractByName = async (contractName) => {
 };
 
 const writeTransfer = async (request) => {
-  //append request object to map inside smart contract
-  let callResult = await tezos.contract
-    .at(contractConfig.transferAddress)
-    .then((contract) => {
-      return contract.methods
-        .postDataTransfer(
-          request.assetId.toString(),
-          request.consumerId,
-          request.contractRef,
-          request.currency,
-          request.customerGaiaId,
-          request.customerInvoiceAddress,
-          request.customerName,
-          request.invoiceDate,
-          request.paymentTerm,
-          request.providerId,
-          request.transactionId
-        )
-        .send();
-    })
-    .then(async (op) => {
+  let retryCount = 0;
+  while (retryCount < 10) {
+    try {
+      // append request object to map inside smart contract
+      const contract = await tezos.contract.at(contractConfig.transferAddress);
+      const op = await contract.methods.postDataTransfer(
+        request.assetId.toString(),
+        request.consumerId,
+        request.contractRef,
+        request.currency,
+        request.customerGaiaId,
+        request.customerInvoiceAddress,
+        request.customerName,
+        request.invoiceDate,
+        request.paymentTerm,
+        request.providerId,
+        request.transactionId
+      ).send();
       console.log(`Waiting for ${op.hash} to be confirmed...`);
       await op.confirmation(1);
-      return op.hash;
-    })
-    .then((hash) => {
-      let url = `https://better-call.dev/ghostnet/opg/${hash}/contents`;
-      console.log(`Operation injected: ${hash}`);
+
+      const url = `https://better-call.dev/ghostnet/opg/${op.hash}/contents`;
+      console.log(`Operation injected: ${op.hash}`);
       return url;
-    })
-    .catch((error) => {
-      throw new Error(error);
-    });
-  return callResult;
+    } catch (error) {
+      console.log(`Failed to send request. Retrying in 2 seconds...`);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      retryCount++;
+    }
+  }
+  throw new Error(`Failed to send request after ${retryCount} retries.`);
 };
 
 const getTransfer = async (transferId) => {

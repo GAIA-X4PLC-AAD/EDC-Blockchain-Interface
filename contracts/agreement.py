@@ -2,8 +2,8 @@ import smartpy as sp
 
 # ---------------------------- Contract Agreement ---------------------------- #
 # transaction id as identifier
-# compare hash to verify intefrity
-# every entity must its own tezos account
+# compare hash to verify integrity
+# every entity must have its own tezos account
 
 TAgreementRecord = sp.TRecord(providerAddress=sp.TAddress, consumerAddress=sp.TAddress,
                               hash=sp.TString, timestamp=sp.TTimestamp, toVerify=sp.TAddress)

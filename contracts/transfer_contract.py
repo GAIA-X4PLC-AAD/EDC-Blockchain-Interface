@@ -4,6 +4,9 @@ import smartpy as sp
 TInvoiceObject = sp.TRecord(customerId=sp.TString, customerName=sp.TString, customerGaiaId=sp.TString,
                             customerInvoiceAddress=sp.TString, invoiceDate=sp.TString, paymentTerm=sp.TString, currency=sp.TString)
 
+# serviceId, serviceName, dataId, dataName, consumerCredential, consumerName, contractId, transferDate, quantity, quantityUnit, usageDate
+TLoggingObject = sp.TRecord(consumerId=sp.TString, providerId=sp.TString)
+
 TTransferObject = sp.TRecord(consumerId=sp.TString, providerId=sp.TString,
                              assetId=sp.TString, timestamp=sp.TTimestamp, contractRef=sp.TAddress)
 

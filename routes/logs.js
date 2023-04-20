@@ -11,6 +11,7 @@ import {
   mintContract,
   writeTransfer,
   getTransfer,
+  logAgreement
 } from "../taquito/contract.js";
 
 import { pinJSON } from "../pinata/ipfs.js";
@@ -597,4 +598,17 @@ export const getLogRoute = (client) => {
       res.send(error.message);
     }
   });
+  client.post("/agreement/add", async (req, res) => {
+    //let request = req.body;
+    let request = req.body;
+    try {
+      let operationUrl = await logAgreement(request);
+      res.status(201);
+      res.send(JSON.stringify({ status: "ok", operationRef: operationUrl }));
+    } catch (error) {
+      res.status(400);
+      res.send(error.message);
+    }
+  });
+
 };

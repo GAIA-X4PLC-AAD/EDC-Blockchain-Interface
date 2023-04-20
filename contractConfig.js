@@ -21,6 +21,9 @@ const contractConfig = {
   agreementAddress: process.env.AGREEMENT_ADDRESS
     ? process.env.AGREEMENT_ADDRESS
     : "KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD",
+  agreementLoggingAddress: process.env.AGREEMENT_LOGGING_ADDRESS
+    ? process.env.AGREEMENT_LOGGING_ADDRESS
+    : "KT1T9KzoVyuVXZvUsjnPoyExGgTBSg8oDfRE"
 };
 
 export { contractConfig };

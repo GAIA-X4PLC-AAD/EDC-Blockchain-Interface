@@ -330,6 +330,40 @@ const writeTransfer = async (request) => {
   throw new Error(`Failed to send request after ${retryCount} retries.`);
 };
 
+const logAgreement = async (request) => {
+  let retryCount = 0;
+  while (retryCount < 10) {
+    try {
+      // append request object to map inside smart contract
+      const contract = await tezos.contract.at(contractConfig.agreementLoggingAddress);
+      const op = await contract.methods.postAgreementLog(
+        request.assetId.toString(),
+        request.contractRef,
+        request.currency,
+        request.customerGaiaId,
+        request.customerId,
+        request.customerInvoiceAddress,
+        request.customerName,
+        request.invoiceDate,
+        request.paymentTerm,
+        request.providerId,
+        request.transferId
+      ).send();
+      console.log(`Waiting for ${op.hash} to be confirmed...`);
+      await op.confirmation(1);
+
+      const url = `https://better-call.dev/ghostnet/opg/${op.hash}/contents`;
+      console.log(`Operation injected: ${op.hash}`);
+      return url;
+    } catch (error) {
+      console.log(`Failed to send request. Retrying in 2 seconds...`);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      retryCount++;
+    }
+  }
+  throw new Error(`Failed to send request after ${retryCount} retries.`);
+};
+
 const getTransfer = async (transferId) => {
   let query = await tezos.contract
     .at(contractConfig.transferAddress)
@@ -366,4 +400,5 @@ export {
   getContractByName,
   writeTransfer,
   getTransfer,
+  logAgreement
 };

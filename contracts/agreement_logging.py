@@ -1,7 +1,7 @@
 import smartpy as sp
 
 # required data object for invoices
-TInvoiceObject = sp.TRecord(customerId=sp.TString, providerId=sp.TString, assetId=sp.TString, contractRef=sp.TString, customerName=sp.TString, customerGaiaId=sp.TString,
+TInvoiceObject = sp.TRecord(customerId=sp.TString, providerId=sp.TString, agreementId=sp.TString, contractRef=sp.TString, customerName=sp.TString, customerGaiaId=sp.TString,
                             customerInvoiceAddress=sp.TString, invoiceDate=sp.TString, paymentTerm=sp.TString, currency=sp.TString)
 
 
@@ -13,13 +13,13 @@ class AgreementLogging(sp.Contract):
         )
 
     @ sp.entry_point(name="postAgreementLog")
-    def postAgreementLog(self, transferId, customerId, providerId, assetId, contractRef, customerName, customerGaiaId, customerInvoiceAddress, invoiceDate, paymentTerm, currency):
+    def postAgreementLog(self, transferId, customerId, providerId, agreementId, contractRef, customerName, customerGaiaId, customerInvoiceAddress, invoiceDate, paymentTerm, currency):
         # check if transferId is already used
         sp.verify(~self.data.invoiceMap.contains(transferId),
                   message="transferId already used.")
 
         # store invoice data
-        self.data.invoiceMap[transferId] = sp.record(customerId=customerId, providerId=providerId, assetId=assetId, contractRef=contractRef, customerName=customerName,
+        self.data.invoiceMap[transferId] = sp.record(customerId=customerId, providerId=providerId, agreementId=agreementId, contractRef=contractRef, customerName=customerName,
                                                      customerGaiaId=customerGaiaId, customerInvoiceAddress=customerInvoiceAddress, invoiceDate=invoiceDate, paymentTerm=paymentTerm, currency=currency)
 
     @ sp.entry_point(name="getInvoice")

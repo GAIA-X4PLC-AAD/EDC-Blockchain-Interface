@@ -598,6 +598,79 @@ export const getLogRoute = (client) => {
       res.send(error.message);
     }
   });
+
+    /**
+   * @swagger
+   * /agreement/add:
+   *   post:
+   *     summary: Write data transfer to smart contract.
+   *     description: Manually add metadata of data transfer to smart contract.
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               customerId:
+   *                 type: string
+   *                 description: Consumer Id of data transfer.
+   *                 example: consumerId_placeholder
+   *               providerId:
+   *                 type: string
+   *                 description: Provider Id of data transfer.
+   *                 example: providerId_placeholder
+   *               assetId:
+   *                 type: string
+   *                 description: Asset Id of data transfer.
+   *                 example: assetId_placeholder
+   *               contractRef:
+   *                 type: string
+   *                 description: Reference to the smart contract including the contract documentation.
+   *                 example: KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9
+   *               customerName:
+   *                 type: string
+   *                 description: Name of customer.
+   *                 example: customerName_placeholder
+   *               customerGaiaId:
+   *                 type: string
+   *                 description: Gaia Id of customer.
+   *                 example: customerGaiaId_placeholder
+   *               customerInvoiceAddress:
+   *                 type: string
+   *                 description: Invoice address of customer.
+   *                 example: customerInvoiceAddress_placeholder
+   *               invoiceDate:
+   *                 type: string
+   *                 description: Date of invoice.
+   *                 example: 2021-01-01
+   *               paymentTerm:
+   *                 type: string
+   *                 description: Payment term of invoice.
+   *                 example: paymentTerm_placeholder
+   *               currency:
+   *                 type: string
+   *                 description: Currency of invoice.
+   *                 example: EUR
+   *     responses:
+   *       201:
+   *         description: Response might take a while since 2 confirmations are awaited.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   description: Status of log forwarding.
+   *                   example: ok
+   *                 operationRef:
+   *                   type: string
+   *                   description: Hash of blockchain transaction.
+   *                   example: https://better-call.dev/ghostnet/opg/oouUPSmsoCXrSudfNkPk9YGpsi5afXoDMqYcDsT5n8fohXyMFCo/contents
+   *
+   */
+
   client.post("/agreement/add", async (req, res) => {
     //let request = req.body;
     let request = req.body;

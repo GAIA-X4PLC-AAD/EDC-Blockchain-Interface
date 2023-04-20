@@ -34,6 +34,15 @@ const getBalance = async () => {
   return response;
 };
 
+// create uuid 
+const uuidv4 = () => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
 // Returns the size of the map containing the logs
 const getMapSize = async (mapName) => {
   let result = { admin: "", mapSize: 0 };
@@ -330,40 +339,6 @@ const writeTransfer = async (request) => {
   throw new Error(`Failed to send request after ${retryCount} retries.`);
 };
 
-const logAgreement = async (request) => {
-  let retryCount = 0;
-  while (retryCount < 10) {
-    try {
-      // append request object to map inside smart contract
-      const contract = await tezos.contract.at(contractConfig.agreementLoggingAddress);
-      const op = await contract.methods.postAgreementLog(
-        request.assetId.toString(),
-        request.contractRef,
-        request.currency,
-        request.customerGaiaId,
-        request.customerId,
-        request.customerInvoiceAddress,
-        request.customerName,
-        request.invoiceDate,
-        request.paymentTerm,
-        request.providerId,
-        request.transferId
-      ).send();
-      console.log(`Waiting for ${op.hash} to be confirmed...`);
-      await op.confirmation(1);
-
-      const url = `https://better-call.dev/ghostnet/opg/${op.hash}/contents`;
-      console.log(`Operation injected: ${op.hash}`);
-      return url;
-    } catch (error) {
-      console.log(`Failed to send request. Retrying in 2 seconds...`);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      retryCount++;
-    }
-  }
-  throw new Error(`Failed to send request after ${retryCount} retries.`);
-};
-
 const getTransfer = async (transferId) => {
   let query = await tezos.contract
     .at(contractConfig.transferAddress)
@@ -383,6 +358,40 @@ const getTransfer = async (transferId) => {
       throw new Error(error);
     });
   return query;
+};
+
+const logAgreement = async (request) => {
+  let retryCount = 0;
+  while (retryCount < 10) {
+    try {
+      // append request object to map inside smart contract
+      const contract = await tezos.contract.at(contractConfig.agreementLoggingAddress);
+      const op = await contract.methods.postAgreementLog(
+        request.agreementId.toString(),
+        request.contractRef,
+        request.currency,
+        request.customerGaiaId,
+        request.customerId,
+        request.customerInvoiceAddress,
+        request.customerName,
+        request.invoiceDate,
+        request.paymentTerm,
+        request.providerId,
+        uuidv4()
+      ).send();
+      console.log(`Waiting for ${op.hash} to be confirmed...`);
+      await op.confirmation(1);
+
+      const url = `https://better-call.dev/ghostnet/opg/${op.hash}/contents`;
+      console.log(`Operation injected: ${op.hash}`);
+      return url;
+    } catch (error) {
+      console.log(`Failed to send request. Retrying in 2 seconds...`);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      retryCount++;
+    }
+  }
+  throw new Error(`Failed to send request after ${retryCount} retries.`);
 };
 
 export {

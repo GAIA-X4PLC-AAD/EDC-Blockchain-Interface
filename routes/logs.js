@@ -488,50 +488,19 @@ export const getLogRoute = (client) => {
    *           schema:
    *             type: object
    *             properties:
-   *               transactionId:
+   *               agreementId:
    *                 type: string
-   *                 description: Transaction Id of data transfer.
-   *                 example: 78c7919b-7774-401a-8ad3-b79760ba4d65
-   *               consumerId:
-   *                 type: string
-   *                 description: Consumer Id of data transfer.
-   *                 example: consumerId_placeholder
-   *               providerId:
-   *                 type: string
-   *                 description: Provider Id of data transfer.
-   *                 example: providerId_placeholder
+   *                 description: Agreement ref of data transfer.
    *               assetId:
    *                 type: string
    *                 description: Asset Id of data transfer.
    *                 example: assetId_placeholder
-   *               contractRef:
-   *                 type: string
-   *                 description: Reference to the smart contract including the contract documentation.
-   *                 example: KT1NUjiNytkqvp52eTkT5GKiCuKMymwfgQC9
-   *               customerName:
+   *               consumerName:
    *                 type: string
    *                 description: Name of customer.
    *                 example: customerName_placeholder
-   *               customerGaiaId:
+   *               providerId:
    *                 type: string
-   *                 description: Gaia Id of customer.
-   *                 example: customerGaiaId_placeholder
-   *               customerInvoiceAddress:
-   *                 type: string
-   *                 description: Invoice address of customer.
-   *                 example: customerInvoiceAddress_placeholder
-   *               invoiceDate:
-   *                 type: string
-   *                 description: Date of invoice.
-   *                 example: 2021-01-01
-   *               paymentTerm:
-   *                 type: string
-   *                 description: Payment term of invoice.
-   *                 example: paymentTerm_placeholder
-   *               currency:
-   *                 type: string
-   *                 description: Currency of invoice.
-   *                 example: EUR
    *     responses:
    *       201:
    *         description: Response might take a while since 2 confirmations are awaited.

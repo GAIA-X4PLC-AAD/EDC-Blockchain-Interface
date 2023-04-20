@@ -43,7 +43,7 @@ Following smart contracts were originated and can be used for minting by default
 - FA2 Asset Contract: [KT1N3iJne4jFnQz4tdHBz5q7Cd8Wmd6XtZSH](https://better-call.dev/ghostnet/KT1N3iJne4jFnQz4tdHBz5q7Cd8Wmd6XtZSH/tokens)
 - FA2 Policy Contract: [KT1J7FvNLo2yQSUm7jcm2wzNHDBhR19Y5dJ9](https://better-call.dev/ghostnet/KT1J7FvNLo2yQSUm7jcm2wzNHDBhR19Y5dJ9/tokens)
 - FA2 Contract Contract : [KT1QDheV2TkL3mitzYNKzunWYhSe6MmEPTh5](https://better-call.dev/ghostnet/KT1QDheV2TkL3mitzYNKzunWYhSe6MmEPTh5/tokens)
-- EDC Transfer Logging Contract : [KT1M7mbYZoP4XTejnSdiKFvq3iynnct2iF9M](https://better-call.dev/ghostnet/KT1M7mbYZoP4XTejnSdiKFvq3iynnct2iF9M/operations)
+- EDC Transfer Logging Contract : [KT18pEHAbmtGj9iYQAJNhN2CtzjBGf4zBxKX](https://better-call.dev/ghostnet/KT18pEHAbmtGj9iYQAJNhN2CtzjBGf4zBxKX/operations)
 - EDC Agreement Contract : [KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD](https://better-call.dev/ghostnet/KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD/operations)
 - EDC Agreement Logging Contract: [KT1CHo3f2eWcnT7zCYs1KD1ERVXwEPYacj3A](https://better-call.dev/ghostnet/KT1CHo3f2eWcnT7zCYs1KD1ERVXwEPYacj3A/operations)
 

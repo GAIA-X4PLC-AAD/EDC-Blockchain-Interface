@@ -312,17 +312,11 @@ const writeTransfer = async (request) => {
       // append request object to map inside smart contract
       const contract = await tezos.contract.at(contractConfig.transferAddress);
       const op = await contract.methods.postDataTransfer(
+        request.agreementId,
         request.assetId.toString(),
         request.consumerId,
-        request.contractRef,
-        request.currency,
-        request.customerGaiaId,
-        request.customerInvoiceAddress,
-        request.customerName,
-        request.invoiceDate,
-        request.paymentTerm,
         request.providerId,
-        request.transactionId
+        uuidv4(),
       ).send();
       console.log(`Waiting for ${op.hash} to be confirmed...`);
       await op.confirmation(1);

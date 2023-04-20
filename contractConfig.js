@@ -17,7 +17,7 @@ const contractConfig = {
     : "KT1QDheV2TkL3mitzYNKzunWYhSe6MmEPTh5",
   transferAddress: process.env.TRANSFER_ADDRESS
     ? process.env.TRANSFER_ADDRESS
-    : "KT1M7mbYZoP4XTejnSdiKFvq3iynnct2iF9M",
+    : "KT18pEHAbmtGj9iYQAJNhN2CtzjBGf4zBxKX",
   agreementAddress: process.env.AGREEMENT_ADDRESS
     ? process.env.AGREEMENT_ADDRESS
     : "KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD",

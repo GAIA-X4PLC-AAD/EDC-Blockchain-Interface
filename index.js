@@ -2,7 +2,7 @@ import express from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { getBalanceRoute } from "./routes/balance.js";
-import { getLogRoute } from "./routes/logs.js";
+import { getLogRoute } from "./routes/tezos_ednpoints.js";
 import dotenv from "dotenv";
 
 // set up express

@@ -11,7 +11,7 @@ import {
   mintContract,
   writeTransfer,
   getTransfer,
-  logAgreement
+  logAgreement,
 } from "../taquito/contract.js";
 
 import { pinJSON } from "../pinata/ipfs.js";
@@ -568,7 +568,7 @@ export const getLogRoute = (client) => {
     }
   });
 
-    /**
+  /**
    * @swagger
    * /agreement/add:
    *   post:
@@ -652,5 +652,4 @@ export const getLogRoute = (client) => {
       res.send(error.message);
     }
   });
-
 };

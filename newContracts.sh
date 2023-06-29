@@ -23,7 +23,7 @@ deploy_contract() {
 
   echo -e "\nDeploying $contract_name..."
 
-  contract_address=$(octez-client originate contract $contract_name transferring 0 from edc_account running "$(cat $contract_code)" --init "$(cat $storage_file)" --burn-cap 0.6 --force 2>/dev/null | awk '/New contract/ { print $3 }')
+  contract_address=$(octez-client originate contract $contract_name transferring 0 from edc-account running "$(cat $contract_code)" --init "$(cat $storage_file)" --burn-cap 0.6 --force 2>/dev/null | awk '/New contract/ { print $3 }')
 
   echo -e "\n$contract_name originated at address: $contract_address"
 }

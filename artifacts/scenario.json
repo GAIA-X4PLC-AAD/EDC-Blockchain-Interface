@@ -1,12 +1,98 @@
 [
  {
-  "shortname": "transferContract",
-  "longname": "transferContract",
+  "shortname": "postDataTransfer",
+  "longname": "postDataTransfer",
   "scenario": [
    {
     "action": "newContract",
     "accept_unknown_types": false,
-    "export": "(template_id ((\"\" -1) static_id 0) \nstorage ((\"contracts/transfer_contract.py\" 10) record (admin ((\"contracts/transfer_contract.py\" 11) set ((\"contracts/transfer_contract.py\" 11) literal (address \"tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5\")))) (dataTransferMap ((\"contracts/transfer_contract.py\" 11) type_annotation ((\"contracts/transfer_contract.py\" 11) map ) (map \"nat\" (record ((assetId \"string\") (consumerId \"string\") (contractRef \"address\") (producerId \"string\") (timestamp \"timestamp\")) None (\"contracts/transfer_contract.py\" 3))))))\nstorage_type (())\nentry_points ((deleteDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 29) (((\"contracts/transfer_contract.py\" 31) verify ((\"contracts/transfer_contract.py\" 31) contains ((\"contracts/transfer_contract.py\" 31) attr ((\"\" -1) data) \"admin\") ((\"\" -1) source)) ((\"contracts/transfer_contract.py\" 31) literal (string \"No permission to write to smart contract.\"))) ((\"contracts/transfer_contract.py\" 34) verify ((\"contracts/transfer_contract.py\" 34) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"dataTransferMap\") ((\"contracts/transfer_contract.py\" 29) params))) ((\"contracts/transfer_contract.py\" 36) del_item ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"dataTransferMap\") ((\"contracts/transfer_contract.py\" 29) params)))) (getDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 24) (((\"contracts/transfer_contract.py\" 26) verify ((\"contracts/transfer_contract.py\" 26) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"dataTransferMap\") ((\"contracts/transfer_contract.py\" 24) params))))) (postDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 15) (((\"contracts/transfer_contract.py\" 17) verify ((\"contracts/transfer_contract.py\" 17) not ((\"contracts/transfer_contract.py\" 17) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"dataTransferMap\") ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"transactionId\"))) ((\"contracts/transfer_contract.py\" 17) literal (string \"TransactionId already used.\"))) ((\"contracts/transfer_contract.py\" 20) set ((\"contracts/transfer_contract.py\" 20) get_item ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"dataTransferMap\") ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"transactionId\")) ((\"contracts/transfer_contract.py\" 20) record (assetId ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"assetId\")) (consumerId ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"consumerId\")) (contractRef ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"contractRef\")) (producerId ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"producerId\")) (timestamp ((\"\" -1) now)))))))\nflags ()\nprivates ()\nviews ()\nentry_points_layout ()\ninitial_metadata ()\nbalance ())",
+    "export": "(template_id ((\"contracts/transfer_contract.py\" 55) static_id 0) \nstorage ((\"contracts/transfer_contract.py\" 10) record (admin ((\"contracts/transfer_contract.py\" 11) set ((\"contracts/transfer_contract.py\" 11) literal (address \"tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ\")))) (institution ((\"contracts/transfer_contract.py\" 10) literal (string \"TU Berlin\"))) (transferMap ((\"contracts/transfer_contract.py\" 11) type_annotation ((\"contracts/transfer_contract.py\" 11) map ) (map \"string\" (record ((agreementId \"string\") (assetId \"string\") (consumerId \"string\") (providerId \"string\") (timestamp \"timestamp\")) None (\"contracts/transfer_contract.py\" 3))))))\nstorage_type (())\nentry_points ((addAdmin True None None None True None (\"contracts/transfer_contract.py\" 39) (((\"contracts/transfer_contract.py\" 41) verify ((\"contracts/transfer_contract.py\" 41) contains ((\"contracts/transfer_contract.py\" 41) attr ((\"contracts/transfer_contract.py\" 55) data) \"admin\") ((\"\" -1) source)) ((\"contracts/transfer_contract.py\" 41) literal (string \"No permission to write to smart contract.\"))) ((\"contracts/transfer_contract.py\" 44) update_set ((\"contracts/transfer_contract.py\" 41) attr ((\"contracts/transfer_contract.py\" 55) data) \"admin\") ((\"contracts/transfer_contract.py\" 39) params) True))) (deleteDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 29) (((\"contracts/transfer_contract.py\" 31) verify ((\"contracts/transfer_contract.py\" 31) contains ((\"contracts/transfer_contract.py\" 41) attr ((\"contracts/transfer_contract.py\" 55) data) \"admin\") ((\"\" -1) source)) ((\"contracts/transfer_contract.py\" 31) literal (string \"No permission to write to smart contract.\"))) ((\"contracts/transfer_contract.py\" 34) verify ((\"contracts/transfer_contract.py\" 34) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 55) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 29) params))) ((\"contracts/transfer_contract.py\" 36) del_item ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 55) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 29) params)))) (getDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 24) (((\"contracts/transfer_contract.py\" 26) verify ((\"contracts/transfer_contract.py\" 26) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 55) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 24) params))))) (postDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 15) (((\"contracts/transfer_contract.py\" 17) verify ((\"contracts/transfer_contract.py\" 17) not ((\"contracts/transfer_contract.py\" 17) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 55) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 55) attr ((\"contracts/transfer_contract.py\" 15) params) \"transferId\"))) ((\"contracts/transfer_contract.py\" 17) literal (string \"transferId already used.\"))) ((\"contracts/transfer_contract.py\" 20) set ((\"contracts/transfer_contract.py\" 20) get_item ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 55) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 55) attr ((\"contracts/transfer_contract.py\" 15) params) \"transferId\")) ((\"contracts/transfer_contract.py\" 20) record (agreementId ((\"contracts/transfer_contract.py\" 55) attr ((\"contracts/transfer_contract.py\" 15) params) \"agreementId\")) (assetId ((\"contracts/transfer_contract.py\" 55) attr ((\"contracts/transfer_contract.py\" 15) params) \"assetId\")) (consumerId ((\"contracts/transfer_contract.py\" 55) attr ((\"contracts/transfer_contract.py\" 15) params) \"consumerId\")) (providerId ((\"contracts/transfer_contract.py\" 55) attr ((\"contracts/transfer_contract.py\" 15) params) \"providerId\")) (timestamp ((\"\" -1) now)))))))\nflags ()\nprivates ()\nviews ()\nentry_points_layout ()\ninitial_metadata ()\nbalance ())",
+    "id": "((\"contracts/transfer_contract.py\" 55) static_id 0)",
+    "line_no": "(\"contracts/transfer_contract.py\" 55)",
+    "show": true
+   },
+   {
+    "action": "html",
+    "inner": "Create Transfer Object",
+    "line_no": "(\"contracts/transfer_contract.py\" 56)",
+    "tag": "h1"
+   },
+   {
+    "action": "message",
+    "id": "((\"contracts/transfer_contract.py\" 55) static_id 0)",
+    "line_no": "(\"contracts/transfer_contract.py\" 57)",
+    "message": "postDataTransfer",
+    "params": "((\"contracts/transfer_contract.py\" 57) record (agreementId ((\"contracts/transfer_contract.py\" 57) literal (string \"agreementId\"))) (assetId ((\"contracts/transfer_contract.py\" 57) literal (string \"assetId\"))) (consumerId ((\"contracts/transfer_contract.py\" 57) literal (string \"consumerId\"))) (providerId ((\"contracts/transfer_contract.py\" 57) literal (string \"providerId\"))) (transferId ((\"contracts/transfer_contract.py\" 57) literal (string \"0\"))))",
+    "sender": "((\"contracts/transfer_contract.py\" 63) literal (address \"tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ\"))"
+   },
+   {
+    "action": "html",
+    "inner": "Following data object was inserted:",
+    "line_no": "(\"contracts/transfer_contract.py\" 64)",
+    "tag": "p"
+   },
+   {
+    "action": "show",
+    "compile": false,
+    "expression": "((\"contracts/transfer_contract.py\" 65) get_item ((\"contracts/transfer_contract.py\" 65) attr ((\"contracts/transfer_contract.py\" 57) contract_data ((\"contracts/transfer_contract.py\" 55) static_id 0)) \"transferMap\") ((\"contracts/transfer_contract.py\" 65) literal (string \"0\")))",
+    "html": true,
+    "line_no": "(\"contracts/transfer_contract.py\" 65)",
+    "stripStrings": false
+   },
+   {
+    "action": "verify",
+    "condition": "((\"contracts/transfer_contract.py\" 67) eq ((\"contracts/transfer_contract.py\" 67) attr ((\"contracts/transfer_contract.py\" 67) get_item ((\"contracts/transfer_contract.py\" 65) attr ((\"contracts/transfer_contract.py\" 57) contract_data ((\"contracts/transfer_contract.py\" 55) static_id 0)) \"transferMap\") ((\"contracts/transfer_contract.py\" 67) literal (string \"0\"))) \"agreementId\") ((\"contracts/transfer_contract.py\" 67) literal (string \"agreementId\")))",
+    "line_no": "(\"contracts/transfer_contract.py\" 67)"
+   },
+   {
+    "action": "verify",
+    "condition": "((\"contracts/transfer_contract.py\" 68) eq ((\"contracts/transfer_contract.py\" 68) attr ((\"contracts/transfer_contract.py\" 68) get_item ((\"contracts/transfer_contract.py\" 65) attr ((\"contracts/transfer_contract.py\" 57) contract_data ((\"contracts/transfer_contract.py\" 55) static_id 0)) \"transferMap\") ((\"contracts/transfer_contract.py\" 68) literal (string \"0\"))) \"assetId\") ((\"contracts/transfer_contract.py\" 68) literal (string \"assetId\")))",
+    "line_no": "(\"contracts/transfer_contract.py\" 68)"
+   },
+   {
+    "action": "verify",
+    "condition": "((\"contracts/transfer_contract.py\" 69) eq ((\"contracts/transfer_contract.py\" 69) attr ((\"contracts/transfer_contract.py\" 69) get_item ((\"contracts/transfer_contract.py\" 65) attr ((\"contracts/transfer_contract.py\" 57) contract_data ((\"contracts/transfer_contract.py\" 55) static_id 0)) \"transferMap\") ((\"contracts/transfer_contract.py\" 69) literal (string \"0\"))) \"consumerId\") ((\"contracts/transfer_contract.py\" 69) literal (string \"consumerId\")))",
+    "line_no": "(\"contracts/transfer_contract.py\" 69)"
+   }
+  ],
+  "kind": "test"
+ },
+ {
+  "shortname": "addAdmin",
+  "longname": "addAdmin",
+  "scenario": [
+   {
+    "action": "newContract",
+    "accept_unknown_types": false,
+    "export": "(template_id ((\"contracts/transfer_contract.py\" 80) static_id 0) \nstorage ((\"contracts/transfer_contract.py\" 10) record (admin ((\"contracts/transfer_contract.py\" 11) set ((\"contracts/transfer_contract.py\" 11) literal (address \"tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ\")))) (institution ((\"contracts/transfer_contract.py\" 10) literal (string \"TU Berlin\"))) (transferMap ((\"contracts/transfer_contract.py\" 11) type_annotation ((\"contracts/transfer_contract.py\" 11) map ) (map \"string\" (record ((agreementId \"string\") (assetId \"string\") (consumerId \"string\") (providerId \"string\") (timestamp \"timestamp\")) None (\"contracts/transfer_contract.py\" 3))))))\nstorage_type (())\nentry_points ((addAdmin True None None None True None (\"contracts/transfer_contract.py\" 39) (((\"contracts/transfer_contract.py\" 41) verify ((\"contracts/transfer_contract.py\" 41) contains ((\"contracts/transfer_contract.py\" 41) attr ((\"contracts/transfer_contract.py\" 80) data) \"admin\") ((\"\" -1) source)) ((\"contracts/transfer_contract.py\" 41) literal (string \"No permission to write to smart contract.\"))) ((\"contracts/transfer_contract.py\" 44) update_set ((\"contracts/transfer_contract.py\" 41) attr ((\"contracts/transfer_contract.py\" 80) data) \"admin\") ((\"contracts/transfer_contract.py\" 39) params) True))) (deleteDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 29) (((\"contracts/transfer_contract.py\" 31) verify ((\"contracts/transfer_contract.py\" 31) contains ((\"contracts/transfer_contract.py\" 41) attr ((\"contracts/transfer_contract.py\" 80) data) \"admin\") ((\"\" -1) source)) ((\"contracts/transfer_contract.py\" 31) literal (string \"No permission to write to smart contract.\"))) ((\"contracts/transfer_contract.py\" 34) verify ((\"contracts/transfer_contract.py\" 34) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 80) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 29) params))) ((\"contracts/transfer_contract.py\" 36) del_item ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 80) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 29) params)))) (getDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 24) (((\"contracts/transfer_contract.py\" 26) verify ((\"contracts/transfer_contract.py\" 26) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 80) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 24) params))))) (postDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 15) (((\"contracts/transfer_contract.py\" 17) verify ((\"contracts/transfer_contract.py\" 17) not ((\"contracts/transfer_contract.py\" 17) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 80) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 80) attr ((\"contracts/transfer_contract.py\" 15) params) \"transferId\"))) ((\"contracts/transfer_contract.py\" 17) literal (string \"transferId already used.\"))) ((\"contracts/transfer_contract.py\" 20) set ((\"contracts/transfer_contract.py\" 20) get_item ((\"contracts/transfer_contract.py\" 34) attr ((\"contracts/transfer_contract.py\" 80) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 80) attr ((\"contracts/transfer_contract.py\" 15) params) \"transferId\")) ((\"contracts/transfer_contract.py\" 20) record (agreementId ((\"contracts/transfer_contract.py\" 80) attr ((\"contracts/transfer_contract.py\" 15) params) \"agreementId\")) (assetId ((\"contracts/transfer_contract.py\" 80) attr ((\"contracts/transfer_contract.py\" 15) params) \"assetId\")) (consumerId ((\"contracts/transfer_contract.py\" 80) attr ((\"contracts/transfer_contract.py\" 15) params) \"consumerId\")) (providerId ((\"contracts/transfer_contract.py\" 80) attr ((\"contracts/transfer_contract.py\" 15) params) \"providerId\")) (timestamp ((\"\" -1) now)))))))\nflags ()\nprivates ()\nviews ()\nentry_points_layout ()\ninitial_metadata ()\nbalance ())",
+    "id": "((\"contracts/transfer_contract.py\" 80) static_id 0)",
+    "line_no": "(\"contracts/transfer_contract.py\" 80)",
+    "show": true
+   },
+   {
+    "action": "message",
+    "id": "((\"contracts/transfer_contract.py\" 80) static_id 0)",
+    "line_no": "(\"contracts/transfer_contract.py\" 82)",
+    "message": "addAdmin",
+    "params": "((\"contracts/transfer_contract.py\" 83) literal (address \"tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ\"))",
+    "sender": "((\"contracts/transfer_contract.py\" 84) literal (address \"tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ\"))"
+   },
+   {
+    "action": "verify",
+    "condition": "((\"contracts/transfer_contract.py\" 86) contains ((\"contracts/transfer_contract.py\" 86) attr ((\"contracts/transfer_contract.py\" 82) contract_data ((\"contracts/transfer_contract.py\" 80) static_id 0)) \"admin\") ((\"contracts/transfer_contract.py\" 87) literal (address \"tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ\")))",
+    "line_no": "(\"contracts/transfer_contract.py\" 86)"
+   }
+  ],
+  "kind": "test"
+ },
+ {
+  "shortname": "transfer_logs",
+  "longname": "transfer_logs",
+  "scenario": [
+   {
+    "action": "newContract",
+    "accept_unknown_types": false,
+    "export": "(template_id ((\"\" -1) static_id 0) \nstorage ((\"contracts/transfer_contract.py\" 10) record (admin ((\"contracts/transfer_contract.py\" 11) set ((\"contracts/transfer_contract.py\" 11) literal (address \"tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ\")))) (institution ((\"contracts/transfer_contract.py\" 10) literal (string \"TU Berlin\"))) (transferMap ((\"contracts/transfer_contract.py\" 11) type_annotation ((\"contracts/transfer_contract.py\" 11) map ) (map \"string\" (record ((agreementId \"string\") (assetId \"string\") (consumerId \"string\") (providerId \"string\") (timestamp \"timestamp\")) None (\"contracts/transfer_contract.py\" 3))))))\nstorage_type (())\nentry_points ((addAdmin True None None None True None (\"contracts/transfer_contract.py\" 39) (((\"contracts/transfer_contract.py\" 41) verify ((\"contracts/transfer_contract.py\" 41) contains ((\"contracts/transfer_contract.py\" 41) attr ((\"\" -1) data) \"admin\") ((\"\" -1) source)) ((\"contracts/transfer_contract.py\" 41) literal (string \"No permission to write to smart contract.\"))) ((\"contracts/transfer_contract.py\" 44) update_set ((\"contracts/transfer_contract.py\" 41) attr ((\"\" -1) data) \"admin\") ((\"contracts/transfer_contract.py\" 39) params) True))) (deleteDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 29) (((\"contracts/transfer_contract.py\" 31) verify ((\"contracts/transfer_contract.py\" 31) contains ((\"contracts/transfer_contract.py\" 41) attr ((\"\" -1) data) \"admin\") ((\"\" -1) source)) ((\"contracts/transfer_contract.py\" 31) literal (string \"No permission to write to smart contract.\"))) ((\"contracts/transfer_contract.py\" 34) verify ((\"contracts/transfer_contract.py\" 34) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 29) params))) ((\"contracts/transfer_contract.py\" 36) del_item ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 29) params)))) (getDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 24) (((\"contracts/transfer_contract.py\" 26) verify ((\"contracts/transfer_contract.py\" 26) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"transferMap\") ((\"contracts/transfer_contract.py\" 24) params))))) (postDataTransfer True None None None True None (\"contracts/transfer_contract.py\" 15) (((\"contracts/transfer_contract.py\" 17) verify ((\"contracts/transfer_contract.py\" 17) not ((\"contracts/transfer_contract.py\" 17) contains ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"transferMap\") ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"transferId\"))) ((\"contracts/transfer_contract.py\" 17) literal (string \"transferId already used.\"))) ((\"contracts/transfer_contract.py\" 20) set ((\"contracts/transfer_contract.py\" 20) get_item ((\"contracts/transfer_contract.py\" 34) attr ((\"\" -1) data) \"transferMap\") ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"transferId\")) ((\"contracts/transfer_contract.py\" 20) record (agreementId ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"agreementId\")) (assetId ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"assetId\")) (consumerId ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"consumerId\")) (providerId ((\"\" -1) attr ((\"contracts/transfer_contract.py\" 15) params) \"providerId\")) (timestamp ((\"\" -1) now)))))))\nflags ()\nprivates ()\nviews ()\nentry_points_layout ()\ninitial_metadata ()\nbalance ())",
     "id": "((\"\" -1) static_id 0)",
     "line_no": "(\"\" -1)",
     "show": true

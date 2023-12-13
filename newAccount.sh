@@ -14,4 +14,3 @@ docker exec octez-node-alpha octez-client show address $account_name
 
 # Link to a website
 echo "Visit https://faucet.ghostnet.teztnets.xyz to fund your account"
-

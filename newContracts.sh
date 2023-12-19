@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set ghostnet as the default network and redirect warnings to /dev/null
-octez-client --endpoint https://rpc.ghostnet.teztnets.xyz/ config update 2>/dev/null
+docker exec octez-node-alpha octez-client --endpoint https://rpc.ghostnet.teztnets.xyz/ config update 2>/dev/null
 
 # Prompt user for contract selection
 echo "Select contracts to deploy:"
@@ -23,7 +23,7 @@ deploy_contract() {
 
   echo -e "\nDeploying $contract_name..."
 
-  contract_address=$(octez-client originate contract $contract_name transferring 0 from edc-account running "$(cat $contract_code)" --init "$(cat $storage_file)" --burn-cap 0.6 --force 2>/dev/null | awk '/New contract/ { print $3 }')
+  contract_address=$(docker exec octez-node-alpha octez-client originate contract $contract_name transferring 0 from edc-account running "$(cat $contract_code)" --init "$(cat $storage_file)" --burn-cap 0.6 --force 2>/dev/null | awk '/New contract/ { print $3 }')
 
   echo -e "\n$contract_name originated at address: $contract_address"
 }

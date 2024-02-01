@@ -1,0 +1,24 @@
+{
+    "@context": {
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "surveyonto": "http://semanticweb.org/metadatasurveyontology/"
+    },
+    "@id": "did:example:survey_service_offering_27bppg6ztnsj02g047epabp0p4",
+    "@type": "surveyonto:SurveyServiceOffering",
+    "surveyonto:survey_id": {
+        "@value": "27bppg6ztnsj02g047epabp0p4",
+        "@type": "xsd:string"
+    },
+    "surveyonto:survey_description": {
+        "@value": "12ifxtest",
+        "@type": "xsd:string"
+    },
+    "surveyonto:survey_title": {
+        "@value": "12ifxtest",
+        "@type": "xsd:string"
+    },
+    "surveyonto:survey_url": {
+        "@value": "web-mpc.gxfs.gx4fm.org/?session=27bppg6ztnsj02g047epabp0p4",
+        "@type": "xsd:string"
+    }
+}

@@ -8,8 +8,9 @@ echo "Select contracts to deploy:"
 echo "1. Asset Contract"
 echo "2. Policy Contract"
 echo "3. Contract Contract"
-echo "4. Transfer Contract"
-echo "Enter comma-separated numbers (e.g., 1,3):"
+echo "4. Verifiable Credentials Contract"
+#echo "5. Transfer Contract"
+echo "Enter comma-separated numbers (e.g., 1,4):"
 read selected_contracts
 
 # Split the input by comma and remove any whitespace
@@ -66,6 +67,13 @@ for contract_number in "${contracts[@]}"; do
       loading_animation $!
       ;;
     4)
+      contract_code="artifacts/verifiableCredentialsContract/step_000_cont_0_contract.tz"
+      storage_file="artifacts/verifiableCredentials/step_000_cont_0_storage.tz"
+      contract_name="verifiableCredentialsContract"
+      (deploy_contract "$contract_code" "$storage_file" "$contract_name") &
+      loading_animation $!
+      ;;
+    5)
       contract_code="artifacts/transfer_logs/step_000_cont_0_contract.tz"
       storage_file="artifacts/transfer_logs/step_000_cont_0_storage.tz"
       contract_name="transferContract"

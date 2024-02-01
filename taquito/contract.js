@@ -124,6 +124,38 @@ const mintPolicy = async (metaLink = "") => {
     
 };
 
+
+const mintVerifiableCredentials = async (metaLink = "") => {
+  for (let i = 0; i < 10; i++) {
+    try {
+      let result = await tezos.contract
+        .at(contractConfig.verifiableCredentialsAddress)
+        .then((contract) => {
+          return contract.methods
+            .mint([
+              {
+                to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                metadata: {
+                  "": char2Bytes(metaLink),
+                },
+              },
+            ])
+            .send();
+        })
+        .then((hash) => {
+          return hash.hash;
+        });
+      console.log("Return Object: " + result);
+      return result;
+    } catch (error) {
+      console.error(`Error on attempt ${i + 1}: ${error}`);
+      console.log("Waiting 2 seconds before retrying...")
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+  }
+  throw new Error("Failed to mint verifiable credentials after 10 attempts.");
+};
+
 const mintContract = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
@@ -266,6 +298,45 @@ const getPolicyByName = async (policyName) => {
   return result;
 };
 
+const getVerifiableCredentials = async (verifiableCredentialsId) => {
+  let query = await tezos.contract
+    .at(contractConfig.verifiableCredentialsAddress, tzip12)
+    .then((contract) => {
+      console.log(`Fetching the token metadata for the token ID ${verifiableCredentialsId}`);
+      return contract.tzip12().getTokenMetadata(verifiableCredentialsId);
+    })
+    .then((tokenMetadata) => {
+      console.log(tokenMetadata);
+      return tokenMetadata;
+    })
+    .catch((error) => {
+      throw new Error(error);
+    });
+  return query;
+};
+
+const getVerifiableCredentialsByName = async (VerifiableCredentialsName) => {
+  let result = [];
+  let request = {
+    method: "get",
+    url: "https://api.ghostnet.tzkt.io/v1/tokens/",
+    params: {
+      contract: contractConfig.verifiableCredentialsAddress,
+      "metadata.name": VerifiableCredentialsName,
+    },
+  };
+  await axios(request)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      result = response.data;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  return result;
+};
+
 const getContract = async (contractId) => {
   let query = await tezos.contract
     .at(contractConfig.contractAddress, tzip12)
@@ -393,12 +464,15 @@ export {
   getMapSize,
   mintAsset,
   mintPolicy,
+  mintVerifiableCredentials,
   mintContract,
   getAllTokens,
   getAsset,
   getAssetByName,
   getPolicy,
   getPolicyByName,
+  getVerifiableCredentials,
+  getVerifiableCredentialsByName,
   getContract,
   getContractByName,
   writeTransfer,

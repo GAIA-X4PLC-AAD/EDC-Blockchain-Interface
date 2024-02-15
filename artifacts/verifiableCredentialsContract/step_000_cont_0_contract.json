@@ -27,8 +27,7 @@
                       {
                         "prim": "pair",
                         "args": [
-                          { "prim": "nat", "annots": [ "%token_id" ] },
-                          { "prim": "map", "args": [ { "prim": "string" }, { "prim": "bytes" } ], "annots": [ "%token_info" ] }
+                          { "prim": "nat", "annots": [ "%token_id" ] }, { "prim": "map", "args": [ { "prim": "string" }, { "prim": "bytes" } ], "annots": [ "%token_info" ] }
                         ]
                       }
                     ],
@@ -185,9 +184,7 @@
                         [
                           { "prim": "DUP", "args": [ { "int": "7" } ] },
                           { "prim": "GET", "args": [ { "int": "6" } ] },
-                          { "prim": "SWAP" },
-                          { "prim": "DUP" },
-                          { "prim": "DUG", "args": [ { "int": "2" } ] },
+                          { "prim": "DUP", "args": [ { "int": "2" } ] },
                           { "prim": "CDR" },
                           { "prim": "MEM" },
                           { "prim": "IF", "args": [ [], [ { "prim": "PUSH", "args": [ { "prim": "string" }, { "string": "FA2_TOKEN_UNDEFINED" } ] }, { "prim": "FAILWITH" } ] ] },
@@ -204,8 +201,7 @@
                           {
                             "prim": "IF",
                             "args": [
-                              [ { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "1" } ] } ],
-                              [ { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "0" } ] } ]
+                              [ { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "1" } ] } ], [ { "prim": "PUSH", "args": [ { "prim": "nat" }, { "int": "0" } ] } ]
                             ]
                           },
                           { "prim": "SWAP" },
@@ -275,9 +271,7 @@
                 "prim": "IF_LEFT",
                 "args": [
                   [
-                    { "prim": "SWAP" },
-                    { "prim": "DUP" },
-                    { "prim": "DUG", "args": [ { "int": "2" } ] },
+                    { "prim": "DUP", "args": [ { "int": "2" } ] },
                     { "prim": "CAR" },
                     { "prim": "CAR" },
                     { "prim": "SENDER" },

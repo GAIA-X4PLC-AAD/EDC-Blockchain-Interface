@@ -4,7 +4,7 @@
 # ---------------------------------------------------------------------------- #
 
 import smartpy as sp
-FA2 = sp.io.import_script_from_url("https://smartpy.io/templates/fa2_lib.py")
+FA2 = sp.io.import_template("fa2_lib.py")
 
 
 class ExampleFa2Nft(FA2.Admin, FA2.Fa2Nft):
@@ -43,7 +43,7 @@ sp.add_compilation_target(
     # metadata json file should be generated under the name "metadata_base" which will contain the offchain views as well
     "verifiableCredentialContract",
     ExampleFa2Nft(admin=sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ"), metadata=sp.utils.metadata_of_url(
-        "https://ipfs.io/ipfs/QmeXJFHDRrnU6P8v6QB6UpCerMQPdRqmstkMNPK6kkeppY"), metadata_base={
+        "https://ipfs.io/ipfs/QmeXJFHDRrnU6P8v6QB6UpCerMQPdRqmstkMNPK6kkeppY"), metadata_base={ #TODO
             "name": "gaia.tub.assets",
             "version": "1.0.0",
             "description": "NFT contract for ipfs asset management",
@@ -60,3 +60,24 @@ sp.add_compilation_target(
             }
     })
 )
+
+@sp.add_test("test")
+def test():
+	s = sp.test_scenario()
+	s+= ExampleFa2Nft(admin=sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ"), metadata=sp.utils.metadata_of_url(
+        "https://ipfs.io/ipfs/QmeXJFHDRrnU6P8v6QB6UpCerMQPdRqmstkMNPK6kkeppY"), metadata_base={
+            "name": "gaia.tub.assets",
+            "version": "1.0.0",
+            "description": "NFT contract for ipfs asset management",
+            "interfaces": ["TZIP-012", "TZIP-016"],
+            "authors": ["Technische Universität Berlin", "Information Systems Engineering", "Johann Hartmann"],
+            "homepage": "https://www.ise.tu-berlin.de/menue/projekte/",
+            "source": {
+                "tools": ["SmartPy"],
+                "location": "https://gitlab.com/SmartPy/smartpy/-/raw/master/python/templates/FA2.py"
+            },
+            "permissions": {
+                "receiver": "owner-no-hook",
+                "sender": "owner-no-hook"
+            }
+    })

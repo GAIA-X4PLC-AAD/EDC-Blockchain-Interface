@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set ghostnet as the default network
-docker exec octez-node-alpha octez-client --endpoint https://rpc.ghostnet.teztnets.xyz/ config update #2>/dev/null
+docker exec octez-node-alpha octez-client --endpoint https://rpc.ghostnet.teztnets.com/ config update #2>/dev/null
 
 # Generate a new account using the octez-client
 account_name="edc-account"
@@ -13,4 +13,4 @@ echo "New account generated"
 docker exec octez-node-alpha octez-client show address $account_name
 
 # Link to a website
-echo "Visit https://faucet.ghostnet.teztnets.xyz to fund your account"
+echo "Visit https://faucet.ghostnet.teztnets.com to fund your account"

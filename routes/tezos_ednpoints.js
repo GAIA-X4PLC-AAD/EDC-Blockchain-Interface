@@ -2,11 +2,14 @@ import { setTimeout } from "timers/promises";
 import {
   mintAsset,
   mintPolicy,
+  mintVerifiableCredentials,
   getAllTokens,
   getAsset,
   getAssetByName,
   getPolicy,
   getPolicyByName,
+  getVerifiableCredentials,
+  getVerifiableCredentialsByName,
   getContract,
   mintContract,
   writeTransfer,
@@ -177,6 +180,69 @@ export const getLogRoute = (client) => {
     }
   });
 
+    /**
+   * @swagger
+   * /mint/verifiable_credentials:
+   *   post:
+   *     summary: Minting new verifiable credentials token.
+   *     description: Requests metadata object with reference to actual verifiable credentials ressource to save metadata on ipfs and mint new token.
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *     responses:
+   *       201:
+   *         description: Response might take a while since 2 confirmations are awaited.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   description: Status of log forwarding.
+   *                   example: ok
+   *                 hash:
+   *                   type: string
+   *                   description: Hash of blockchain transaction.
+   *                   example: https://ithacanet.smartpy.io/ooSLJmoD4My5UmS7fsVLbqJ5aj3hyBqQyBPSNHrswhwH4MkNtQW
+   *
+   */
+
+  client.post("/mint/verifiable_credentials", async (req, res) => {
+    // Await upload of metadata
+    console.log("Verifiable credentials endpoint triggered");
+    let request = req.body;
+    let ipfsHash;
+    let blockHash;
+
+    // Initiate ipfs pinning
+    try {
+      console.log("IPFS Pinning...");
+      ipfsHash = await pinJSON(request);
+    } catch (error) {
+      res.status(404);
+      res.send(error.message);
+      return;
+    }
+    let metaUri = "ipfs://" + ipfsHash;
+    try {
+      console.log("Minting process...");
+      blockHash = await mintVerifiableCredentials(metaUri);
+      let returnObject = {
+        status: "ok",
+        hash: blockHash,
+      };
+      res.status(201);
+      res.send(JSON.stringify(returnObject));
+    } catch (error) {
+      res.status(400);
+      res.send(error.message);
+    }
+  });
+
   /**
    * @swagger
    * /mint/contract:
@@ -242,6 +308,37 @@ export const getLogRoute = (client) => {
 
   /**
    * @swagger
+   * /assetName/{assetName}:
+   *   get:
+   *     summary: Retrieve token metadata of asset for given document name.
+   *     description: Make sure you know the exact document name.
+   *     parameters:
+   *       - in: path
+   *         name: assetName
+   *         schema:
+   *           type: string
+   *           example: test-document-34
+   *         required: true
+   *         description: Exact name of asset
+   *     responses:
+   *       200:
+   *         description: Asset in JSON format.
+   *
+   *
+   */
+  client.get("/assetName/:assetName", async (req, res) => {
+    try {
+      let assetResult = await getAssetByName(req.params.assetName);
+      res.status(200);
+      res.send(JSON.stringify(assetResult));
+    } catch (error) {
+      res.status(404);
+      res.send(error.message);
+    }
+  });
+
+  /**
+   * @swagger
    * /asset/{assetId}:
    *   get:
    *     summary: Retrieve token metadata of asset for given id.
@@ -282,36 +379,6 @@ export const getLogRoute = (client) => {
     }
   });
 
-  /**
-   * @swagger
-   * /assetName/{assetName}:
-   *   get:
-   *     summary: Retrieve token metadata of asset for given document name.
-   *     description: Make sure you know the exact document name.
-   *     parameters:
-   *       - in: path
-   *         name: assetName
-   *         schema:
-   *           type: string
-   *           example: test-document-34
-   *         required: true
-   *         description: Exact name of asset
-   *     responses:
-   *       200:
-   *         description: Asset in JSON format.
-   *
-   *
-   */
-  client.get("/assetName/:assetName", async (req, res) => {
-    try {
-      let assetResult = await getAssetByName(req.params.assetName);
-      res.status(200);
-      res.send(JSON.stringify(assetResult));
-    } catch (error) {
-      res.status(404);
-      res.send(error.message);
-    }
-  });
 
   /**
    * @swagger
@@ -380,6 +447,79 @@ export const getLogRoute = (client) => {
       let policyResult = await getPolicyByName(req.params.policyName);
       res.status(200);
       res.send(JSON.stringify(policyResult));
+    } catch (error) {
+      res.status(404);
+      res.send(error.message);
+    }
+  });
+
+    /**
+   * @swagger
+   * /verifiable_credentials/{verifiableCredentialsId}:
+   *   get:
+   *     summary: Retrieve token metadata of verifiable credentials for given id.
+   *     description: Retrieve token metadata of verifiable credentials for given id.
+   *     parameters:
+   *       - in: path
+   *         name: verifiableCredentialsId
+   *         schema:
+   *           type: integer
+   *         required: true
+   *         description: Token Id
+   *     responses:
+   *       200:
+   *         description: Response in JSON.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 admin:
+   *                   type: string
+   *                   description: Tz address of smart contract's admin.
+   *                   example: tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5
+   *                 mapSize:
+   *                   type: int
+   *                   description: Amount of stored logs.
+   *                   example: 5
+   *
+   */
+    client.get("/verifiable_credentials/:verifiableCredentialsId", async (req, res) => {
+      try {
+        let verifiableCredentialsResult = await getVerifiableCredentials(req.params.verifiableCredentialsId);
+        res.status(200);
+        res.send(JSON.stringify(verifiableCredentialsResult));
+      } catch (error) {
+        res.status(404);
+        res.send(error.message);
+      }
+    });
+
+      /**
+   * @swagger
+   * /verifiableCredentialsName/{verifiableCredentialsName}:
+   *   get:
+   *     summary: Retrieve token metadata of verifiable credentials for given document name.
+   *     description: Make sure you know the exact document name.
+   *     parameters:
+   *       - in: path
+   *         name: verifiableCredentialsName
+   *         schema:
+   *           type: string
+   *           example: test-document-34
+   *         required: true
+   *         description: Exact name of verifiable credentials
+   *     responses:
+   *       200:
+   *         description: Verifiable credentials in JSON format.
+   *
+   *
+   */
+  client.get("/verifiableCredentialsName/:verifiableCredentialsName", async (req, res) => {
+    try {
+      let verifiableCredentialsResult = await getVerifiableCredentialsByName(req.params.verifiableCredentialsName);
+      res.status(200);
+      res.send(JSON.stringify(verifiableCredentialsResult));
     } catch (error) {
       res.status(404);
       res.send(error.message);

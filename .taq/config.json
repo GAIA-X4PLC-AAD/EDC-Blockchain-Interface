@@ -5,7 +5,7 @@
     "network": {
         "ghostnet": {
             "label": "Ghostnet Testnet",
-            "rpcUrl": "https://rpc.ghostnet.teztnets.xyz/",
+            "rpcUrl": "https://rpc.ghostnet.teztnets.com/",
             "protocol": "PtJakart2xVj7pYXJBXrqHgd82rdkLey5ZeeGwDgPp9rhQUbSqY",
             "faucet": {
                 "mnemonic": [

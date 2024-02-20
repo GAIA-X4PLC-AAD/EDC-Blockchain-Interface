@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const contractConfig = {
-  rpcUrl: "https://rpc.ghostnet.teztnets.xyz/",
+  rpcUrl: "https://rpc.ghostnet.teztnets.com/",
   adminAddress: process.env.ADMIN_ADDRESS
     ? process.env.ADMIN_ADDRESS
     : "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",

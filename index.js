@@ -3,6 +3,7 @@ import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { getBalanceRoute } from "./routes/balance.js";
 import { getLogRoute } from "./routes/tezos_ednpoints.js";
+import { getVerifiablePresentationRoute } from "./routes/federatedcatalogue.js";
 import dotenv from "dotenv";
 
 // set up express
@@ -15,6 +16,7 @@ dotenv.config();
 // Load speficig endspoints
 getBalanceRoute(client);
 getLogRoute(client);
+getVerifiablePresentationRoute(client);
 
 // Swagger Setup
 const swaggerDefinition = {

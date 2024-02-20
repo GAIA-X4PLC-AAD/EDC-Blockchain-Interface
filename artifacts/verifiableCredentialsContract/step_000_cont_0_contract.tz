@@ -1,0 +1,155 @@
+parameter (or (or (pair %balance_of (list %requests (pair (address %owner) (nat %token_id))) (contract %callback (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))))) (list %mint (pair (address %to_) (map %metadata string bytes)))) (or (address %set_administrator) (or (list %transfer (pair (address %from_) (list %txs (pair (address %to_) (pair (nat %token_id) (nat %amount)))))) (list %update_operators (or (pair %add_operator (address %owner) (pair (address %operator) (nat %token_id))) (pair %remove_operator (address %owner) (pair (address %operator) (nat %token_id))))))));
+storage   (pair (pair (address %administrator) (pair (string %author) (nat %last_token_id))) (pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes))))));
+code
+  {
+    UNPAIR;     # @parameter : @storage
+    IF_LEFT
+      {
+        IF_LEFT
+          {
+            # == balance_of ==
+            # sp.transfer(params.requests.map(sp.build_lambda(f_x0)), sp.tez(0), params.callback) # @parameter%balance_of : @storage
+            NIL operation; # list operation : @parameter%balance_of : @storage
+            DUP;        # list operation : list operation : @parameter%balance_of : @storage
+            DUP 3;      # @parameter%balance_of : list operation : list operation : @parameter%balance_of : @storage
+            CDR;        # contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+            PUSH mutez 0; # mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+            DUP 5;      # @parameter%balance_of : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+            CAR;        # list (pair (address %owner) (nat %token_id)) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+            MAP
+              {
+                # sp.verify(self.data.token_metadata.contains(_x0.token_id), 'FA2_TOKEN_UNDEFINED') # pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                DUP 7;      # @storage : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                GET 6;      # big_map nat (pair (nat %token_id) (map %token_info string bytes)) : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                DUP 2;      # pair (address %owner) (nat %token_id) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                CDR;        # nat : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                MEM;        # bool : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                IF
+                  {}
+                  {
+                    PUSH string "FA2_TOKEN_UNDEFINED"; # string : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                    FAILWITH;   # FAILED
+                  }; # pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                # sp.result(sp.record(balance = sp.eif(self.data.ledger[_x0.token_id] == _x0.owner, 1, 0), request = _x0)) # pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                DUP;        # pair (address %owner) (nat %token_id) : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                CAR;        # address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                DUP 8;      # @storage : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                GET 3;      # big_map nat address : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                DUP 3;      # pair (address %owner) (nat %token_id) : big_map nat address : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                CDR;        # nat : big_map nat address : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                GET;        # option address : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                IF_NONE
+                  {
+                    PUSH int 370; # int : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                    FAILWITH;   # FAILED
+                  }
+                  {}; # @some : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                COMPARE;    # int : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                EQ;         # bool : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                IF
+                  {
+                    PUSH nat 1; # nat : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                  }
+                  {
+                    PUSH nat 0; # nat : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                  }; # nat : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                SWAP;       # pair (address %owner) (nat %token_id) : nat : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                PAIR;       # pair (pair (address %owner) (nat %token_id)) nat : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+              }; # list (pair (pair (address %owner) (nat %token_id)) nat) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+            DIG 4;      # list operation : list (pair (pair (address %owner) (nat %token_id)) nat) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : @parameter%balance_of : @storage
+            DROP;       # list (pair (pair (address %owner) (nat %token_id)) nat) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : @parameter%balance_of : @storage
+            DIG 4;      # @parameter%balance_of : list (pair (pair (address %owner) (nat %token_id)) nat) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : @storage
+            DROP;       # list (pair (pair (address %owner) (nat %token_id)) nat) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : @storage
+            TRANSFER_TOKENS; # operation : list operation : @storage
+            CONS;       # list operation : @storage
+          }
+          {
+            # == mint ==
+            # for action in params: ... # @parameter%mint : @storage
+            DUP;        # @parameter%mint : @parameter%mint : @storage
+            ITER
+              {
+                # compute___main___35 = sp.local("compute___main___35", self.data.last_token_id) # pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
+                DUP 3;      # @storage : pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
+                CAR;        # pair (address %administrator) (pair (string %author) (nat %last_token_id)) : pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
+                GET 4;      # nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
+                # self.data.token_metadata[compute___main___35.value] = sp.record(token_id = compute___main___35.value, token_info = action.metadata) # nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
+                DIG 3;      # @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                DUP;        # @storage : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                GET 6;      # big_map nat (pair (nat %token_id) (map %token_info string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                DUP 4;      # pair (address %to_) (map %metadata string bytes) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                CDR;        # map string bytes : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                DUP 4;      # nat : map string bytes : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                PAIR;       # pair nat (map string bytes) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                SOME;       # option (pair nat (map string bytes)) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                DUP 4;      # nat : option (pair nat (map string bytes)) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                UPDATE;     # big_map nat (pair nat (map string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                UPDATE 6;   # @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                # self.data.ledger[compute___main___35.value] = action.to_ # @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                DUP;        # @storage : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                GET 3;      # big_map nat address : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                DIG 3;      # pair (address %to_) (map %metadata string bytes) : big_map nat address : @storage : nat : @parameter%mint
+                CAR;        # address : big_map nat address : @storage : nat : @parameter%mint
+                SOME;       # option address : big_map nat address : @storage : nat : @parameter%mint
+                DIG 3;      # nat : option address : big_map nat address : @storage : @parameter%mint
+                UPDATE;     # big_map nat address : @storage : @parameter%mint
+                UPDATE 3;   # @storage : @parameter%mint
+                # self.data.last_token_id += 1 # @storage : @parameter%mint
+                UNPAIR;     # pair (address %administrator) (pair (string %author) (nat %last_token_id)) : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                UNPAIR;     # address : pair (string %author) (nat %last_token_id) : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                SWAP;       # pair (string %author) (nat %last_token_id) : address : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                UNPAIR;     # string : nat : address : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                SWAP;       # nat : string : address : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                PUSH nat 1; # nat : nat : string : address : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                ADD;        # nat : string : address : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                SWAP;       # string : nat : address : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                PAIR;       # pair string nat : address : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                SWAP;       # address : pair string nat : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                PAIR;       # pair address (pair string nat) : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%mint
+                PAIR;       # pair (pair address (pair string nat)) (pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes))))) : @parameter%mint
+                SWAP;       # @parameter%mint : pair (pair address (pair string nat)) (pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))))
+              }; # @parameter%mint : @storage
+            DROP;       # @storage
+            NIL operation; # list operation : @storage
+          }; # list operation : @storage
+      }
+      {
+        IF_LEFT
+          {
+            # == set_administrator ==
+            # sp.verify(sp.sender == self.data.administrator, 'FA2_NOT_ADMIN') # @parameter%set_administrator : @storage
+            DUP 2;      # @storage : @parameter%set_administrator : @storage
+            CAR;        # pair (address %administrator) (pair (string %author) (nat %last_token_id)) : @parameter%set_administrator : @storage
+            CAR;        # address : @parameter%set_administrator : @storage
+            SENDER;     # @sender : address : @parameter%set_administrator : @storage
+            COMPARE;    # int : @parameter%set_administrator : @storage
+            EQ;         # bool : @parameter%set_administrator : @storage
+            IF
+              {}
+              {
+                PUSH string "FA2_NOT_ADMIN"; # string : @parameter%set_administrator : @storage
+                FAILWITH;   # FAILED
+              }; # @parameter%set_administrator : @storage
+            SWAP;       # @storage : @parameter%set_administrator
+            # self.data.administrator = params # @storage : @parameter%set_administrator
+            UNPAIR;     # pair (address %administrator) (pair (string %author) (nat %last_token_id)) : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%set_administrator
+            CDR;        # pair (string %author) (nat %last_token_id) : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))) : @parameter%set_administrator
+            DIG 2;      # @parameter%set_administrator : pair (string %author) (nat %last_token_id) : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes))))
+            PAIR;       # pair @parameter%set_administrator (pair (string %author) (nat %last_token_id)) : pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes))))
+            PAIR;       # pair (pair @parameter%set_administrator (pair (string %author) (nat %last_token_id))) (pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))))
+          }
+          {
+            IF_LEFT
+              {
+                PUSH string "FA2_TX_DENIED"; # string : @parameter%transfer : @storage
+                FAILWITH;   # FAILED
+              }
+              {
+                PUSH string "FA2_OPERATORS_UNSUPPORTED"; # string : @parameter%update_operators : @storage
+                FAILWITH;   # FAILED
+              }; # FAILED
+          }; # pair (pair @parameter%set_administrator (pair (string %author) (nat %last_token_id))) (pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))))
+        NIL operation; # list operation : pair (pair @parameter%set_administrator (pair (string %author) (nat %last_token_id))) (pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))))
+      }; # list operation : pair (pair address (pair (string %author) (nat %last_token_id))) (pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes)))))
+    PAIR;       # pair (list operation) (pair (pair address (pair (string %author) (nat %last_token_id))) (pair (big_map %ledger nat address) (pair (big_map %metadata string bytes) (big_map %token_metadata nat (pair (nat %token_id) (map %token_info string bytes))))))
+  };

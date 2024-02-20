@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Set ghostnet as the default network and redirect warnings to /dev/null
-docker exec octez-node-alpha octez-client --endpoint https://rpc.ghostnet.teztnets.com/ config update #2>/dev/null
+
+docker exec octez-node-alpha octez-client --endpoint https://rpc.ghostnet.teztnets.com/ config update 2>/dev/null
 
 # Prompt user for contract selection
 echo "Select contracts to deploy:"

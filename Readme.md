@@ -72,6 +72,6 @@ npm run deployAssetContract
 Alternatively:
 
 ```
-~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/contractContract/step_000_cont_0_contract.tz --storage ./artifacts/contractContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.xyz/
+~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/contractContract/step_000_cont_0_contract.tz --storage ./artifacts/contractContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.com/
 
 ```

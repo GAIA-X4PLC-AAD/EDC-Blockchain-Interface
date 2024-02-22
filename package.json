@@ -15,6 +15,7 @@
     "deployPolicyContract": "~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/policyContract/step_000_cont_0_contract.tz --storage ./artifacts/policyContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.com/",
     "deployTransferContract": "~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/transferContract/step_000_cont_0_contract.tz --storage ./artifacts/transferContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.com/",
     "deployVerifiableCredentialsContract": "~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/verifiableCredentialsContract/step_000_cont_0_contract.tz --storage ./artifacts/verifiableCredentialsContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.com/"
+
   },
   "author": "",
   "license": "ISC",

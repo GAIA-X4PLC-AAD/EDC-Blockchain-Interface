@@ -15,11 +15,12 @@
     "deployPolicyContract": "~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/policyContract/step_000_cont_0_contract.tz --storage ./artifacts/policyContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.com/",
     "deployTransferContract": "~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/transferContract/step_000_cont_0_contract.tz --storage ./artifacts/transferContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.com/",
     "deployVerifiableCredentialsContract": "~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/verifiableCredentialsContract/step_000_cont_0_contract.tz --storage ./artifacts/verifiableCredentialsContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.com/"
-
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@opentelemetry/api": "^1.8.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.46.1",
     "@taquito/signer": "^14.0.0",
     "@taquito/taquito": "^13.0.1",
     "@taquito/tezbridge-signer": "^14.0.0",

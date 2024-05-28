@@ -215,6 +215,7 @@ const getAssetByName = async (assetName) => {
     params: {
       contract: contractConfig.assetAddress,
       "metadata.name": assetName,
+      "limit": contractConfig.tokenLimit,
     },
   };
   await axios(request)
@@ -241,7 +242,7 @@ const getAllTokens = async (tokenType) => {
     url: "https://api.ghostnet.tzkt.io/v1/tokens/",
     params: {
       contract: contractConfig[tokenType + "Address"],
-      limit: 1000,
+      "limit": contractConfig.tokenLimit,
     },
   };
   await axios(request)
@@ -277,7 +278,7 @@ const getAllTokens = async (tokenType) => {
   let endtime = new Date().getTime();
   let duration = (endtime - startTime) / 1000;
   console.log(`Execution time: ${duration} seconds`);
-  console.log(`${result.length} tokens were returned`);
+  console.log(`${result.length} ${tokenType} tokens were returned`);
 
   return result;
 };
@@ -307,6 +308,7 @@ const getPolicyByName = async (policyName) => {
     params: {
       contract: contractConfig.policyAddress,
       "metadata.name": policyName,
+      "limit": contractConfig.tokenLimit,
     },
   };
   await axios(request)
@@ -346,6 +348,7 @@ const getVerifiableCredentialsByName = async (VerifiableCredentialsName) => {
     params: {
       contract: contractConfig.verifiableCredentialsAddress,
       "metadata.name": VerifiableCredentialsName,
+      "limit": contractConfig.tokenLimit,
     },
   };
   await axios(request)
@@ -385,6 +388,7 @@ const getContractByName = async (contractName) => {
     params: {
       contract: contractConfig.contractAddress,
       "metadata.name": contractName,
+      "limit": contractConfig.tokenLimit,
     },
   };
   await axios(request)

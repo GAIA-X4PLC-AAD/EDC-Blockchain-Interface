@@ -27,6 +27,7 @@ const contractConfig = {
   agreementLoggingAddress: process.env.AGREEMENT_LOGGING_ADDRESS
     ? process.env.AGREEMENT_LOGGING_ADDRESS
     : "KT1CHo3f2eWcnT7zCYs1KD1ERVXwEPYacj3A",
+  tokenLimit: process.env.TOKEN_LIMIT ? process.env.TOKEN_LIMIT : 100,
 };
 
 export { contractConfig };

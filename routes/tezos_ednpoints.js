@@ -583,6 +583,8 @@ export const getLogRoute = (client) => {
    *             - asset
    *             - policy
    *             - contract
+   *             - edccontract
+   *             - vpcontract
    *           default: asset
    *         required: true
    *         description: Token Type

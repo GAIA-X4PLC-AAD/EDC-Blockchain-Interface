@@ -232,17 +232,40 @@ const getAssetByName = async (assetName) => {
 const getAllTokens = async (tokenType) => {
   let result = [];
   let startTime = new Date().getTime();
+  let originalTokenType = tokenType;
+  if (originalTokenType == "edccontract" || originalTokenType == "vpcontract") {
+    tokenType = "contract";
+  }
   let request = {
     method: "get",
     url: "https://api.ghostnet.tzkt.io/v1/tokens/",
     params: {
       contract: contractConfig[tokenType + "Address"],
+      limit: 1000,
     },
   };
   await axios(request)
     .then((response) => {
       let res = response.data;
       res.forEach((element) => {
+        if (element == undefined || element.metadata == undefined || element.metadata.tokenData == undefined) {
+          return;
+        }
+        // remove verifiableCredential and move all fiels from edcContractdefinition directly to tokenData
+        if (originalTokenType == "edccontract") {
+          if (element.metadata.tokenData.edcContractdefinition != undefined) {
+            element.metadata.tokenData = element.metadata.tokenData.edcContractdefinition;
+            result.push(element.metadata);
+          }
+          return;
+        }
+        if (originalTokenType == "vpcontract") {
+          if (element.metadata.tokenData.verifiablePresentation != undefined) {
+            element.metadata.tokenData = element.metadata.tokenData.verifiablePresentation;
+            result.push(element.metadata);
+          }
+          return;
+        }
         result.push(element.metadata);
       });
     })

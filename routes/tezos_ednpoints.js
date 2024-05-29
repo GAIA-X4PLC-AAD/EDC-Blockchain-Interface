@@ -19,6 +19,10 @@ import {
 
 import { pinJSON } from "../pinata/ipfs.js";
 
+import { trace, context, SpanKind } from '@opentelemetry/api';
+
+const tracer = trace.getTracer('default');
+
 export const getLogRoute = (client) => {
   /**
    * @swagger
@@ -92,10 +96,19 @@ export const getLogRoute = (client) => {
     let ipfsHash;
     let blockHash;
 
-    // Initiate ipfs pinning
     try {
-      console.log("IPFS Pinning...");
-      ipfsHash = await pinJSON(request);
+      // Initiate ipfs pinning
+      await tracer.startActiveSpan('pin Asset JSON to IPFS', async span => {
+        console.log("IPFS Pinning...");
+        try {
+          ipfsHash = await pinJSON(request);
+        } catch (error) {
+          span.setStatus({ code: 2, message: error.message }); // Set span status to error
+          span.end();
+          throw error; // Rethrow the error to be caught by the outer try-catch
+        }
+        span.end();
+      })
     } catch (error) {
       res.status(404);
       res.send(error.message);
@@ -104,14 +117,24 @@ export const getLogRoute = (client) => {
     let metaUri = "ipfs://" + ipfsHash;
     // Initiate minting process
     try {
-      console.log("Minting process...");
-      blockHash = await mintAsset(metaUri);
-      let returnObject = {
-        status: "ok",
-        hash: blockHash,
-      };
-      res.status(201);
-      res.send(JSON.stringify(returnObject));
+      await tracer.startActiveSpan('Asset minting', async span => {
+        console.log("IPFS Pinning...");
+        try {
+          console.log("Minting process...");
+          blockHash = await mintAsset(metaUri);
+          let returnObject = {
+            status: "ok",
+            hash: blockHash,
+          };
+          res.status(201);
+          res.send(JSON.stringify(returnObject));
+        } catch (error) {
+          span.setStatus({ code: 2, message: error.message }); // Set span status to error
+          span.end();
+          throw error; // Rethrow the error to be caught by the outer try-catch
+        }
+        span.end();
+      })
     } catch (error) {
       res.status(400);
       res.send(error.message);
@@ -157,8 +180,17 @@ export const getLogRoute = (client) => {
 
     // Initiate ipfs pinning
     try {
-      console.log("IPFS Pinning...");
-      ipfsHash = await pinJSON(request);
+      await tracer.startActiveSpan('pin Policy JSON to IPFS', async span => {
+        console.log("IPFS Pinning...");
+        try {
+          ipfsHash = await pinJSON(request);
+        } catch (error) {
+          span.setStatus({ code: 2, message: error.message }); // Set span status to error
+          span.end();
+          throw error; // Rethrow the error to be caught by the outer try-catch
+        }
+        span.end();
+      })
     } catch (error) {
       res.status(404);
       res.send(error.message);
@@ -166,50 +198,60 @@ export const getLogRoute = (client) => {
     }
     let metaUri = "ipfs://" + ipfsHash;
     try {
-      console.log("Minting process...");
-      blockHash = await mintPolicy(metaUri);
-      let returnObject = {
-        status: "ok",
-        hash: blockHash,
-      };
-      res.status(201);
-      res.send(JSON.stringify(returnObject));
+      await tracer.startActiveSpan('Policy minting', async span => {
+        console.log("Minting process...");
+        try {
+          blockHash = await mintPolicy(metaUri);
+        } catch (error) {
+          span.setStatus({ code: 2, message: error.message }); // Set span status to error
+          span.end();
+          throw error; // Rethrow the error to be caught by the outer try-catch
+        }
+
+        let returnObject = {
+          status: "ok",
+          hash: blockHash,
+        };
+        res.status(201);
+        res.send(JSON.stringify(returnObject));
+        span.end();
+      })
     } catch (error) {
       res.status(400);
       res.send(error.message);
     }
   });
 
-    /**
-   * @swagger
-   * /mint/verifiable_credentials:
-   *   post:
-   *     summary: Minting new verifiable credentials token.
-   *     description: Requests metadata object with reference to actual verifiable credentials ressource to save metadata on ipfs and mint new token.
-   *     requestBody:
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             type: object
-   *     responses:
-   *       201:
-   *         description: Response might take a while since 2 confirmations are awaited.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 status:
-   *                   type: string
-   *                   description: Status of log forwarding.
-   *                   example: ok
-   *                 hash:
-   *                   type: string
-   *                   description: Hash of blockchain transaction.
-   *                   example: https://ithacanet.smartpy.io/ooSLJmoD4My5UmS7fsVLbqJ5aj3hyBqQyBPSNHrswhwH4MkNtQW
-   *
-   */
+  /**
+ * @swagger
+ * /mint/verifiable_credentials:
+ *   post:
+ *     summary: Minting new verifiable credentials token.
+ *     description: Requests metadata object with reference to actual verifiable credentials ressource to save metadata on ipfs and mint new token.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       201:
+ *         description: Response might take a while since 2 confirmations are awaited.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: Status of log forwarding.
+ *                   example: ok
+ *                 hash:
+ *                   type: string
+ *                   description: Hash of blockchain transaction.
+ *                   example: https://ithacanet.smartpy.io/ooSLJmoD4My5UmS7fsVLbqJ5aj3hyBqQyBPSNHrswhwH4MkNtQW
+ *
+ */
 
   client.post("/mint/verifiable_credentials", async (req, res) => {
     // Await upload of metadata
@@ -220,8 +262,17 @@ export const getLogRoute = (client) => {
 
     // Initiate ipfs pinning
     try {
-      console.log("IPFS Pinning...");
-      ipfsHash = await pinJSON(request);
+      await tracer.startActiveSpan('pin Verifiable Credentials JSON to IPFS', async span => {
+        console.log("IPFS Pinning...");
+        try {
+          ipfsHash = await pinJSON(request);
+        } catch (error) {
+          span.setStatus({ code: 2, message: error.message }); // Set span status to error
+          span.end();
+          throw error; // Rethrow the error to be caught by the outer try-catch
+        }
+        span.end();
+      })
     } catch (error) {
       res.status(404);
       res.send(error.message);
@@ -229,14 +280,23 @@ export const getLogRoute = (client) => {
     }
     let metaUri = "ipfs://" + ipfsHash;
     try {
-      console.log("Minting process...");
-      blockHash = await mintVerifiableCredentials(metaUri);
-      let returnObject = {
-        status: "ok",
-        hash: blockHash,
-      };
-      res.status(201);
-      res.send(JSON.stringify(returnObject));
+      await tracer.startActiveSpan('Verifiable Credentials minting', async span => {
+        console.log("Minting process...");
+        try {
+          blockHash = await mintVerifiableCredentials(metaUri);
+        } catch (error) {
+          span.setStatus({ code: 2, message: error.message }); // Set span status to error
+          span.end();
+          throw error; // Rethrow the error to be caught by the outer try-catch
+        }
+        let returnObject = {
+          status: "ok",
+          hash: blockHash,
+        };
+        res.status(201);
+        res.send(JSON.stringify(returnObject));
+        span.end();
+      })
     } catch (error) {
       res.status(400);
       res.send(error.message);
@@ -283,8 +343,17 @@ export const getLogRoute = (client) => {
 
     // Initiate ipfs pinning
     try {
-      console.log("IPFS Pinning...");
-      ipfsHash = await pinJSON(request);
+      await tracer.startActiveSpan('pin Contract JSON to IPFS', async span => {
+        console.log("IPFS Pinning...");
+        try {
+          ipfsHash = await pinJSON(request);
+        } catch (error) {
+          span.setStatus({ code: 2, message: error.message }); // Set span status to error
+          span.end();
+          throw error; // Rethrow the error to be caught by the outer try-catch
+        }
+        span.end();
+      })
     } catch (error) {
       res.status(404);
       res.send(error.message);
@@ -292,14 +361,23 @@ export const getLogRoute = (client) => {
     }
     let metaUri = "ipfs://" + ipfsHash;
     try {
-      console.log("Minting process...");
-      blockHash = await mintContract(metaUri);
-      let returnObject = {
-        status: "ok",
-        hash: blockHash,
-      };
-      res.status(201);
-      res.send(JSON.stringify(returnObject));
+      await tracer.startActiveSpan('Contract minting', async span => {
+        console.log("Minting process...");
+        try {
+          blockHash = await mintContract(metaUri);
+        } catch (error) {
+          span.setStatus({ code: 2, message: error.message }); // Set span status to error
+          span.end();
+          throw error; // Rethrow the error to be caught by the outer try-catch
+        }
+        let returnObject = {
+          status: "ok",
+          hash: blockHash,
+        };
+        res.status(201);
+        res.send(JSON.stringify(returnObject));
+        span.end();
+      })
     } catch (error) {
       res.status(400);
       res.send(error.message);
@@ -453,68 +531,68 @@ export const getLogRoute = (client) => {
     }
   });
 
-    /**
-   * @swagger
-   * /verifiable_credentials/{verifiableCredentialsId}:
-   *   get:
-   *     summary: Retrieve token metadata of verifiable credentials for given id.
-   *     description: Retrieve token metadata of verifiable credentials for given id.
-   *     parameters:
-   *       - in: path
-   *         name: verifiableCredentialsId
-   *         schema:
-   *           type: integer
-   *         required: true
-   *         description: Token Id
-   *     responses:
-   *       200:
-   *         description: Response in JSON.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 admin:
-   *                   type: string
-   *                   description: Tz address of smart contract's admin.
-   *                   example: tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5
-   *                 mapSize:
-   *                   type: int
-   *                   description: Amount of stored logs.
-   *                   example: 5
-   *
-   */
-    client.get("/verifiable_credentials/:verifiableCredentialsId", async (req, res) => {
-      try {
-        let verifiableCredentialsResult = await getVerifiableCredentials(req.params.verifiableCredentialsId);
-        res.status(200);
-        res.send(JSON.stringify(verifiableCredentialsResult));
-      } catch (error) {
-        res.status(404);
-        res.send(error.message);
-      }
-    });
+  /**
+ * @swagger
+ * /verifiable_credentials/{verifiableCredentialsId}:
+ *   get:
+ *     summary: Retrieve token metadata of verifiable credentials for given id.
+ *     description: Retrieve token metadata of verifiable credentials for given id.
+ *     parameters:
+ *       - in: path
+ *         name: verifiableCredentialsId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Token Id
+ *     responses:
+ *       200:
+ *         description: Response in JSON.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 admin:
+ *                   type: string
+ *                   description: Tz address of smart contract's admin.
+ *                   example: tz1RTt21hfc9rndKcQTS1CeF5rzr8bJ5nhV5
+ *                 mapSize:
+ *                   type: int
+ *                   description: Amount of stored logs.
+ *                   example: 5
+ *
+ */
+  client.get("/verifiable_credentials/:verifiableCredentialsId", async (req, res) => {
+    try {
+      let verifiableCredentialsResult = await getVerifiableCredentials(req.params.verifiableCredentialsId);
+      res.status(200);
+      res.send(JSON.stringify(verifiableCredentialsResult));
+    } catch (error) {
+      res.status(404);
+      res.send(error.message);
+    }
+  });
 
-      /**
-   * @swagger
-   * /verifiableCredentialsName/{verifiableCredentialsName}:
-   *   get:
-   *     summary: Retrieve token metadata of verifiable credentials for given document name.
-   *     description: Make sure you know the exact document name.
-   *     parameters:
-   *       - in: path
-   *         name: verifiableCredentialsName
-   *         schema:
-   *           type: string
-   *           example: test-document-34
-   *         required: true
-   *         description: Exact name of verifiable credentials
-   *     responses:
-   *       200:
-   *         description: Verifiable credentials in JSON format.
-   *
-   *
-   */
+  /**
+* @swagger
+* /verifiableCredentialsName/{verifiableCredentialsName}:
+*   get:
+*     summary: Retrieve token metadata of verifiable credentials for given document name.
+*     description: Make sure you know the exact document name.
+*     parameters:
+*       - in: path
+*         name: verifiableCredentialsName
+*         schema:
+*           type: string
+*           example: test-document-34
+*         required: true
+*         description: Exact name of verifiable credentials
+*     responses:
+*       200:
+*         description: Verifiable credentials in JSON format.
+*
+*
+*/
   client.get("/verifiableCredentialsName/:verifiableCredentialsName", async (req, res) => {
     try {
       let verifiableCredentialsResult = await getVerifiableCredentialsByName(req.params.verifiableCredentialsName);

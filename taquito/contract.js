@@ -5,6 +5,9 @@ import axios from "axios";
 import fs from "fs";
 import { Tzip12Module, tzip12 } from "@taquito/tzip12";
 import { contractConfig } from "../contractConfig.js";
+import { trace, context, SpanKind, SpanStatusCode } from '@opentelemetry/api';
+
+const tracer = trace.getTracer('default');
 
 // connect tezos client to testnet
 const tezos = new TezosToolkit(contractConfig.rpcUrl);
@@ -64,25 +67,35 @@ const getMapSize = async (mapName) => {
 const mintAsset = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
-      let result = await tezos.contract
-        .at(contractConfig.assetAddress)
-        .then((contract) => {
-          return contract.methods
-            .mint([
-              {
-                to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
-                metadata: {
-                  "": char2Bytes(metaLink),
-                },
-              },
-            ])
-            .send();
-        })
-        .then((hash) => {
-          return hash.hash;
-        });
-      console.log("Return Object: " + result);
-      return result;
+      let result
+      await tracer.startActiveSpan('tezos.contract mint', { kind: SpanKind.SERVER }, async (span) => {
+        try {
+          result = await tezos.contract
+            .at(contractConfig.assetAddress)
+            .then((contract) => {
+              return contract.methods
+                .mint([
+                  {
+                    to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                    metadata: {
+                      "": char2Bytes(metaLink),
+                    },
+                  },
+                ])
+                .send();
+            })
+            .then((hash) => {
+              return hash.hash;
+            });
+        } catch (error) {
+          span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
+          span.end();
+          throw error;
+        }
+        span.end();
+      });
+        console.log("Return Object: " + result);
+        return result;
     } catch (error) {
       console.error(`Error on attempt ${i + 1}: ${error}`);
       console.log("Waiting 2 seconds before retrying...")
@@ -95,23 +108,33 @@ const mintAsset = async (metaLink = "") => {
 const mintPolicy = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
-      let result = await tezos.contract
-        .at(contractConfig.policyAddress)
-        .then((contract) => {
-          return contract.methods
-            .mint([
-              {
-                to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
-                metadata: {
-                  "": char2Bytes(metaLink),
-                },
-              },
-            ])
-            .send();
-        })
-        .then((hash) => {
-          return hash.hash;
-        })
+      let result
+      await tracer.startActiveSpan('tezos.contract mint', { kind: SpanKind.SERVER }, async (span) => {
+        try {
+          result = await tezos.contract
+            .at(contractConfig.policyAddress)
+            .then((contract) => {
+              return contract.methods
+                .mint([
+                  {
+                    to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                    metadata: {
+                      "": char2Bytes(metaLink),
+                    },
+                  },
+                ])
+                .send();
+            })
+            .then((hash) => {
+              return hash.hash;
+            })
+        } catch (error) {
+          span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
+          span.end();
+          throw error;
+        }
+        span.end();
+      });
       console.log("Return Object: " + result);
       return result;
     } catch (error) {
@@ -128,23 +151,33 @@ const mintPolicy = async (metaLink = "") => {
 const mintVerifiableCredentials = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
-      let result = await tezos.contract
-        .at(contractConfig.verifiableCredentialsAddress)
-        .then((contract) => {
-          return contract.methods
-            .mint([
-              {
-                to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
-                metadata: {
-                  "": char2Bytes(metaLink),
-                },
-              },
-            ])
-            .send();
-        })
-        .then((hash) => {
-          return hash.hash;
-        });
+      let result
+      await tracer.startActiveSpan('tezos.contract mint', { kind: SpanKind.SERVER }, async (span) => {
+        try {
+          result = await tezos.contract
+            .at(contractConfig.verifiableCredentialsAddress)
+            .then((contract) => {
+              return contract.methods
+                .mint([
+                  {
+                    to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                    metadata: {
+                      "": char2Bytes(metaLink),
+                    },
+                  },
+                ])
+                .send();
+            })
+            .then((hash) => {
+              return hash.hash;
+            });
+        } catch (error) {
+          span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
+          span.end();
+          throw error;
+        }
+        span.end();
+      });
       console.log("Return Object: " + result);
       return result;
     } catch (error) {
@@ -159,23 +192,33 @@ const mintVerifiableCredentials = async (metaLink = "") => {
 const mintContract = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
-      let result = await tezos.contract
-        .at(contractConfig.contractAddress)
-        .then((contract) => {
-          return contract.methods
-            .mint([
-              {
-                to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
-                metadata: {
-                  "": char2Bytes(metaLink),
+      let result
+      await tracer.startActiveSpan('tezos.contract mint', { kind: SpanKind.SERVER }, async (span) => {
+        try {
+          result = await tezos.contract
+          .at(contractConfig.contractAddress)
+          .then((contract) => {
+            return contract.methods
+              .mint([
+                {
+                  to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                  metadata: {
+                    "": char2Bytes(metaLink),
+                  },
                 },
-              },
-            ])
-            .send();
-        })
-        .then((hash) => {
-          return hash.hash;
-        })
+              ])
+              .send();
+          })
+          .then((hash) => {
+            return hash.hash;
+          })
+        } catch (error) {
+          span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
+          span.end();
+          throw error;
+        } 
+        span.end();
+      });
       console.log("Return Object: " + result);
       return result;
   } catch (error) {

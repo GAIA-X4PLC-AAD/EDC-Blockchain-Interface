@@ -28,6 +28,7 @@ const contractConfig = {
     ? process.env.AGREEMENT_LOGGING_ADDRESS
     : "KT1CHo3f2eWcnT7zCYs1KD1ERVXwEPYacj3A",
   tokenLimit: process.env.TOKEN_LIMIT ? process.env.TOKEN_LIMIT : 100,
+  sdCreatorURL: process.env.SD_CREATOR_URL ? process.env.SD_CREATOR_URL : "sd-creator.gxfs.gx4fm.org/self-description" 
 };
 
 export { contractConfig };

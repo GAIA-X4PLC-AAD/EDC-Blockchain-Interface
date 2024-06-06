@@ -1,6 +1,7 @@
 import axios from "axios";
 import fs from 'fs';
 import { trace, context, SpanKind, SpanStatusCode } from '@opentelemetry/api';
+import { contractConfig } from "../contractConfig.js";
 
 const tracer = trace.getTracer('default');
 
@@ -25,7 +26,7 @@ const getVerifiablePresentation = async (parameters) => {
         const response = await tracer.startActiveSpan('get VP from sd-creator', async (span) => {
             try {
                 // Sending the modified JSON to the endpoint
-                response = await axios.post('https://sd-creator.gxfs.gx4fm.org/self-description', jsonTemplate);
+                const response = await axios.post(`https://${contractConfig.sdCreatorURL}`, jsonTemplate);
                 span.end();
                 return response;
             } catch (error) {

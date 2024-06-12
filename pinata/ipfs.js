@@ -15,6 +15,12 @@ class TokenMetadata {
 
 export const pinFile = async (file, setIpfsHash) => {
   let bKey = process.env.PINATA_KEY;
+
+  if (bKey == undefined || bKey == "") {
+    console.error("No Pinata API Key found! Aborting.");
+    throw new Error("No Pinata API Key found!");
+  }
+
   const formData = new FormData();
   formData.append("file", file);
 
@@ -39,6 +45,12 @@ export const pinFile = async (file, setIpfsHash) => {
 
 export const pinJSON = async (content) => {
   let bKey = process.env.PINATA_KEY;
+
+  if (bKey == undefined || bKey == "") {
+    console.error("No Pinata API Key found! Aborting.");
+    throw new Error("No Pinata API Key found!");
+  }
+
   // create Token Metadata
   let tokenMeta = new TokenMetadata(content);
 

@@ -105,6 +105,7 @@ export const getLogRoute = (client) => {
         } catch (error) {
           span.setStatus({ code: 2, message: error.message }); // Set span status to error
           span.end();
+          console.error(error);
           throw error; // Rethrow the error to be caught by the outer try-catch
         }
         span.end();
@@ -131,6 +132,7 @@ export const getLogRoute = (client) => {
         } catch (error) {
           span.setStatus({ code: 2, message: error.message }); // Set span status to error
           span.end();
+          console.error(error);
           throw error; // Rethrow the error to be caught by the outer try-catch
         }
         span.end();
@@ -187,6 +189,7 @@ export const getLogRoute = (client) => {
         } catch (error) {
           span.setStatus({ code: 2, message: error.message }); // Set span status to error
           span.end();
+          console.error(error);
           throw error; // Rethrow the error to be caught by the outer try-catch
         }
         span.end();
@@ -205,6 +208,7 @@ export const getLogRoute = (client) => {
         } catch (error) {
           span.setStatus({ code: 2, message: error.message }); // Set span status to error
           span.end();
+          console.error(error);
           throw error; // Rethrow the error to be caught by the outer try-catch
         }
 
@@ -269,6 +273,7 @@ export const getLogRoute = (client) => {
         } catch (error) {
           span.setStatus({ code: 2, message: error.message }); // Set span status to error
           span.end();
+          console.error(error);
           throw error; // Rethrow the error to be caught by the outer try-catch
         }
         span.end();
@@ -287,6 +292,7 @@ export const getLogRoute = (client) => {
         } catch (error) {
           span.setStatus({ code: 2, message: error.message }); // Set span status to error
           span.end();
+          console.error(error);
           throw error; // Rethrow the error to be caught by the outer try-catch
         }
         let returnObject = {
@@ -350,6 +356,7 @@ export const getLogRoute = (client) => {
         } catch (error) {
           span.setStatus({ code: 2, message: error.message }); // Set span status to error
           span.end();
+          console.error(error);
           throw error; // Rethrow the error to be caught by the outer try-catch
         }
         span.end();
@@ -368,6 +375,7 @@ export const getLogRoute = (client) => {
         } catch (error) {
           span.setStatus({ code: 2, message: error.message }); // Set span status to error
           span.end();
+          console.error(error);
           throw error; // Rethrow the error to be caught by the outer try-catch
         }
         let returnObject = {

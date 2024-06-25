@@ -17,11 +17,11 @@ const getVerifiablePresentation = async (parameters) => {
         console.log('Template: ', jsonTemplate )
 
         // Insert variables into the template
-        jsonTemplate['assetonto:asset_id']['@value'] = assetId;
-        jsonTemplate['assetonto:asset_description']['@value'] = assetDescription;
-        jsonTemplate['assetonto:asset_title']['@value'] = assetTitle;
-        jsonTemplate['assetonto:asset_url']['@value'] = assetUrl;
-        jsonTemplate['@id'] = 'did:example:survey_service_offering_' + assetId;
+        jsonTemplate['gx:asset_id']['@value'] = assetId;
+        jsonTemplate['gx:asset_description']['@value'] = assetDescription;
+        jsonTemplate['gx:asset_title']['@value'] = assetTitle;
+        jsonTemplate['gx:asset_url']['@value'] = assetUrl;
+        jsonTemplate['@id'] = 'did:web:participant.gxfs.gx4fm.org:tu-berlin';
 
         const response = await tracer.startActiveSpan('get VP from sd-creator', async (span) => {
             try {

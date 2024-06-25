@@ -1,24 +1,75 @@
 {
     "@context": {
-        "xsd": "http://www.w3.org/2001/XMLSchema#",
-        "assetonto": "http://semanticweb.org/metadataassetonto/"
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "gx": "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#",
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "sh": "http://www.w3.org/ns/shacl#"
     },
-    "@id": "did:example:survey_service_offering_27bppg6ztnsj02g047epabp0p4",
-    "@type": "assetonto:AssetServiceOffering",
-    "assetonto:asset_id": {
-        "@value": "27bppg6ztnsj02g047epabp0p4",
+    "@id": "did:web:participant.gxfs.gx4fm.org:tu-berlin",
+    "@type": "gx:ServiceOffering",
+    "gx:dataAccountExport": {
+      "@type": "gx:dataAccountExport",
+      "gx:requestType": "API",
+      "gx:formatType": {
+        "@value": "application/json",
         "@type": "xsd:string"
+      },
+      "gx:accessType": "digital"
     },
-    "assetonto:asset_description": {
-        "@value": "12ifxtest",
-        "@type": "xsd:string"
+    "gx:asset_id": {
+      "@value": "27bppg6ztnsj02g047epabp0p4",
+      "@type": "xsd:string"
     },
-    "assetonto:asset_title": {
-        "@value": "12ifxtest",
-        "@type": "xsd:string"
+    "gx:asset_description": {
+      "@value": "12ifxtest",
+      "@type": "xsd:string"
     },
-    "assetonto:asset_url": {
-        "@value": "web-mpc.gxfs.gx4fm.org/?session=27bppg6ztnsj02g047epabp0p4",
+    "gx:asset_title": {
+      "@value": "12ifxtest",
+      "@type": "xsd:string"
+    },
+    "gx:asset_url": {
+      "@value": "web-mpc.gxfs.gx4fm.org/?session=27bppg6ztnsj02g047epabp0p4",
+      "@type": "xsd:string"
+    },
+    "gx:termsAndConditions": {
+      "@type": "gx:SOTermsAndConditions",
+      "gx:hash": {
+        "@value": "d056db972da41899ed89cd3f93b8ccd59fc9314e2904af3455ce13d76a2ed99b",
         "@type": "xsd:string"
+      },
+      "gx:URL": {
+        "@value": "https://www.msg.group/sotermsandconditions",
+        "@type": "xsd:string"
+      }
+    },
+    "gx:policy": {
+      "@value": "This could be a policy for the Service Offering",
+      "@type": "xsd:string"
+    },
+    "gx:providedBy": {
+      "@id": "https://participant.gxfs.gx4fm.org/.well-known/legalParticipant.json",
+      "@type": "gx:LegalParticipant",
+      "gx:legalAddress": {
+        "@type": "gx:legalAddress",
+        "gx:countrySubdivisionCode": {
+          "@value": "DE-BY",
+          "@type": "xsd:string"
+        }
+      },
+      "gx:legalRegistrationNumber": {
+        "@type": "gx:legalRegistrationNumber",
+        "gx:vatID": {
+          "@value": "DE 129 420 400",
+          "@type": "xsd:string"
+        }
+      },
+      "gx:headquarterAddress": {
+        "@type": "gx:legalAddress",
+        "gx:countrySubdivisionCode": {
+          "@value": "DE-BY",
+          "@type": "xsd:string"
+        }
+      }
     }
-}
+  }

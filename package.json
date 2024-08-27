@@ -21,6 +21,7 @@
   "dependencies": {
     "@opentelemetry/api": "^1.8.0",
     "@opentelemetry/auto-instrumentations-node": "^0.46.1",
+    "@tacoinfra/get-tez": "^1.0.8",
     "@taquito/signer": "^14.0.0",
     "@taquito/taquito": "^13.0.1",
     "@taquito/tezbridge-signer": "^14.0.0",

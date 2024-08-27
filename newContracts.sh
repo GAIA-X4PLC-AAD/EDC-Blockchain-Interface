@@ -70,6 +70,13 @@ for contract_number in "${contracts[@]}"; do
       (deploy_contract "$contract_code" "$storage_file" "$contract_name") &
       loading_animation $!
       ;;
+    4)
+      contract_code="artifacts/whitelistContract/step_000_cont_0_contract.tz"
+      storage_file="artifacts/whitelistContract/step_000_cont_0_storage.tz"
+      contract_name="WhitelistContract"
+      (deploy_contract "$contract_code" "$storage_file" "$contract_name") &
+      loading_animation $!
+      ;;
 #    4)
 #      contract_code="artifacts/verifiableCredentialsContract/step_000_cont_0_contract.tz"
 #      storage_file="artifacts/verifiableCredentialsContract/step_000_cont_0_storage.tz"

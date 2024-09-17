@@ -2,6 +2,8 @@
 
 # Set ghostnet as the default network and redirect warnings to /dev/null
 
+
+#docker exec octez-node-alpha octez-client --endpoint https://rpc.ghostnet.teztnets.com/ config update #2>/dev/null
 docker exec octez-node-alpha octez-client --endpoint https://rpc.ghostnet.teztnets.com/ config update 2>/dev/null
 
 # Prompt user for contract selection
@@ -26,8 +28,10 @@ deploy_contract() {
 
   echo -e "\nDeploying $contract_name..."
 
-  #contract_address=$(docker exec octez-node-alpha octez-client originate contract $contract_name transferring 0 from edc-account running "$(cat $contract_code)" --init "$(cat $storage_file)" --burn-cap 0.6 --force 2>/dev/null | awk '/New contract/ { print $3 }')
-  contract_address=$(docker exec octez-node-alpha octez-client originate contract $contract_name transferring 0 from edc-account running "$(cat $contract_code)" --init "$(cat $storage_file)" --burn-cap 0.6 --force | awk '/New contract/ { print $3 }')
+  contract_address=$(docker exec octez-node-alpha octez-client originate contract $contract_name transferring 0 from edc-account running "$(cat $contract_code)" --init "$(cat $storage_file)" --burn-cap 0.6 --force 2>/dev/null | awk '/New contract/ { print $3 }')
+  #contract_address=$(docker exec octez-node-alpha octez-client originate contract $contract_name transferring 0 from edc-account running "$(cat $contract_code)" --init "$(cat $storage_file)" --burn-cap 0.6 --force | awk '/New contract/ { print $3 }')
+
+
 
   echo -e "\n$contract_name originated at address: $contract_address"
 }
@@ -39,8 +43,8 @@ loading_animation() {
   local spin_chars="/-\|"
   local i=0
 
-  #while kill -0 $pid 2>/dev/null; do
-  while kill -0 $pid  2>/dev/null; do
+  while kill -0 $pid 2>/dev/null; do
+  #while kill -0 $pid; do
     printf "\r[${spin_chars:i++%${#spin_chars}:1}] Deploying contracts..."
     sleep $delay
   done

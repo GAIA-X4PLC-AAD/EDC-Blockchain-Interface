@@ -76,7 +76,7 @@ const mintAsset = async (metaLink = "") => {
               return contract.methods
                 .mint([
                   {
-                    to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                    to_: "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
                     metadata: {
                       "": char2Bytes(metaLink),
                     },
@@ -117,7 +117,7 @@ const mintPolicy = async (metaLink = "") => {
               return contract.methods
                 .mint([
                   {
-                    to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                    to_: "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
                     metadata: {
                       "": char2Bytes(metaLink),
                     },
@@ -160,7 +160,7 @@ const mintVerifiableCredentials = async (metaLink = "") => {
               return contract.methods
                 .mint([
                   {
-                    to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                    to_: "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
                     metadata: {
                       "": char2Bytes(metaLink),
                     },
@@ -201,7 +201,7 @@ const mintContract = async (metaLink = "") => {
             return contract.methods
               .mint([
                 {
-                  to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                  to_: "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
                   metadata: {
                     "": char2Bytes(metaLink),
                   },

@@ -8,7 +8,7 @@ class TransferLogs(sp.Contract):
     def __init__(self):
         # init map for storing data transfer data
         self.init(
-            admin=sp.set([sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ")]), institution="TU Berlin", transferMap=sp.map(tkey=sp.TString, tvalue=TTransferObject)
+            admin=sp.set([sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL")]), institution="TU Berlin", transferMap=sp.map(tkey=sp.TString, tvalue=TTransferObject)
         )
 
     @ sp.entry_point(name="postDataTransfer")
@@ -60,7 +60,7 @@ def test():
         assetId="assetId",
         consumerId="consumerId",
         providerId="providerId"
-    ).run(sender=sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ"))
+    ).run(sender=sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL"))
     scenario.p("Following data object was inserted:")
     scenario.show(c1.data.transferMap["0"])
     # check if data is stored correctly
@@ -81,7 +81,7 @@ def test():
     # add test data
     scenario += c1.addAdmin(
         sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ")
-    ).run(sender=sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ"))
+    ).run(sender=sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL"))
     # check if address is added to admin set
     scenario.verify(c1.data.admin.contains(
         sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ")))

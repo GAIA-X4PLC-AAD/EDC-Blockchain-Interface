@@ -5,8 +5,7 @@ const contractConfig = {
   rpcUrl: "https://rpc.ghostnet.teztnets.com/",
   adminAddress: process.env.ADMIN_ADDRESS
     ? process.env.ADMIN_ADDRESS
-    : "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
-    //: "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
+    : "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
   assetAddress: process.env.ASSET_ADDRESS
     ? process.env.ASSET_ADDRESS
     : "KT1N3iJne4jFnQz4tdHBz5q7Cd8Wmd6XtZSH",

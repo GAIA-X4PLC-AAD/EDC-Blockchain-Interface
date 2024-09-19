@@ -3,7 +3,7 @@ import smartpy as sp
 class Contract(sp.Contract):
   def __init__(self):
     self.init_type(sp.TRecord(administrator = sp.TAddress, author = sp.TString, last_token_id = sp.TNat, ledger = sp.TBigMap(sp.TNat, sp.TAddress), metadata = sp.TBigMap(sp.TString, sp.TBytes), token_metadata = sp.TBigMap(sp.TNat, sp.TRecord(token_id = sp.TNat, token_info = sp.TMap(sp.TString, sp.TBytes)).layout(("token_id", "token_info")))).layout((("administrator", ("author", "last_token_id")), ("ledger", ("metadata", "token_metadata")))))
-    self.init(administrator = sp.address('tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ'),
+    self.init(administrator = sp.address('tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL'),
               author = 'Johann Hartmann',
               last_token_id = 0,
               ledger = {},

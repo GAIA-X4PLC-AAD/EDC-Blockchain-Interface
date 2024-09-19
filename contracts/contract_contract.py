@@ -42,7 +42,7 @@ class ExampleFa2Nft(FA2.Admin, FA2.Fa2Nft):
 sp.add_compilation_target(
     # metadata json file should be generated under the name "metadata_base" which will contain the offchain views as well
     "contractContract",
-    ExampleFa2Nft(admin=sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ"), metadata=sp.utils.metadata_of_url(
+    ExampleFa2Nft(admin=sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL"), metadata=sp.utils.metadata_of_url(
         "https://ipfs.io/ipfs/QmTvQA5UMXK6bCYjT8UUApJuMKBJgynRZ5745AQewNkvcC"), metadata_base={
             "name": "gaia.tub.assets",
             "version": "1.0.0",

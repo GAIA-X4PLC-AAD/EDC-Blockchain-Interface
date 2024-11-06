@@ -19,33 +19,33 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@opentelemetry/api": "^1.8.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.46.1",
-    "@taquito/signer": "^14.0.0",
-    "@taquito/taquito": "^13.0.1",
-    "@taquito/tezbridge-signer": "^14.0.0",
-    "@taquito/tzip12": "^14.0.0",
-    "@taquito/tzip16": "^14.0.0",
-    "@taquito/utils": "^14.0.0",
-    "axios": "^1.6.7",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.1",
-    "node-fetch": "^3.2.4",
-    "nodemon": "^2.0.16",
-    "swagger-jsdoc": "^6.2.1",
-    "swagger-ui-express": "^4.4.0"
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.52.0",
+    "@taquito/signer": "^20.1.0",
+    "@taquito/taquito": "^20.1.0",
+    "@taquito/tezbridge-signer": "^14.2.0",
+    "@taquito/tzip12": "^20.1.0",
+    "@taquito/tzip16": "^20.1.0",
+    "@taquito/utils": "^20.1.0",
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "@taqueria/plugin-metadata": "^0.20.2",
-    "@taqueria/plugin-smartpy": "^0.20.2"
+    "@taqueria/plugin-metadata": "^0.64.0",
+    "@taqueria/plugin-smartpy": "^0.64.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/johannha/edc-interface.git"
+    "url": "git+https://github.com/GAIA-X4PLC-AAD/EDC-Blockchain-Interface.git"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/johannha/edc-interface/issues"
+    "url": "https://github.com/GAIA-X4PLC-AAD/EDC-Blockchain-Interface/issues"
   },
-  "homepage": "https://github.com/johannha/edc-interface#readme"
+  "homepage": "https://github.com/GAIA-X4PLC-AAD/EDC-Blockchain-Interface/blob/main/Readme.md"
 }

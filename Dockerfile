@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:17.0.1-alpine
+FROM node:alpine3.20
 ENV NODE_ENV=production
 WORKDIR /app
 COPY ["package.json", "package-lock.json*", "./"]

@@ -53,3 +53,13 @@ code
     NIL operation; # list operation : @storage
     PAIR;       # pair (list operation) @storage
   };
+
+view
+  "present" unit bool
+  {
+    CDR;        # @storage
+    # sp.result(self.data.operators.contains(sp.source)) # @storage
+    GET 4;      # set address
+    SOURCE;     # @source : set address
+    MEM;        # bool
+  };

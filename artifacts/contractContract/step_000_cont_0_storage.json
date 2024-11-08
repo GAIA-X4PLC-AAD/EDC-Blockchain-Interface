@@ -1,7 +1,10 @@
 {
   "prim": "Pair",
   "args": [
-    { "prim": "Pair", "args": [ { "string": "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL" }, { "prim": "Pair", "args": [ { "string": "Johann Hartmann" }, { "int": "0" } ] } ] },
+    {
+      "prim": "Pair",
+      "args": [ { "string": "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL" }, { "prim": "Pair", "args": [ { "string": "Johann Hartmann, Ramon Mehrpoya" }, { "int": "0" } ] } ]
+    },
     {
       "prim": "Pair",
       "args": [
@@ -14,7 +17,7 @@
                 "prim": "Elt",
                 "args": [
                   { "string": "" },
-                  { "bytes": "68747470733a2f2f697066732e696f2f697066732f516d5476514135554d584b366243596a5438555541704a754d4b424a67796e525a35373435415165774e6b766343" }
+                  { "bytes": "68747470733a2f2f697066732e696f2f697066732f516d556d55714643526a6354416b506753667375556d64735750524e444a6d454332737762465842363233723678" }
                 ]
               }
             ],

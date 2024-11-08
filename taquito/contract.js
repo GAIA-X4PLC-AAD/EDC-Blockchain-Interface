@@ -68,7 +68,7 @@ const mintAsset = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
       const inMemorySignerParams = {
-        mnemonic: process.env.MNEMONIC
+        mnemonic: 'position rate moment length expect cube hood myself wolf aunt forward east festival lunar disorder'
       }
       const signer = InMemorySigner.fromMnemonic(inMemorySignerParams);
       tezos.setSignerProvider(signer);
@@ -115,7 +115,7 @@ const mintPolicy = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
       const inMemorySignerParams = {
-        mnemonic: process.env.MNEMONIC
+        mnemonic: 'position rate moment length expect cube hood myself wolf aunt forward east festival lunar disorder'
       }
       const signer = InMemorySigner.fromMnemonic(inMemorySignerParams);
       tezos.setSignerProvider(signer);
@@ -205,7 +205,7 @@ const mintContract = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
       const inMemorySignerParams = {
-        mnemonic: process.env.MNEMONIC
+        mnemonic: 'position rate moment length expect cube hood myself wolf aunt forward east festival lunar disorder'
       }
       const signer = InMemorySigner.fromMnemonic(inMemorySignerParams);
       tezos.setSignerProvider(signer);

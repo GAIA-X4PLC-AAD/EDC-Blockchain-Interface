@@ -1,4 +1,3 @@
-import { UriNotFound } from "@taquito/tzip16";
 import axios from "axios";
 
 class TokenMetadata {

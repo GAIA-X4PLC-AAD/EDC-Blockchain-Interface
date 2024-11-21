@@ -1,0 +1,17 @@
+version: "3.0"
+services:
+  octez-node:
+    container_name: octez-node-alpha
+    image: tezos/tezos:latest
+    hostname: octez-node
+    command: octez-node
+    ports:
+      - 9732:9732
+      - 8732:8732
+    environment:
+      NODE_HOST: octez-node
+      PROTOCOL: alpha
+    volumes:
+      - ./node_data:/var/run/tezos/node
+      - ./client_data:/var/run/tezos/client
+    restart: on-failure

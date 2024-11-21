@@ -1,0 +1,1 @@
+sp.record(administrator = sp.address('tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL'), author = 'Ramon Mehrpoya', operators = sp.set([sp.address('tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL')]))

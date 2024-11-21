@@ -1,0 +1,65 @@
+parameter (or (address %add_operator) (address %del_operator));
+storage   (pair (address %administrator) (pair (string %author) (set %operators address)));
+code
+  {
+    UNPAIR;     # @parameter : @storage
+    IF_LEFT
+      {
+        # == add_operator ==
+        # sp.verify(sp.sender == self.data.administrator, 'FA2_NOT_ADMIN') # @parameter%add_operator : @storage
+        DUP 2;      # @storage : @parameter%add_operator : @storage
+        CAR;        # address : @parameter%add_operator : @storage
+        SENDER;     # @sender : address : @parameter%add_operator : @storage
+        COMPARE;    # int : @parameter%add_operator : @storage
+        EQ;         # bool : @parameter%add_operator : @storage
+        IF
+          {}
+          {
+            PUSH string "FA2_NOT_ADMIN"; # string : @parameter%add_operator : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%add_operator : @storage
+        SWAP;       # @storage : @parameter%add_operator
+        # self.data.operators.add(params) # @storage : @parameter%add_operator
+        DUP;        # @storage : @storage : @parameter%add_operator
+        GET 4;      # set address : @storage : @parameter%add_operator
+        PUSH bool True; # bool : set address : @storage : @parameter%add_operator
+        DIG 3;      # @parameter%add_operator : bool : set address : @storage
+        UPDATE;     # set address : @storage
+        UPDATE 4;   # @storage
+      }
+      {
+        # == del_operator ==
+        # sp.verify(sp.sender == self.data.administrator, 'FA2_NOT_ADMIN') # @parameter%del_operator : @storage
+        DUP 2;      # @storage : @parameter%del_operator : @storage
+        CAR;        # address : @parameter%del_operator : @storage
+        SENDER;     # @sender : address : @parameter%del_operator : @storage
+        COMPARE;    # int : @parameter%del_operator : @storage
+        EQ;         # bool : @parameter%del_operator : @storage
+        IF
+          {}
+          {
+            PUSH string "FA2_NOT_ADMIN"; # string : @parameter%del_operator : @storage
+            FAILWITH;   # FAILED
+          }; # @parameter%del_operator : @storage
+        SWAP;       # @storage : @parameter%del_operator
+        # self.data.operators.remove(params) # @storage : @parameter%del_operator
+        DUP;        # @storage : @storage : @parameter%del_operator
+        GET 4;      # set address : @storage : @parameter%del_operator
+        PUSH bool False; # bool : set address : @storage : @parameter%del_operator
+        DIG 3;      # @parameter%del_operator : bool : set address : @storage
+        UPDATE;     # set address : @storage
+        UPDATE 4;   # @storage
+      }; # @storage
+    NIL operation; # list operation : @storage
+    PAIR;       # pair (list operation) @storage
+  };
+
+view
+  "present" unit bool
+  {
+    CDR;        # @storage
+    # sp.result(self.data.operators.contains(sp.source)) # @storage
+    GET 4;      # set address
+    SOURCE;     # @source : set address
+    MEM;        # bool
+  };

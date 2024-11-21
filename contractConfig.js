@@ -5,16 +5,19 @@ const contractConfig = {
   rpcUrl: "https://rpc.ghostnet.teztnets.com/",
   adminAddress: process.env.ADMIN_ADDRESS
     ? process.env.ADMIN_ADDRESS
-    : "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+    : "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
+    inMemorySignerParams: process.env.MNEMONIC
+    ? process.env.MNEMONIC
+    : "position rate moment length expect cube hood myself wolf aunt forward east festival lunar disorder",
   assetAddress: process.env.ASSET_ADDRESS
     ? process.env.ASSET_ADDRESS
-    : "KT1N3iJne4jFnQz4tdHBz5q7Cd8Wmd6XtZSH",
+    : "KT18xeKGvSVcgBdTYsaMeSAknzRKydthkj45",
   policyAddress: process.env.POLICY_ADDRESS
     ? process.env.POLICY_ADDRESS
-    : "KT1J7FvNLo2yQSUm7jcm2wzNHDBhR19Y5dJ9",
+    : "KT1XkpevyRR76QEk5PdwQnSEZAABFF2MhGmm",
   contractAddress: process.env.CONTRACT_ADDRESS
     ? process.env.CONTRACT_ADDRESS
-    : "KT1QDheV2TkL3mitzYNKzunWYhSe6MmEPTh5",
+    : "KT1L44vn26X98s2qMikPKBXoLFymGViwJM47",
   verifiableCredentialsAddress: process.env.VERIFIABLE_CREDENTIALS_ADDRESS
     ? process.env.VERIFIABLE_CREDENTIALS_ADDRESS
     : "KT1XgUq6rzN9q6YMh44TbLffEz3zb54HbY2H",

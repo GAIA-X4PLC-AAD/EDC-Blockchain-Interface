@@ -12,7 +12,7 @@ TAgreementRecord = sp.TRecord(providerAddress=sp.TAddress, consumerAddress=sp.TA
 class ContractAgreement(sp.Contract):
 
     def __init__(self):
-        self.init(admin=sp.set([sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ")]), institution="TU Berlin", unverifiedAgreements=sp.map(
+        self.init(admin=sp.set([sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL")]), institution="TU Berlin", unverifiedAgreements=sp.map(
             tkey=sp.TString, tvalue=TAgreementRecord), verifiedAgreements=sp.map(tkey=sp.TString, tvalue=TAgreementRecord))
 
     @sp.entry_point(name="postAgreement")

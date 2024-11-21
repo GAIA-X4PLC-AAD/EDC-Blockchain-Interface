@@ -1,5 +1,5 @@
 import { TezosToolkit, MichelsonMap } from "@taquito/taquito";
-import { importKey } from "@taquito/signer";
+import { importKey, InMemorySigner } from "@taquito/signer";
 import { char2Bytes } from "@taquito/utils";
 import axios from "axios";
 import fs from "fs";
@@ -67,7 +67,13 @@ const getMapSize = async (mapName) => {
 const mintAsset = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
-      let result
+      const inMemorySignerParams = {
+        mnemonic: 'position rate moment length expect cube hood myself wolf aunt forward east festival lunar disorder'
+      }
+      const signer = InMemorySigner.fromMnemonic(inMemorySignerParams);
+      tezos.setSignerProvider(signer);
+
+      let result;
       await tracer.startActiveSpan('tezos.contract mint', { kind: SpanKind.SERVER }, async (span) => {
         try {
           result = await tezos.contract
@@ -76,7 +82,7 @@ const mintAsset = async (metaLink = "") => {
               return contract.methods
                 .mint([
                   {
-                    to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                    to_: "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
                     metadata: {
                       "": char2Bytes(metaLink),
                     },
@@ -94,11 +100,11 @@ const mintAsset = async (metaLink = "") => {
         }
         span.end();
       });
-        console.log("Return Object: " + result);
-        return result;
+      console.log("Return Object: " + result);
+      return result;
     } catch (error) {
       console.error(`Error on attempt ${i + 1}: ${error}`);
-      console.log("Waiting 2 seconds before retrying...")
+      console.log("Waiting 2 seconds before retrying...");
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
   }
@@ -108,6 +114,12 @@ const mintAsset = async (metaLink = "") => {
 const mintPolicy = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
+      const inMemorySignerParams = {
+        mnemonic: 'position rate moment length expect cube hood myself wolf aunt forward east festival lunar disorder'
+      }
+      const signer = InMemorySigner.fromMnemonic(inMemorySignerParams);
+      tezos.setSignerProvider(signer);
+    
       let result
       await tracer.startActiveSpan('tezos.contract mint', { kind: SpanKind.SERVER }, async (span) => {
         try {
@@ -117,7 +129,7 @@ const mintPolicy = async (metaLink = "") => {
               return contract.methods
                 .mint([
                   {
-                    to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                    to_: "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
                     metadata: {
                       "": char2Bytes(metaLink),
                     },
@@ -160,7 +172,7 @@ const mintVerifiableCredentials = async (metaLink = "") => {
               return contract.methods
                 .mint([
                   {
-                    to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                    to_: "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
                     metadata: {
                       "": char2Bytes(metaLink),
                     },
@@ -192,6 +204,12 @@ const mintVerifiableCredentials = async (metaLink = "") => {
 const mintContract = async (metaLink = "") => {
   for (let i = 0; i < 10; i++) {
     try {
+      const inMemorySignerParams = {
+        mnemonic: 'position rate moment length expect cube hood myself wolf aunt forward east festival lunar disorder'
+      }
+      const signer = InMemorySigner.fromMnemonic(inMemorySignerParams);
+      tezos.setSignerProvider(signer);
+
       let result
       await tracer.startActiveSpan('tezos.contract mint', { kind: SpanKind.SERVER }, async (span) => {
         try {
@@ -201,7 +219,7 @@ const mintContract = async (metaLink = "") => {
             return contract.methods
               .mint([
                 {
-                  to_: "tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ",
+                  to_: "tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL",
                   metadata: {
                     "": char2Bytes(metaLink),
                   },

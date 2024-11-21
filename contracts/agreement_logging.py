@@ -9,7 +9,7 @@ class AgreementLogging(sp.Contract):
     def __init__(self):
         # init map for storing data transfer data
         self.init(
-            admin=sp.set([sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ")]), institution="TU Berlin", invoiceMap=sp.map(tkey=sp.TString, tvalue=TInvoiceObject)
+            admin=sp.set([sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL")]), institution="TU Berlin", invoiceMap=sp.map(tkey=sp.TString, tvalue=TInvoiceObject)
         )
 
     @ sp.entry_point(name="postAgreementLog")
@@ -59,7 +59,7 @@ def test():
     # add test data
     scenario += c1.addAdmin(
         sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ")
-    ).run(sender=sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ"))
+    ).run(sender=sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL"))
     # check if address is added to admin set
     scenario.verify(c1.data.admin.contains(
         sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ")))

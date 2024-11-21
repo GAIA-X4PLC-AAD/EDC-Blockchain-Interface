@@ -8,9 +8,6 @@ code
         IF_LEFT
           {
             # == balance_of ==
-            # def f_x0(_x0):
-            #   sp.verify(self.data.token_metadata.contains(_x0.token_id), 'FA2_TOKEN_UNDEFINED')
-            #   sp.result(sp.record(request = _x0, balance = sp.eif(self.data.ledger[_x0.token_id] == _x0.owner, 1, 0)))
             # sp.transfer(params.requests.map(sp.build_lambda(f_x0)), sp.tez(0), params.callback) # @parameter%balance_of : @storage
             NIL operation; # list operation : @parameter%balance_of : @storage
             DUP;        # list operation : list operation : @parameter%balance_of : @storage
@@ -24,9 +21,7 @@ code
                 # sp.verify(self.data.token_metadata.contains(_x0.token_id), 'FA2_TOKEN_UNDEFINED') # pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                 DUP 7;      # @storage : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                 GET 6;      # big_map nat (pair (nat %token_id) (map %token_info string bytes)) : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
-                SWAP;       # pair (address %owner) (nat %token_id) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
-                DUP;        # pair (address %owner) (nat %token_id) : pair (address %owner) (nat %token_id) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
-                DUG 2;      # pair (address %owner) (nat %token_id) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                DUP 2;      # pair (address %owner) (nat %token_id) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                 CDR;        # nat : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                 MEM;        # bool : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                 IF
@@ -35,7 +30,7 @@ code
                     PUSH string "FA2_TOKEN_UNDEFINED"; # string : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                     FAILWITH;   # FAILED
                   }; # pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
-                # sp.result(sp.record(request = _x0, balance = sp.eif(self.data.ledger[_x0.token_id] == _x0.owner, 1, 0))) # pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                # sp.result(sp.record(balance = sp.eif(self.data.ledger[_x0.token_id] == _x0.owner, 1, 0), request = _x0)) # pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                 DUP;        # pair (address %owner) (nat %token_id) : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                 CAR;        # address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                 DUP 8;      # @storage : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
@@ -45,7 +40,7 @@ code
                 GET;        # option address : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                 IF_NONE
                   {
-                    PUSH int 370; # int : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
+                    PUSH int 32; # int : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
                     FAILWITH;   # FAILED
                   }
                   {}; # @some : address : pair (address %owner) (nat %token_id) : mutez : contract (list (pair (pair %request (address %owner) (nat %token_id)) (nat %balance))) : list operation : list operation : @parameter%balance_of : @storage
@@ -70,15 +65,34 @@ code
           }
           {
             # == mint ==
+            # sp.verify(sp.view("present", sp.unit, sp.address('KT1FmkBCmA1TEVPWfyVN7GvMumvasnTtmbMr'), sp.TBool).open_some(message = 'View not found') == True, 'FA2_NOT_ADMIN') # @parameter%mint : @storage
+            PUSH bool True; # bool : @parameter%mint : @storage
+            PUSH address "KT1FmkBCmA1TEVPWfyVN7GvMumvasnTtmbMr"; # address : bool : @parameter%mint : @storage
+            UNIT;       # unit : address : bool : @parameter%mint : @storage
+            VIEW "present" bool; # option bool : bool : @parameter%mint : @storage
+            IF_NONE
+              {
+                PUSH string "View not found"; # string : bool : @parameter%mint : @storage
+                FAILWITH;   # FAILED
+              }
+              {}; # @some : bool : @parameter%mint : @storage
+            COMPARE;    # int : @parameter%mint : @storage
+            EQ;         # bool : @parameter%mint : @storage
+            IF
+              {}
+              {
+                PUSH string "FA2_NOT_ADMIN"; # string : @parameter%mint : @storage
+                FAILWITH;   # FAILED
+              }; # @parameter%mint : @storage
             # for action in params: ... # @parameter%mint : @storage
             DUP;        # @parameter%mint : @parameter%mint : @storage
             ITER
               {
-                # compute_policy_contract_35 = sp.local("compute_policy_contract_35", self.data.last_token_id) # pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
+                # compute_asset_contract_35 = sp.local("compute_asset_contract_35", self.data.last_token_id) # pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
                 DUP 3;      # @storage : pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
                 CAR;        # pair (address %administrator) (pair (string %author) (nat %last_token_id)) : pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
                 GET 4;      # nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
-                # self.data.token_metadata[compute_policy_contract_35.value] = sp.record(token_id = compute_policy_contract_35.value, token_info = action.metadata) # nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
+                # self.data.token_metadata[compute_asset_contract_35.value] = sp.record(token_id = compute_asset_contract_35.value, token_info = action.metadata) # nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint : @storage
                 DIG 3;      # @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
                 DUP;        # @storage : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
                 GET 6;      # big_map nat (pair (nat %token_id) (map %token_info string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
@@ -90,7 +104,7 @@ code
                 DUP 4;      # nat : option (pair nat (map string bytes)) : big_map nat (pair (nat %token_id) (map %token_info string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
                 UPDATE;     # big_map nat (pair nat (map string bytes)) : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
                 UPDATE 6;   # @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
-                # self.data.ledger[compute_policy_contract_35.value] = action.to_ # @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
+                # self.data.ledger[compute_asset_contract_35.value] = action.to_ # @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
                 DUP;        # @storage : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
                 GET 3;      # big_map nat address : @storage : nat : pair (address %to_) (map %metadata string bytes) : @parameter%mint
                 DIG 3;      # pair (address %to_) (map %metadata string bytes) : big_map nat address : @storage : nat : @parameter%mint
@@ -121,11 +135,9 @@ code
       {
         IF_LEFT
           {
-            SWAP;       # @storage : @parameter%set_administrator
             # == set_administrator ==
-            # sp.verify(sp.sender == self.data.administrator, 'FA2_NOT_ADMIN') # @storage : @parameter%set_administrator
-            DUP;        # @storage : @storage : @parameter%set_administrator
-            DUG 2;      # @storage : @parameter%set_administrator : @storage
+            # sp.verify(sp.sender == self.data.administrator, 'FA2_NOT_ADMIN') # @parameter%set_administrator : @storage
+            DUP 2;      # @storage : @parameter%set_administrator : @storage
             CAR;        # pair (address %administrator) (pair (string %author) (nat %last_token_id)) : @parameter%set_administrator : @storage
             CAR;        # address : @parameter%set_administrator : @storage
             SENDER;     # @sender : address : @parameter%set_administrator : @storage

@@ -1,6 +1,30 @@
 import smartpy as sp
 
-class Contract(sp.Contract):
+class Whitelist(sp.Contract):
+    def __init__(self):
+        self.init_type(sp.TRecord(
+            administrator = sp.TAddress, 
+            author = sp.TString, 
+            operators = sp.TSet(sp.TAddress)))
+        self.init(administrator = sp.address('tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL'), author = "Ramon Mehrpoya", operators = sp.set([sp.address('tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL')]))
+            
+    @sp.entry_point
+    def add_operator(self, params):
+        sp.verify(sp.sender == self.data.administrator, "FA2_NOT_ADMIN")
+        self.data.operators.add(params)
+
+    @sp.entry_point
+    def del_operator(self, params):
+        sp.verify(sp.sender == self.data.administrator, "FA2_NOT_ADMIN")
+        self.data.operators.remove(params)
+
+    @sp.onchain_view()
+    def present(self):
+        sp.result(self.data.operators.contains(sp.source))
+
+
+
+class Asset(sp.Contract):
     def __init__(self):
         self.init_type(sp.TRecord(
             administrator = sp.TAddress,
@@ -34,8 +58,6 @@ class Contract(sp.Contract):
 
     @sp.entry_point
     def mint(self, params):
-        present = sp.view("present", sp.address('KT1FmkBCmA1TEVPWfyVN7GvMumvasnTtmbMr'), sp.unit, sp.TBool).open_some("View not found")
-        sp.verify(present == True, 'FA2_NOT_ADMIN')
         sp.set_type(params, sp.TList(sp.TRecord(metadata = sp.TMap(sp.TString, sp.TBytes), to_ = sp.TAddress).layout(("to_", "metadata"))))
         sp.for action in params:
             compute_asset_contract_35 = sp.local("compute_asset_contract_35", self.data.last_token_id)
@@ -58,17 +80,20 @@ class Contract(sp.Contract):
         sp.set_type(params, sp.TList(sp.TVariant(add_operator = sp.TRecord(operator = sp.TAddress, owner = sp.TAddress, token_id = sp.TNat).layout(("owner", ("operator", "token_id"))), remove_operator = sp.TRecord(operator = sp.TAddress, owner = sp.TAddress, token_id = sp.TNat).layout(("owner", ("operator", "token_id")))).layout(("add_operator", "remove_operator"))))
         sp.failwith('FA2_OPERATORS_UNSUPPORTED')
 
-    #@sp.entry_point
-    #def check_whitelist(self, providerAddress):
-    #    #present = sp.view("present", providerAddress, sp.unit, t = sp.TRecord(balance = sp.TBool)).open_some("View not found")
-    #    present = sp.view("present", sp.address('KT1FmkBCmA1TEVPWfyVN7GvMumvasnTtmbMr'), sp.unit, sp.TBool).open_some("View not found")
-    #    sp.verify(present == True, 'FA2_NOT_ADMIN')
+    @sp.entry_point
+    def check_whitelist(self, providerAddress):
+        #present = sp.view("present", providerAddress, sp.unit, t = sp.TRecord(balance = sp.TBool)).open_some("View not found")
+        present = sp.view("present", providerAddress, sp.unit, sp.TBool).open_some("View not found")
+        sp.verify(present == True, 'FA2_NOT_ADMIN')
 
 
 @sp.add_test(name = "Whitelist")
 def test():
     scenario = sp.test_scenario()
-    c2 = Contract()
+    
+    c1 = Whitelist()
+    scenario += c1
+
+    c2 = Asset()
     scenario += c2
-    #scenario += c2.check_whitelist(c1.address).run(source=sp.address('tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL'))
-    # see artifacts\combined_contract.py for the combined test
+    scenario += c2.check_whitelist(c1.address).run(source=sp.address('tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL'))

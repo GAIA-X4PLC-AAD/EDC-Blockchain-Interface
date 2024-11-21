@@ -69,9 +69,26 @@ Deploy Asset Contract:
 npm run deployAssetContract
 ```
 
-Alternatively:
+1. Alternative:
 
 ```
 ~/smartpy-cli/SmartPy.sh originate-contract --code ./artifacts/contractContract/step_000_cont_0_contract.tz --storage ./artifacts/contractContract/step_000_cont_0_storage.tz --rpc https://rpc.ghostnet.teztnets.com/
 
 ```
+
+2. Alternative(Scripts):
+
+Generate a new address tz1... and load tez on to it:
+```
+./newAccount.sh 
+```
+Copy the hash and visit the tezos faucet page to fund your account at:
+```
+https://faucet.ghostnet.teztnets.xyz 
+```
+Generate new asset, policy, contract and/or whitelist contracts with:
+```
+./newContracts.sh 
+```
+
+If you wish to create and replace a new whitelist, update the hard coded default address ([KT1FmkBCmA1TEVPWfyVN7GvMumvasnTtmbMr](https://better-call.dev/ghostnet/KT1FmkBCmA1TEVPWfyVN7GvMumvasnTtmbMr/operations)). The default whitelist address for asset, policy and contract contracts is hardcoded in the corresponding artifacts\...\step_000_cont_0_contract.tz and artifacts\...\step_000_cont_0_storage.tz files.

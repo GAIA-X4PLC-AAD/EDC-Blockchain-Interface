@@ -7,6 +7,7 @@ import { Tzip12Module, tzip12 } from "@taquito/tzip12";
 import { contractConfig } from "../contractConfig.js";
 import { trace, context, SpanKind, SpanStatusCode } from '@opentelemetry/api';
 import crypto from 'crypto';
+import { mnemonicToSeedSync } from 'bip39';
 
 const tracer = trace.getTracer('default');
 
@@ -465,14 +466,14 @@ const getContractByName = async (contractName) => {
   return result;
 };
 
-
+//AES encryption and decryption
 function generateKey() {
   const key = crypto.randomBytes(32); // 32 bytes for AES-256
   const iv = crypto.randomBytes(16); // 16 bytes for the IV
   return { key, iv };
 }
 
-function encrypt(plainText, key, iv) {
+function encrypt(plaintext, key, iv) {
   const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
   let encrypted = cipher.update(plaintext, 'utf8', 'hex');
   encrypted += cipher.final('hex');
@@ -486,20 +487,54 @@ function decrypt(encryptedText, key, ivHex) {
     return decrypted;
 }
 
+// RSA encryption and decryption
+async function derivePrivateKeyFromMnemonic(mnemonic = contractConfig.MNEMONIC, passphrase = '') {
+  const seed = mnemonicToSeedSync(mnemonic, passphrase);
+  const signer = await InMemorySigner.fromFundraiser(mnemonic, 'email@example.com', 'password123');
+  const privateKey = signer.secretKey().slice(0, 64); // First 64 chars are the private key
+  return privateKey;
+}
+
+function encryptWithPublicKey(plaintext, publicKey) {
+  const buffer = Buffer.from(plaintext, 'utf8');
+  const encrypted = crypto.publicEncrypt(
+      {
+          key: publicKey,
+          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+          oaepHash: 'sha256',
+      },
+      buffer
+  );
+  return encrypted.toString('base64');
+}
+
+function decryptWithPrivateKey(ciphertext, privateKey) {
+  const buffer = Buffer.from(ciphertext, 'base64');
+  const decrypted = crypto.privateDecrypt(
+      {
+          key: privateKey,
+          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+          oaepHash: 'sha256',
+      },
+      buffer
+  );
+  return decrypted.toString('utf8');
+}
+
 const writeTransfer = async (request) => {
   let retryCount = 0;
   while (retryCount < 10) {
     try {
       // append request object to map inside smart contract
       const contract = await tezos.contract.at(contractConfig.transferAddress);
-      var key, iv = generateKey();
+      var aESKey, aESKeyIV = generateKey();
       const op = await contract.methods.postDataTransfer(
-        encrypt(request.agreementId, key, iv),
-        encrypt(request.assetId.toString(), key, iv),
-        encrypt(request.consumerId, key, iv),
-        encrypt(request.providerId, key, iv),
-        aESKey,
-        aESKeyIV,
+        encrypt(request.agreementId, aESKey, aESKeyIV),
+        encrypt(request.assetId.toString(), aESKey, aESKeyIV),
+        encrypt(request.consumerId, aESKey, aESKeyIV),
+        encrypt(request.providerId, aESKey, aESKeyIV),
+        encryptWithPublicKey(aESKey, contractConfig.adminAddress), // TODO: encrypt with external entity's public key in production mode.
+        encryptWithPublicKey(aESKeyIV, contractConfig.adminAddress), // TODO: encrypt with external entity's public key in production mode.
         uuidv4(),
       ).send();
       console.log(`Waiting for ${op.hash} to be confirmed...`);

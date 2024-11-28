@@ -6,7 +6,7 @@ import fs from "fs";
 import { Tzip12Module, tzip12 } from "@taquito/tzip12";
 import { contractConfig } from "../contractConfig.js";
 import { trace, context, SpanKind, SpanStatusCode } from '@opentelemetry/api';
-import CryptoJS from 'crypto-js';
+import crypto from 'crypto';
 
 const tracer = trace.getTracer('default');
 
@@ -467,27 +467,23 @@ const getContractByName = async (contractName) => {
 
 
 function generateKey() {
-  const key = CryptoJS.lib.WordArray.random(32); // 32 bytes for AES-256
-  const iv = CryptoJS.lib.WordArray.random(16); // 16 bytes for AES block size
+  const key = crypto.randomBytes(32); // 32 bytes for AES-256
+  const iv = crypto.randomBytes(16); // 16 bytes for the IV
   return { key, iv };
 }
 
 function encrypt(plainText, key, iv) {
-  const encrypted = CryptoJS.AES.encrypt(plainText, key, {
-      iv: iv,
-      padding: CryptoJS.pad.Pkcs7,
-      mode: CryptoJS.mode.CBC
-  });
-  return encrypted.toString(); // Ciphertext as Base64 string
+  const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+  let encrypted = cipher.update(plaintext, 'utf8', 'hex');
+  encrypted += cipher.final('hex');
+  return { iv: iv.toString('hex'), encryptedData: encrypted };
 }
 
-function decrypt(cipherText, key, iv) {
-  const decrypted = CryptoJS.AES.decrypt(cipherText, key, {
-      iv: iv,
-      padding: CryptoJS.pad.Pkcs7,
-      mode: CryptoJS.mode.CBC
-  });
-  return decrypted.toString(CryptoJS.enc.Utf8); // Plaintext as UTF-8 string
+function decrypt(encryptedText, key, ivHex) {
+  const decipher = crypto.createDecipheriv('aes-256-cbc', key, Buffer.from(ivHex, 'hex'));
+    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
 }
 
 const writeTransfer = async (request) => {

@@ -23,7 +23,7 @@ const contractConfig = {
     : "KT1XgUq6rzN9q6YMh44TbLffEz3zb54HbY2H",
   transferAddress: process.env.TRANSFER_ADDRESS
     ? process.env.TRANSFER_ADDRESS
-    : "KT18pEHAbmtGj9iYQAJNhN2CtzjBGf4zBxKX",
+    : "KT1NTyB7jHa39w4nAvmyoWRt5q5gtWgSQB2F",
   agreementAddress: process.env.AGREEMENT_ADDRESS
     ? process.env.AGREEMENT_ADDRESS
     : "KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD",

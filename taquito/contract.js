@@ -6,6 +6,7 @@ import fs from "fs";
 import { Tzip12Module, tzip12 } from "@taquito/tzip12";
 import { contractConfig } from "../contractConfig.js";
 import { trace, context, SpanKind, SpanStatusCode } from '@opentelemetry/api';
+import CryptoJS from 'crypto-js';
 
 const tracer = trace.getTracer('default');
 
@@ -464,17 +465,45 @@ const getContractByName = async (contractName) => {
   return result;
 };
 
+
+function generateKey() {
+  const key = CryptoJS.lib.WordArray.random(32); // 32 bytes for AES-256
+  const iv = CryptoJS.lib.WordArray.random(16); // 16 bytes for AES block size
+  return { key, iv };
+}
+
+function encrypt(plainText, key, iv) {
+  const encrypted = CryptoJS.AES.encrypt(plainText, key, {
+      iv: iv,
+      padding: CryptoJS.pad.Pkcs7,
+      mode: CryptoJS.mode.CBC
+  });
+  return encrypted.toString(); // Ciphertext as Base64 string
+}
+
+function decrypt(cipherText, key, iv) {
+  const decrypted = CryptoJS.AES.decrypt(cipherText, key, {
+      iv: iv,
+      padding: CryptoJS.pad.Pkcs7,
+      mode: CryptoJS.mode.CBC
+  });
+  return decrypted.toString(CryptoJS.enc.Utf8); // Plaintext as UTF-8 string
+}
+
 const writeTransfer = async (request) => {
   let retryCount = 0;
   while (retryCount < 10) {
     try {
       // append request object to map inside smart contract
       const contract = await tezos.contract.at(contractConfig.transferAddress);
+      var key, iv = generateKey();
       const op = await contract.methods.postDataTransfer(
-        request.agreementId,
-        request.assetId.toString(),
-        request.consumerId,
-        request.providerId,
+        encrypt(request.agreementId, key, iv),
+        encrypt(request.assetId.toString(), key, iv),
+        encrypt(request.consumerId, key, iv),
+        encrypt(request.providerId, key, iv),
+        aESKey,
+        aESKeyIV,
         uuidv4(),
       ).send();
       console.log(`Waiting for ${op.hash} to be confirmed...`);

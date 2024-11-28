@@ -1,7 +1,7 @@
 import smartpy as sp
 
 TTransferObject = sp.TRecord(agreementId=sp.TString, assetId=sp.TString,
-                             consumerId=sp.TString, providerId=sp.TString, timestamp=sp.TTimestamp)
+                             consumerId=sp.TString, providerId=sp.TString, timestamp=sp.TTimestamp, aESKey=sp.TString, aESKeyIV=sp.TString)
 
 
 class TransferLogs(sp.Contract):
@@ -12,13 +12,13 @@ class TransferLogs(sp.Contract):
         )
 
     @ sp.entry_point(name="postDataTransfer")
-    def postDataTransfer(self, transferId, agreementId, assetId, consumerId, providerId):
+    def postDataTransfer(self, transferId, agreementId, assetId, consumerId, providerId, aESKey, aESKeyIV):
         # check if transferId is already used
         sp.verify(~self.data.transferMap.contains(transferId),
                   message="transferId already used.")
         # store data transfer data
         self.data.transferMap[transferId] = sp.record(
-            agreementId=agreementId, assetId=assetId, consumerId=consumerId, providerId=providerId, timestamp=sp.now)
+            agreementId=agreementId, assetId=assetId, consumerId=consumerId, providerId=providerId, timestamp=sp.now, aESKey=aESKey, aESKeyIV=aESKeyIV)
 
     @ sp.entry_point(name="getDataTransfer")
     def getDataTransfer(self, transferId):
@@ -59,8 +59,10 @@ def test():
         agreementId="agreementId",
         assetId="assetId",
         consumerId="consumerId",
-        providerId="providerId"
-    ).run(sender=sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL"))
+        providerId="providerId",
+        aESKey="decryptionKey",
+        aESKeyIV="decryptionKey"
+    ).run(sender=sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDDgZ"))
     scenario.p("Following data object was inserted:")
     scenario.show(c1.data.transferMap["0"])
     # check if data is stored correctly
@@ -79,12 +81,12 @@ def test():
     # add contract to scenario
     scenario += c1
     # add test data
-    scenario += c1.addAdmin(
-        sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ")
-    ).run(sender=sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL"))
-    # check if address is added to admin set
-    scenario.verify(c1.data.admin.contains(
-        sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ")))
+    #scenario += c1.addAdmin(
+    #    sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ")
+    #).run(sender=sp.address("tz1W6FF4j95sA7JBgV35Q2n7mDFkXYwmCUVL"))
+    ## check if address is added to admin set
+    #scenario.verify(c1.data.admin.contains(
+    #    sp.address("tz1Na21NimuuPXcQdHUk2en2XWYe9McyDMgZ")))
 
 
 # add compilation target

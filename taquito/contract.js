@@ -487,7 +487,7 @@ function decryptAES(encryptedText, key, ivHex) {
 
 function encryptRSA(publicKey, plaintext) {
   const encryptedMessage = crypto.publicEncrypt(publicKey , plaintext);
-  return encrypted.toString('hex');
+  return encryptedMessage;
 }
 
 
@@ -497,14 +497,15 @@ const writeTransfer = async (request) => {
     try {
       // append request object to map inside smart contract
       const contract = await tezos.contract.at(contractConfig.transferAddress);
-      //var aESKey, aESKeyIV = generateKey();
+      const aesKey = crypto.randomBytes(32); 
+      const aesKeyIV = crypto.randomBytes(16);
       const op = await contract.methods.postDataTransfer(
-        request.agreementId, //encrypt(request.agreementId, aESKey, aESKeyIV),
-        request.assetId.toString, //encrypt(request.assetId.toString(), aESKey, aESKeyIV),
-        request.consumerId, //encrypt(request.consumerId, aESKey, aESKeyIV),
-        request.providerId, //encrypt(request.providerId, aESKey, aESKeyIV),
-        //encryptWithPublicKey(aESKey, contractConfig.adminAddress), // TODO: encrypt with external entity's public key in production mode.
-        //encryptWithPublicKey(aESKeyIV, contractConfig.adminAddress), // TODO: encrypt with external entity's public key in production mode.
+        //encryptRSA(contractConfig.govPublicKey, aesKeyIV).toString('hex'),
+        //encryptRSA(contractConfig.govPublicKey, aesKey).toString('hex'),
+        request.agreementId, //encryptAES(request.agreementId, aesKey, aesKeyIV),
+        request.assetId.toString, //encryptAES(request.assetId.toString(), aesKey, aesKeyIV),
+        request.consumerId, //encryptAES(request.consumerId, aesKey, aesKeyIV),
+        request.providerId, //encryptAES(request.providerId, aesKey, aesKeyIV),
         uuidv4(),
       ).send();
       console.log(`Waiting for ${op.hash} to be confirmed...`);
@@ -551,17 +552,9 @@ const logAgreement = async (request) => {
       const contract = await tezos.contract.at(contractConfig.agreementLoggingAddress);
       const aesKey = crypto.randomBytes(32); 
       const aesKeyIV = crypto.randomBytes(16);
-      try {
-        const encryptedMessage = crypto.publicEncrypt(contractConfig.govPublicKey, aesKey);
-        console.log('Verschlüsselte Nachricht:', encryptedMessage.toString('hex'));
-      } catch (error) {
-        console.error('Fehler beim Verschlüsseln:', error);
-      }
       const op = await contract.methods.postAgreementLog(
-        encryptRSA(contractConfig.govPublicKey, aesKeyIV),
-        encryptRSA(contractConfig.govPublicKey, aesKey),
-        //aesKeyIV.toString('hex'),
-        //aesKey.toString('hex'),
+        encryptRSA(contractConfig.govPublicKey, aesKeyIV).toString('hex'),
+        encryptRSA(contractConfig.govPublicKey, aesKey).toString('hex'),
         encryptAES(request.agreementId.toString(), aesKey, aesKeyIV), 
         encryptAES(request.contractRef, aesKey, aesKeyIV), 
         encryptAES(request.currency, aesKey, aesKeyIV), 

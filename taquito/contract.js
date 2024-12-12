@@ -7,6 +7,8 @@ import { Tzip12Module, tzip12 } from "@taquito/tzip12";
 import { contractConfig } from "../contractConfig.js";
 import { trace, context, SpanKind, SpanStatusCode } from '@opentelemetry/api';
 import crypto from 'crypto';
+//import { encryptMessage } from "@taquito/utils"
+import { buf2hex } from "@taquito/utils"
 import { mnemonicToSeedSync } from 'bip39';
 
 const tracer = trace.getTracer('default');
@@ -466,60 +468,28 @@ const getContractByName = async (contractName) => {
   return result;
 };
 
-//AES encryption and decryption
-function generateKey() {
-  const key = crypto.randomBytes(32); // 32 bytes for AES-256
-  const iv = crypto.randomBytes(16); // 16 bytes for the IV
-  return { key, iv };
-}
 
-function encrypt(plaintext, key, iv) {
+function encryptAES(plaintext, key, iv) {
   const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
   let encrypted = cipher.update(plaintext, 'utf8', 'hex');
   encrypted += cipher.final('hex');
-  return { iv: iv.toString('hex'), encryptedData: encrypted };
+  //return { iv: iv.toString('hex'), encryptedData: encrypted };
+  return encrypted
 }
 
-function decrypt(encryptedText, key, ivHex) {
+function decryptAES(encryptedText, key, ivHex) {
   const decipher = crypto.createDecipheriv('aes-256-cbc', key, Buffer.from(ivHex, 'hex'));
     let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     return decrypted;
 }
 
-// RSA encryption and decryption
-async function derivePrivateKeyFromMnemonic(mnemonic = contractConfig.MNEMONIC, passphrase = '') {
-  const seed = mnemonicToSeedSync(mnemonic, passphrase);
-  const signer = await InMemorySigner.fromFundraiser(mnemonic, 'email@example.com', 'password123');
-  const privateKey = signer.secretKey().slice(0, 64); // First 64 chars are the private key
-  return privateKey;
+
+function encryptRSA(publicKey, plaintext) {
+  const encryptedMessage = crypto.publicEncrypt(publicKey , plaintext);
+  return encrypted.toString('hex');
 }
 
-function encryptWithPublicKey(plaintext, publicKey) {
-  const buffer = Buffer.from(plaintext, 'utf8');
-  const encrypted = crypto.publicEncrypt(
-      {
-          key: publicKey,
-          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-          oaepHash: 'sha256',
-      },
-      buffer
-  );
-  return encrypted.toString('base64');
-}
-
-function decryptWithPrivateKey(ciphertext, privateKey) {
-  const buffer = Buffer.from(ciphertext, 'base64');
-  const decrypted = crypto.privateDecrypt(
-      {
-          key: privateKey,
-          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-          oaepHash: 'sha256',
-      },
-      buffer
-  );
-  return decrypted.toString('utf8');
-}
 
 const writeTransfer = async (request) => {
   let retryCount = 0;
@@ -527,14 +497,14 @@ const writeTransfer = async (request) => {
     try {
       // append request object to map inside smart contract
       const contract = await tezos.contract.at(contractConfig.transferAddress);
-      var aESKey, aESKeyIV = generateKey();
+      //var aESKey, aESKeyIV = generateKey();
       const op = await contract.methods.postDataTransfer(
-        encrypt(request.agreementId, aESKey, aESKeyIV),
-        encrypt(request.assetId.toString(), aESKey, aESKeyIV),
-        encrypt(request.consumerId, aESKey, aESKeyIV),
-        encrypt(request.providerId, aESKey, aESKeyIV),
-        encryptWithPublicKey(aESKey, contractConfig.adminAddress), // TODO: encrypt with external entity's public key in production mode.
-        encryptWithPublicKey(aESKeyIV, contractConfig.adminAddress), // TODO: encrypt with external entity's public key in production mode.
+        request.agreementId, //encrypt(request.agreementId, aESKey, aESKeyIV),
+        request.assetId.toString, //encrypt(request.assetId.toString(), aESKey, aESKeyIV),
+        request.consumerId, //encrypt(request.consumerId, aESKey, aESKeyIV),
+        request.providerId, //encrypt(request.providerId, aESKey, aESKeyIV),
+        //encryptWithPublicKey(aESKey, contractConfig.adminAddress), // TODO: encrypt with external entity's public key in production mode.
+        //encryptWithPublicKey(aESKeyIV, contractConfig.adminAddress), // TODO: encrypt with external entity's public key in production mode.
         uuidv4(),
       ).send();
       console.log(`Waiting for ${op.hash} to be confirmed...`);
@@ -579,17 +549,29 @@ const logAgreement = async (request) => {
     try {
       // append request object to map inside smart contract
       const contract = await tezos.contract.at(contractConfig.agreementLoggingAddress);
+      const aesKey = crypto.randomBytes(32); 
+      const aesKeyIV = crypto.randomBytes(16);
+      try {
+        const encryptedMessage = crypto.publicEncrypt(contractConfig.govPublicKey, aesKey);
+        console.log('Verschlüsselte Nachricht:', encryptedMessage.toString('hex'));
+      } catch (error) {
+        console.error('Fehler beim Verschlüsseln:', error);
+      }
       const op = await contract.methods.postAgreementLog(
-        request.agreementId.toString(),
-        request.contractRef,
-        request.currency,
-        request.customerGaiaId,
-        request.customerId,
-        request.customerInvoiceAddress,
-        request.customerName,
-        request.invoiceDate,
-        request.paymentTerm,
-        request.providerId,
+        encryptRSA(contractConfig.govPublicKey, aesKeyIV),
+        encryptRSA(contractConfig.govPublicKey, aesKey),
+        //aesKeyIV.toString('hex'),
+        //aesKey.toString('hex'),
+        encryptAES(request.agreementId.toString(), aesKey, aesKeyIV), 
+        encryptAES(request.contractRef, aesKey, aesKeyIV), 
+        encryptAES(request.currency, aesKey, aesKeyIV), 
+        encryptAES(request.customerGaiaId, aesKey, aesKeyIV), 
+        encryptAES(request.customerId, aesKey, aesKeyIV),
+        encryptAES(request.customerInvoiceAddress, aesKey, aesKeyIV), 
+        encryptAES(request.customerName, aesKey, aesKeyIV),
+        encryptAES(request.invoiceDate, aesKey, aesKeyIV),
+        encryptAES(request.paymentTerm, aesKey, aesKeyIV),
+        encryptAES(request.providerId, aesKey, aesKeyIV),
         uuidv4()
       ).send();
       console.log(`Waiting for ${op.hash} to be confirmed...`);

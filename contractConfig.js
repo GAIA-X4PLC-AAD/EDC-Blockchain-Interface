@@ -30,6 +30,17 @@ const contractConfig = {
   agreementLoggingAddress: process.env.AGREEMENT_LOGGING_ADDRESS
     ? process.env.AGREEMENT_LOGGING_ADDRESS
     : "KT1CHo3f2eWcnT7zCYs1KD1ERVXwEPYacj3A",
+  govPublicKey: process.env.GOV_PUBLIC_KEY
+    ? process.env.GOV_PUBLIC_KEY
+    : `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoFZasC3DGdt2ISGQX12c
+d4tSY9DLGr8xxRV0g+0IxXQwd3xLRzA86hd/Us5c7i3BQ0ZLl1SAcrcxzfc+iu6T
+52riN9kLHMdMbIbF0eFmvBWOfaxRSjuHcb91PPqG0c1cxNCv4rpiNlqEXeA37LRI
+3zerx6hjsIfVoPOFG4QFzTT3dpKJQUOUpjRfIoemwRBc81hegQz2F3NukxmuyUt5
+3EQW52nGPRZmLiubC0itDhf+1c9Brt0YH5ww7Sh2Dsgv+R+mdjNPCJlx9u0JU1o1
+8eHb/UhnkpIdjPEHz7fOkn+3Ks0mSIThD3eJiz6V5UZ1eqY0MEx8Hs4NP0iIkmhJ
+5wIDAQAB
+-----END PUBLIC KEY-----`,
   tokenLimit: process.env.TOKEN_LIMIT ? process.env.TOKEN_LIMIT : 100,
   sdCreatorURL: process.env.SD_CREATOR_URL ? process.env.SD_CREATOR_URL : "sd-creator.gxfs.gx4fm.org/self-description" 
 };

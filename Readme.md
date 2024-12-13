@@ -92,3 +92,38 @@ Generate new asset, policy, contract and/or whitelist contracts with:
 ```
 
 If you wish to create and replace a new whitelist, update the hard coded default address ([KT1FmkBCmA1TEVPWfyVN7GvMumvasnTtmbMr](https://better-call.dev/ghostnet/KT1FmkBCmA1TEVPWfyVN7GvMumvasnTtmbMr/operations)). The default whitelist address for asset, policy and contract contracts is hardcoded in the corresponding artifacts\...\step_000_cont_0_contract.tz and artifacts\...\step_000_cont_0_storage.tz files.
+
+## Encryption
+
+The agreement logging smart contract fields on the blockchain are AES encrpyted, these can be decrypted by the random AES key and IV fields on the smart contract. These fields again are encrypted by RSA with a fix public key and can be decrypted by the coresponding private Key. 
+
+We generated our RSA keys with: 
+
+```
+// Generate a key pair
+crypto.generateKeyPair('rsa', {
+    modulusLength: 2048,
+    publicKeyEncoding: {
+      type: 'spki',
+      format: 'pem'
+    },
+    privateKeyEncoding: {
+      type: 'pkcs8',
+      format: 'pem',
+      cipher: 'aes-256-cbc',
+      passphrase: 'your-passphrase'
+    }
+  }, (err, publicKey, privateKey) => {
+    if (err) {
+      console.error('Error generating key pair:', err);
+      return;
+    }
+  
+    console.log('Public Key:', publicKey);
+    console.log('Private Key:', privateKey);
+  });
+```
+
+The public is stored in the contractConfig.js file as govPublicKey and the private key should be stored in .env as GOV_PRIVATE_KEY="-----BEGIN ENCRYPTED PRIVATE KEY-----
+...
+-----END ENCRYPTED PRIVATE KEY-----"

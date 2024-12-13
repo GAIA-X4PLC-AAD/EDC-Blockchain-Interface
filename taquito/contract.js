@@ -473,7 +473,6 @@ function encryptAES(plaintext, key, iv) {
   const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
   let encrypted = cipher.update(plaintext, 'utf8', 'hex');
   encrypted += cipher.final('hex');
-  //return { iv: iv.toString('hex'), encryptedData: encrypted };
   return encrypted
 }
 
@@ -484,10 +483,20 @@ function decryptAES(encryptedText, key, ivHex) {
     return decrypted;
 }
 
-
 function encryptRSA(publicKey, plaintext) {
   const encryptedMessage = crypto.publicEncrypt(publicKey , plaintext);
   return encryptedMessage;
+}
+
+function decryptRSA(privateKey, encryptedText) {
+  const decryptedMessage = crypto.privateDecrypt(
+    {
+      key: privateKey,
+      passphrase: 'your-passphrase',
+    },
+    Buffer.from(encryptedText, 'base64')
+  );
+  return decryptedMessage.toString('utf8');
 }
 
 

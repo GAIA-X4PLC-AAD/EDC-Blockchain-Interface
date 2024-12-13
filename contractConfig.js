@@ -41,6 +41,9 @@ d4tSY9DLGr8xxRV0g+0IxXQwd3xLRzA86hd/Us5c7i3BQ0ZLl1SAcrcxzfc+iu6T
 8eHb/UhnkpIdjPEHz7fOkn+3Ks0mSIThD3eJiz6V5UZ1eqY0MEx8Hs4NP0iIkmhJ
 5wIDAQAB
 -----END PUBLIC KEY-----`,
+govPrivateKey: process.env.GOV_PRIVATE_KEY
+    ? process.env.GOV_PRIVATE_KEY
+    : ``, //env variable not set
   tokenLimit: process.env.TOKEN_LIMIT ? process.env.TOKEN_LIMIT : 100,
   sdCreatorURL: process.env.SD_CREATOR_URL ? process.env.SD_CREATOR_URL : "sd-creator.gxfs.gx4fm.org/self-description" 
 };

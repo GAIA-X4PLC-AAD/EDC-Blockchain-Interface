@@ -506,16 +506,22 @@ const writeTransfer = async (request) => {
     try {
       // append request object to map inside smart contract
       const contract = await tezos.contract.at(contractConfig.transferAddress);
-      const aesKey = crypto.randomBytes(32); 
-      const aesKeyIV = crypto.randomBytes(16);
+      const aesKey = crypto.randomBytes(32); // 32 bytes so 256 bits
+      const aesKeyIV = crypto.randomBytes(16); // 16 bytes so 128 bits
       const op = await contract.methods.postDataTransfer(
-        //encryptRSA(contractConfig.govPublicKey, aesKeyIV).toString('hex'),
+        /*//encryptRSA(contractConfig.govPublicKey, aesKeyIV).toString('hex'),
         //encryptRSA(contractConfig.govPublicKey, aesKey).toString('hex'),
         request.agreementId, //encryptAES(request.agreementId, aesKey, aesKeyIV),
         request.assetId.toString, //encryptAES(request.assetId.toString(), aesKey, aesKeyIV),
         request.consumerId, //encryptAES(request.consumerId, aesKey, aesKeyIV),
         request.providerId, //encryptAES(request.providerId, aesKey, aesKeyIV),
-        uuidv4(),
+        uuidv4(),*/
+        encryptRSA(contractConfig.govPublicKey, aesKeyIV).toString('hex'),
+        encryptRSA(contractConfig.govPublicKey, aesKey).toString('hex'),
+        encryptAES(request.agreementId, aesKey, aesKeyIV),
+        encryptAES(request.assetId.toString(), aesKey, aesKeyIV),
+        encryptAES(request.consumerId, aesKey, aesKeyIV),
+        encryptAES(request.providerId, aesKey, aesKeyIV),
       ).send();
       console.log(`Waiting for ${op.hash} to be confirmed...`);
       await op.confirmation(1);
@@ -559,8 +565,8 @@ const logAgreement = async (request) => {
     try {
       // append request object to map inside smart contract
       const contract = await tezos.contract.at(contractConfig.agreementLoggingAddress);
-      const aesKey = crypto.randomBytes(32); 
-      const aesKeyIV = crypto.randomBytes(16);
+      const aesKey = crypto.randomBytes(32); // 32 bytes so 256 bits
+      const aesKeyIV = crypto.randomBytes(16); // 16 bytes so 128 bits
       const op = await contract.methods.postAgreementLog(
         encryptRSA(contractConfig.govPublicKey, aesKeyIV).toString('hex'),
         encryptRSA(contractConfig.govPublicKey, aesKey).toString('hex'),

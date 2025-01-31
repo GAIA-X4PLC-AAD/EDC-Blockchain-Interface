@@ -29,7 +29,7 @@ const contractConfig = {
     : "KT19Jk6zvWfFjWMVSozPNm7VDMKSDVGrU6XD",
   agreementLoggingAddress: process.env.AGREEMENT_LOGGING_ADDRESS
     ? process.env.AGREEMENT_LOGGING_ADDRESS
-    : "KT1CHo3f2eWcnT7zCYs1KD1ERVXwEPYacj3A",
+    : "KT1Wa19mrNmRZQPmu8y2XnVELyAEKkCEw4z7",
   govPublicKey: process.env.GOV_PUBLIC_KEY
     ? process.env.GOV_PUBLIC_KEY
     : `-----BEGIN PUBLIC KEY-----
